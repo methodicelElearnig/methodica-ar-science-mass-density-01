@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تطبيق تعليمي 720 | علوم الهدف 10 | ساين 5</title>
+<link rel="stylesheet" href="styles.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/motion.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261102c">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-body-matter-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<div id="app">
+
+  <!-- ============ מסך 1 (data-screen="0") — TransitionScreen (שקף 64) ============
+       תבנית: TransitionScreen — זהה למסך 1 בסיין 3 (#s0; מחלקות s22-*), בלי שורת פתיחה. הדמות: מרימה משקולות
+       (turquoise-avatar-heavy-weights.mp4, מתנגן). תוכן: תסריט ההפקה, שקף 64 — כותרת מודגשת "זמן ל–4 שאלות מתקדמות",
+       שורת משנה "(זה אומר שעלינו רמה 😊)" (בתסריט: סמל Wingdings J = פרצוף מחייך). התסריט לא מציין טקסט לכפתור → "המשך". -->
+  <section class="screen active" data-screen="0" id="s0">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <h1 class="s22-title">وقت لـ4 أسئلة متقدمة</h1>
+        <p class="s22-body">(هذا يعني أننا ارتقينا مستوى <span aria-hidden="true">😊</span>)</p>
+      </div>
+      <div class="s22-video-wrap" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s0-char-video" muted loop playsinline preload="auto"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source src="assets/videos/turquoise-avatar-heavy-weights.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-continue" id="s0-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 2 (data-screen="1") — OrderedDragAndDropQuestion (שקף 65): שאלה 1 מתוך 4 (סדרה "מתקדם") ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (טקסט בלבד: 3 איזורי גרירה בשורות לצד תוויות הרכיבים + 7 משפטים, מהם 4 מסיחים; הערת מפיקה:
+       "OrderedDragAndDropQuestion — גרירת משפטים לאיזורי גרירה לבניית טיעון … אפשר להציג את השאלה כגלילה"). מצבי Figma: 1717:40975 התחלה ·
+       1717:40891 איזור גרירה · 1717:41017 אחרי שחרור · 1717:41058 / 1717:41092 חיווי · 1730:44201 משוב נכון.
+       מפתח (לפי הפתרון בתסריט): טענה / ראיה / נימוק. 2 ניסיונות (התסריט שותק), רמז זמין מההתחלה.
+       סרגל התקדמות: שאלה 1 מתוך 4. הפופאפים — מחוץ ל-.screen, מזהים s1q-*. -->
+  <section class="screen" data-screen="1" id="s1">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <!-- רמז גלילה (הערת לקוח): מופיע כל עוד יש משפטים נוספים מתחת לקפל; נעלם בגלילה לסוף -->
+    <div class="s1-scroll-cue is-hidden" id="s1-scroll-cue" aria-hidden="true">
+      <span class="s1-scroll-cue__pill">
+        <span>مرّروا للأسفل لمزيد من الجمل</span>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </span>
+    </div>
+    <div class="s1-scroll" id="s1-scroll" tabindex="0" role="region" aria-label="السؤال، مكونات الحُجّة والجمل المُراد سحبها">
+      <div class="s1-inner">
+      <!-- מחוות-יד — אותו נכס כמו בסיין 2; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s1-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+        <div class="s1-text" data-reveal="1">
+          <p>تلقّى صائغ مجوهرات حُليًّا للفحص، بدعوى أنه غير مصنوع من الذهب الخالص. وللتحقق من ذلك، قام بغمر الحُليّ وسبيكة ذهب خالص ذات كتلة مماثلة في الماء. وبالقياس، تبيّن أن الحُليّ أزاح حجم ماء أكبر من سبيكة الذهب، وبذلك تأكدت صحة الدعوى.</p>
+          <p><strong>بنوا حجّة علمية كاملة ودقيقة: اسحبوا الجملة المناسبة لكل عنصر من عناصر الحجة في الجدول.</strong></p>
+        </div>
+
+        <div class="s1-content" data-reveal="2">
+          <div class="s1-rows">
+            <div class="s1-row">
+              <span class="s1-label" id="s1-label-claim">ادّعاء</span>
+              <div class="s1-zone" id="s1-zone-claim" data-zone="claim" role="button" tabindex="0" aria-labelledby="s1-label-claim" onclick="s1ZoneClick('claim', event)" onkeydown="s1ZoneKey(event, 'claim')"></div>
+            </div>
+            <div class="s1-row">
+              <span class="s1-label" id="s1-label-evidence">دليل</span>
+              <div class="s1-zone" id="s1-zone-evidence" data-zone="evidence" role="button" tabindex="0" aria-labelledby="s1-label-evidence" onclick="s1ZoneClick('evidence', event)" onkeydown="s1ZoneKey(event, 'evidence')"></div>
+            </div>
+            <div class="s1-row">
+              <span class="s1-label" id="s1-label-reasoning">التبرير</span>
+              <div class="s1-zone" id="s1-zone-reasoning" data-zone="reasoning" role="button" tabindex="0" aria-labelledby="s1-label-reasoning" onclick="s1ZoneClick('reasoning', event)" onkeydown="s1ZoneKey(event, 'reasoning')"></div>
+            </div>
+          </div>
+
+          <div class="s1-tray" id="s1-tray" role="group" aria-label="جمل للسحب" onclick="s1TrayClick(event)">
+            <div class="s1-slot"><div class="s1-card" id="s1-d-d2" role="button" tabindex="0" aria-pressed="false"><span class="s1-card__text">الحلية مصنوعة من ذهب خالص.</span></div></div>
+            <div class="s1-slot"><div class="s1-card" id="s1-d-claim" role="button" tabindex="0" aria-pressed="false"><span class="s1-card__text">الحُليّ ليست مصنوعة من ذهب خالص.</span></div></div>
+            <div class="s1-slot"><div class="s1-card" id="s1-d-d4" role="button" tabindex="0" aria-pressed="false"><span class="s1-card__text">السبيكة الذهبية أزاحت كمية أقل من الماء، ولذلك فهي أثقل.</span></div></div>
+            <div class="s1-slot"><div class="s1-card" id="s1-d-reasoning" role="button" tabindex="0" aria-pressed="false"><span class="s1-card__text">عندما تتساوى الكتلتان، ويكون الحجم أكبر، تكون كثافة المادة أقل من كثافة الذهب.</span></div></div>
+            <div class="s1-slot"><div class="s1-card" id="s1-d-d1" role="button" tabindex="0" aria-pressed="false"><span class="s1-card__text">عندما تكون الكتلتان متساويتين، فإن الجسم ذا الحجم الأكبر يكون أعلى كثافة.</span></div></div>
+            <div class="s1-slot"><div class="s1-card" id="s1-d-evidence" role="button" tabindex="0" aria-pressed="false"><span class="s1-card__text">الحلية أزاحت حجمًا من الماء أكبر مما أزاحته سبيكة الذهب ذات الكتلة المماثلة.</span></div></div>
+            <div class="s1-slot"><div class="s1-card" id="s1-d-d3" role="button" tabindex="0" aria-pressed="false"><span class="s1-card__text">الحلية وسبيكة الذهب تختلفان عن بعضهما في اللمعان والمظهر.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s1-live" aria-live="polite"></div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s1q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s1q-hint" type="button" onclick="s1OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s1q-check" type="button" disabled onclick="s1Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 2) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s1q-popup" onpointerdown="s1PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s1q-popup-title"></p>
+    <div class="s8q-popup-body" id="s1q-popup-body"></div>
+    <div class="s19-popup-actions" id="s1q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 2) — Hint Card; הטקסט: שקף 65. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s1q-hint-overlay" onclick="s1CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>لبناء حجة علمية، ابحثوا عن:</p>
+        <p><strong>ادّعاء</strong> – ما هو الاستنتاج؟</p>
+        <p><strong>دليل</strong> – ما البيانات التي تم قياسها؟</p>
+        <p><strong>التبرير</strong> – ما المبدأ العلمي الذي يربط بين الدليل والادعاء؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s1CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 3 (data-screen="2") — ImageTopDragAndDropQuestion (שקף 66): שאלה 2 מתוך 4 (סדרה "מתקדם") ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (אזורים מרובי-פריטים כמו מסך 20 בסיין 1; כרטיסי תמונה כמו מסך 4 בסיין 2).
+       שם המסך בהערת המפיקה: ImageTopDragAndDropQuestion; Figma 5340:25539 + Drag&Drop State 1249:32691. הפריסה — לפי רינדור השקף:
+       כוס שמן זית משמאל, מעליה אזור "יצוף על פני השמן" ומתחתיה אזור "ישקע לתחתית הכלי"; מימין שלושה כרטיסי גוף (תמונה + שם)
+       וטבלת צפיפויות. מפתח (הערת מפיקה): יצוף — פקק שעם, פוליפרופילן; ישקע — אלומיניום.
+       2 ניסיונות (התסריט שותק), רמז זמין מההתחלה (קבוצת הרמז בשקף 66). סרגל התקדמות: שאלה 2 מתוך 4.
+       הפופאפים — מחוץ ל-.screen, מזהים s2q-*. -->
+  <section class="screen" data-screen="2" id="s2">
+      <!-- מחוות-יד — אותו נכס כמו בסיין 2; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s2-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s2-stage">
+      <div class="s2-text" data-reveal="1">
+        <div class="s2-text__copy">
+          <p>في الكأس زيت زيتون كثافته 0.92 جرام/سم³. أمامكم ثلاثة أجسام مصنوعة من مواد مختلفة.</p>
+          <p><strong>استعينوا بجدول الكثافات واسحبوا كل جسم إلى المكان المناسب: سيطفو على سطح الزيت أو سيغوص إلى قاع الوعاء.</strong></p>
+        </div>
+        <div class="s2-densities">
+          <p class="s2-densities__title">جدول الكثافات:</p>
+          <table class="s2-table"><colgroup><col class="c-mat"><col></colgroup>
+            <thead>
+              <tr><th scope="col">المادة</th><th scope="col" class="is-num">الكثافة (جرام/سم³)</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">سدادة الفلين</th><td class="is-num">0.24</td></tr>
+              <tr><th scope="row">بوليبروبيلين</th><td class="is-num">0.90</td></tr>
+              <tr><th scope="row">الألومنيوم</th><td class="is-num">2.70</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="s2-col" data-reveal="2">
+        <div class="s2-zone s2-zone--float" id="s2-zone-float" data-zone="float" role="button" tabindex="0" aria-label="يطفو على سطح الزيت — منطقة التحرير" onclick="s2ZoneClick('float', event)" onkeydown="s2ZoneKey(event,'float')">
+          <span class="s2-zone__label">يطفو على سطح الزيت</span>
+        </div>
+        <div class="s2-glass">
+          <img class="s2-glass__img" src="assets/images/olive-oil-glass.png" alt="كوب شفاف يحتوي على زيت زيتون" loading="lazy">
+        </div>
+        <div class="s2-zone s2-zone--sink" id="s2-zone-sink" data-zone="sink" role="button" tabindex="0" aria-label="يغرق إلى قاع الوعاء — منطقة للسحب والإفلات" onclick="s2ZoneClick('sink', event)" onkeydown="s2ZoneKey(event,'sink')">
+          <span class="s2-zone__label">سيغوص إلى قاع الوعاء</span>
+        </div>
+      </div>
+
+      <div class="s2-tray" id="s2-tray" data-reveal="3" onclick="s2TrayClick(event)">
+        <div class="s2-slot"><div class="s2-card" id="s2-d-cork" data-id="cork" role="button" tabindex="0" aria-pressed="false" aria-label="سدادة الفلين"><span class="s2-card__name">سدادة الفلين</span><img class="s2-card__img" src="assets/images/cork.png" alt="" loading="lazy"></div></div>
+        <div class="s2-slot"><div class="s2-card" id="s2-d-al" data-id="al" role="button" tabindex="0" aria-pressed="false" aria-label="الألومنيوم"><span class="s2-card__name">الألومنيوم</span><img class="s2-card__img" src="assets/images/foil-ball.png" alt="" loading="lazy"></div></div>
+        <div class="s2-slot"><div class="s2-card" id="s2-d-poly" data-id="poly" role="button" tabindex="0" aria-pressed="false" aria-label="بوليبروبيلين"><span class="s2-card__name">بوليبروبيلين</span><img class="s2-card__img" src="assets/images/polypropylene.png" alt="" loading="lazy"></div></div>
+      </div>
+
+      <p class="sr-only" id="s2-live" aria-live="polite"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s2q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s2q-hint" type="button" onclick="s2OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s2q-check" type="button" disabled onclick="s2Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 3) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s2q-popup" onpointerdown="s2PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s2q-popup-title"></p>
+    <div class="s8q-popup-body" id="s2q-popup-body"></div>
+    <div class="s19-popup-actions" id="s2q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 3) — Hint Card; הטקסט: שקף 66 (קבוצת הרמז). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s2q-hint-overlay" onclick="s2CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>هنا السائل ليس ماءً بل زيتًا<br>(الكثافة: 0.92 جرام / سم³).</p>
+        <p>في هذه الحالة سنقارن كل جسم بكثافة الزيت،<br>لا إلى كثافة الماء.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s2CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 4 (data-screen="3") — MultipleChoiceQuestion, וריאנט תמונה (שקף 67): שאלה 3 מתוך 4 (סדרה "מתקדם") ============
+       בהערת המפיקה: "SingleChoiceQuestionImage — שאלת רב ברירה, לחיצה על הדמויות; תשובות נכונות: שיר ואמיר" → סמנטיקת בחירה מרובה
+       (תבנית MultipleChoiceQuestion, Set). Figma 2134:26156 (התחלה) · 2134:26163 (נבחר) · 2134:26170 (נכון) · 2134:26178 (שגוי).
+       4 כרטיסי דמות (תמונה + שם + משפט), כרטיס = checkbox. 2 ניסיונות (התסריט שותק), רמז זמין מההתחלה. סרגל התקדמות: שאלה 3 מתוך 4.
+       הפופאפים — מחוץ ל-.screen, מזהים s3q-*. -->
+  <section class="screen" data-screen="3" id="s3">
+      <!-- מחוות-יד — אותו נכס כמו בסיין 2; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s3-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s3-stage">
+      <div class="s3-text" data-reveal="1">
+        <p>طُلب من أربعة طلاب شرح ما هي الكثافة وكيفية تحديدها.</p>
+        <p>أيّ من الطلاب يصفون الكثافة بشكل صحيح كخاصيّة مميزة لمادة؟<br><strong>اضغطوا على الشخصيات المناسبة (يوجد أكثر من واحدة).</strong></p>
+      </div>
+
+      <div class="s3-cards" id="s3-cards" role="group" aria-label="الطلاب" data-reveal="2">
+        <button class="s3-card" id="s3-c-amir" type="button" role="checkbox" aria-checked="false" data-id="amir" onclick="s3Toggle('amir')">
+          <span class="s3-card__frame"><img class="s3-card__img" src="assets/images/student-amir.jpg" alt="أمير" loading="lazy"></span>
+          <span class="s3-card__name">أمير</span>
+          <span class="s3-card__text">الكثافة هي النسبة بين كتلة المادة وحجمها. هذه القيمة ثابتة لكل مادة، ولذلك فهي تتيح تحديد نوع المادة.</span>
+        </button>
+        <button class="s3-card" id="s3-c-rut" type="button" role="checkbox" aria-checked="false" data-id="rut" onclick="s3Toggle('rut')">
+          <span class="s3-card__frame"><img class="s3-card__img" src="assets/images/student-rut.jpg" alt="لينا" loading="lazy"></span>
+          <span class="s3-card__name">لينا</span>
+          <span class="s3-card__text">الكثافة تعتمد فقط على كتلة الجسم. كلما كانت كتلة الجسم أكبر، كانت كثافته أكبر.</span>
+        </button>
+        <button class="s3-card" id="s3-c-shir" type="button" role="checkbox" aria-checked="false" data-id="shir" onclick="s3Toggle('shir')">
+          <span class="s3-card__frame"><img class="s3-card__img" src="assets/images/student-shir.jpg" alt="ريم" loading="lazy"></span>
+          <span class="s3-card__name">ريم</span>
+          <span class="s3-card__text">الكثافة هي خاصيّة للمادة. سيكون لجسمين مصنوعين من نفس المادة دائمًا نفس الكثافة، بغض النظر عن حجمهما أو شكلهما.</span>
+        </button>
+        <button class="s3-card" id="s3-c-alon" type="button" role="checkbox" aria-checked="false" data-id="alon" onclick="s3Toggle('alon')">
+          <span class="s3-card__frame"><img class="s3-card__img" src="assets/images/student-alon.jpg" alt="سامي" loading="lazy"></span>
+          <span class="s3-card__name">سامي</span>
+          <span class="s3-card__text">الكثافة هي خاصيّة للجسم نفسه. لكل جسم كثافة خاصة به، ويمكن أن يكون للأجسام المختلفة كثافات مختلفة حتى لو كانت مصنوعة تمامًا من نفس المادة.</span>
+        </button>
+      </div>
+      <p class="sr-only" id="s3-live" aria-live="polite"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s3q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s3q-hint" type="button" onclick="s3OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s3q-check" type="button" disabled onclick="s3Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 4) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s3q-popup" onpointerdown="s3PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s3q-popup-title"></p>
+    <div class="s8q-popup-body" id="s3q-popup-body"></div>
+    <div class="s19-popup-actions" id="s3q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 4) — Hint Card; הטקסט: שקף 67. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s3q-hint-overlay" onclick="s3CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>تحققوا من مَن يشير إلى العلاقة بين الكتلة والحجم، وإلى أن الأجسام المصنوعة من نفس المادة لها نفس الكثافة.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s3CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 5 (data-screen="4") — OrderedDragAndDropQuestion (שקף 68): שאלה 4 מתוך 4 (סדרה "מתקדם") ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (כמו מסך 2: טקסט בלבד, איזורי גרירה + כרטיסי משפט, גלילה), כאן 6 איזורי גרירה ממוספרים 1–6
+       (סידור שלבי תהליך בסדר הנכון) ו-6 שלבים משמאל — בלי מסיחים. הערת מפיקה: "OrderedDragAndDropQuestion … הסדר בו מופיעים המסיחים הוא הסדר הנכון – יש לערבב".
+       Figma: 1717:39511 התחלה · 1717:39465 גרירה · 1717:39599 / 1717:39645 אחרי שחרור · 1717:39683 / 1717:39762 חיווי · 1717:39801 משוב.
+       מפתח (סדר השקף, מימין לשמאל): 1 קריאת מפלס התחלתי · 2 הטבלת הגוף · 3 קריאת מפלס חדש · 4 חישוב ההפרש (נפח) · 5 חילוק הנפח במסה · 6 השוואה לטבלת צפיפויות.
+       2 ניסיונות (התסריט שותק), רמז זמין מההתחלה (קבוצת הרמז בשקף 68). סרגל התקדמות: שאלה 4 מתוך 4. הפופאפים — מחוץ ל-.screen, מזהים s4q-*. -->
+  <section class="screen" data-screen="4" id="s4">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s4-scroll" id="s4-scroll" tabindex="0" role="region" aria-label="السؤال، مواضع المراحل والمراحل للسحب">
+      <div class="s4-inner">
+      <!-- מחוות-יד — אותו נכס כמו בסיין 2; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s4-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+        <div class="s4-text" data-reveal="1">
+          <p>أوريان بحاجة إلى تحديد المادة التي صُنع منها جسم غير معروف. من المعروف أن كتلة الجسم هي: 54 جرام.<br>الآن عليه أن يقيس حجم الجسم للوصول إلى قيمة كثافته، وعندها سيتمكن من التعرف على المادة. <br><strong>ساعدوه على فهم ما هو استمرار العملية التي عليه القيام بها، رتّبوا الخطوات حسب التسلسل الصحيح:</strong></p>
+        </div>
+
+        <div class="s4-content" data-reveal="2">
+          <div class="s4-rows">
+            <div class="s4-row">
+              <span class="s4-num" aria-hidden="true">1</span>
+              <div class="s4-zone" id="s4-zone-z1" data-zone="z1" role="button" tabindex="0" aria-label="المكان 1 — منطقة للإفلات" onclick="s4ZoneClick('z1', event)" onkeydown="s4ZoneKey(event, 'z1')"></div>
+            </div>
+            <div class="s4-row">
+              <span class="s4-num" aria-hidden="true">2</span>
+              <div class="s4-zone" id="s4-zone-z2" data-zone="z2" role="button" tabindex="0" aria-label="المكان 2 — منطقة الإفلات" onclick="s4ZoneClick('z2', event)" onkeydown="s4ZoneKey(event, 'z2')"></div>
+            </div>
+            <div class="s4-row">
+              <span class="s4-num" aria-hidden="true">3</span>
+              <div class="s4-zone" id="s4-zone-z3" data-zone="z3" role="button" tabindex="0" aria-label="الموقع 3 — منطقة للإفلات" onclick="s4ZoneClick('z3', event)" onkeydown="s4ZoneKey(event, 'z3')"></div>
+            </div>
+            <div class="s4-row">
+              <span class="s4-num" aria-hidden="true">4</span>
+              <div class="s4-zone" id="s4-zone-z4" data-zone="z4" role="button" tabindex="0" aria-label="المكان 4 — منطقة للتحرير" onclick="s4ZoneClick('z4', event)" onkeydown="s4ZoneKey(event, 'z4')"></div>
+            </div>
+            <div class="s4-row">
+              <span class="s4-num" aria-hidden="true">5</span>
+              <div class="s4-zone" id="s4-zone-z5" data-zone="z5" role="button" tabindex="0" aria-label="الموضع 5 — منطقة للإفلات" onclick="s4ZoneClick('z5', event)" onkeydown="s4ZoneKey(event, 'z5')"></div>
+            </div>
+            <div class="s4-row">
+              <span class="s4-num" aria-hidden="true">6</span>
+              <div class="s4-zone" id="s4-zone-z6" data-zone="z6" role="button" tabindex="0" aria-label="الموضع 6 — منطقة للإفراغ" onclick="s4ZoneClick('z6', event)" onkeydown="s4ZoneKey(event, 'z6')"></div>
+            </div>
+          </div>
+
+          <div class="s4-tray" id="s4-tray" role="group" aria-label="خطوات السحب" onclick="s4TrayClick(event)">
+            <div class="s4-slot"><div class="s4-card" id="s4-d-a1" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__text">قراءة مستوى الماء الابتدائي لإناء القياس</span></div></div>
+            <div class="s4-slot"><div class="s4-card" id="s4-d-a2" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__text">غَمر الجسم في الماء.</span></div></div>
+            <div class="s4-slot"><div class="s4-card" id="s4-d-a3" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__text">قراءة مستوى الماء الجديد.</span></div></div>
+            <div class="s4-slot"><div class="s4-card" id="s4-d-a4" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__text">حساب الفرق في مستوى الماء بين القياسَين (حجم الجسم)</span></div></div>
+            <div class="s4-slot"><div class="s4-card" id="s4-d-a5" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__text">قسمة الحجم الموجود على الكتلة، لإيجاد قيمة الكثافة</span></div></div>
+            <div class="s4-slot"><div class="s4-card" id="s4-d-a6" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__text">مقارنة بجدول الكثافات لتحديد المادة.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s4-live" aria-live="polite"></div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s4q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s4q-hint" type="button" onclick="s4OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s4q-check" type="button" disabled onclick="s4Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 5) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s4q-popup" onpointerdown="s4PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s4q-popup-title"></p>
+    <div class="s8q-popup-body" id="s4q-popup-body"></div>
+    <div class="s19-popup-actions" id="s4q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 5) — Hint Card; הטקסט: שקף 68 (קבוצת הרמז). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s4q-hint-overlay" onclick="s4CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>الكتلة معروفة بالفعل. ما هو المعطى الإضافي المطلوب لحساب الكثافة، وكيف يُقاس؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s4CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- כפתור דיווח בעיות גלובלי — ויזואלי בלבד, כמו בסיין 1 (720-templates → _global-components.md → "Report / Issue button") -->
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen, ישירות ב-#app
+       (720-templates _global-components.md). Wired by delegation in ../unit-js/25-report.js — no onclick. -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل وجدتم مشكلة؟" title="هل وجدتم مشكلة؟">
+    <span class="flag-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 12 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.397164 17C0.177722 17 0 16.8239 0 16.6065V0.393501C0 0.176082 0.177722 0 0.397164 0C0.616607 0 0.794329 0.176082 0.794329 0.393501V16.607C0.794329 16.8245 0.616607 17.0005 0.397164 17.0005V17Z" fill="currentColor"/>
+        <g transform="translate(0, 0.5933)">
+          <path d="M2.76227 9.31542C1.91972 9.31542 1.06958 9.15545 0.213483 8.71363C0.0823588 8.64599 0 8.51124 0 8.36469V0.950975C0 0.814619 0.0715221 0.687925 0.188558 0.615989C0.305594 0.54459 0.45189 0.537611 0.574886 0.598811C0.577053 0.599884 0.578679 0.600958 0.580846 0.602032C2.31309 1.49586 4.05563 1.046 5.90003 0.569821C7.80946 0.0770055 9.78336 -0.431915 11.7865 0.601495C11.9176 0.669136 12 0.803882 12 0.950438V8.36415C12 8.4946 11.9344 8.617 11.8255 8.69001C11.7166 8.76302 11.5774 8.77805 11.4555 8.72974C11.443 8.7249 11.4311 8.71954 11.4197 8.71363C9.68745 7.8198 7.94491 8.26967 6.10051 8.7453C5.00709 9.02714 3.89199 9.31489 2.76281 9.31489L2.76227 9.31542ZM0.793787 8.11935C2.45559 8.87307 4.13094 8.44038 5.90003 7.98407C7.62469 7.53903 9.40191 7.08057 11.2062 7.75806V1.19631C9.54441 0.442591 7.86906 0.875281 6.09997 1.33159C4.37531 1.77663 2.59755 2.23509 0.793787 1.5576V8.11935Z" fill="currentColor"/>
+        </g>
+      </svg>
+    </span>
+    <span class="flag-btn__label">هل وجدتم مشكلة؟</span>
+  </button>
+
+  <!-- ═══ "מצאתם בעיה?" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-body-matter-01-02 (2026-11-02). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما ينبغي؟<br>أخبرونا بما حدث حتى نتعامل معه.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ما حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال تبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقينا التبليغ وسنهتم بالأمر بأقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق لن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261102c"></script>
+<script src="../unit-js/20-xapi.js?v=20261102c"></script>
+<script src="../unit-js/25-report.js?v=20261102c"></script>
+<script src="../unit-js/40-resume.js?v=20261102c"></script>
+<script src="../unit-js/50-loader.js?v=20261102c"></script>
+<script src="../unit-js/05-media.js?v=20261102c"></script>
+<script src="../unit-js/05-motion.js?v=20261102c"></script>
+<script src="../unit-js/07-btn-width.js?v=20261103"></script>
+<script src="script.js?v=20261102c"></script>
+<script src="../unit-js/90-boot.js?v=20261102c"></script>
+</body>
+</html>

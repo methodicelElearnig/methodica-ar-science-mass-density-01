@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لومدة 720 | علوم الهدف 10 | ساين 2</title>
+<link rel="stylesheet" href="styles.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/motion.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261102c">
+<link rel="stylesheet" href="applet/applet.css?v=20261102c">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-body-matter-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<div id="app">
+
+  <!-- ============ מסך 1 (data-screen="0") — TransitionScreen (שקף 41) ============
+       תבנית: TransitionScreen ShortText, "מסך הזנקה סטנדרטי א'" — אותו מבנה כמו מסך 26
+       בסיין 1 (#s25; מחלקות s22-*). תוכן: תסריט ההפקה, שקף 41 — שורת פתיחה "סיימנו את שלב
+       הלימוד, נעבור לתרגול הראשון ונענה על", כותרת "4 שאלות", שורת סגירה (מודגשת במקור)
+       "צריך לענות נכון על 3 שאלות לפחות.". כפתור ההמשך "אפשר להתחיל!" כמו בשקף.
+       הדמות: turquoise-avatar-weighting.mp4, מתנגן פעם אחת. -->
+  <section class="screen active" data-screen="0" id="s0">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <p class="s22-lead">أنهينا مرحلة التعلّم، سننتقل إلى التمرين الأول ونجيب عن</p>
+        <h1 class="s22-title">4 أسئلة</h1>
+        <p class="s22-body"><strong>يجب الإجابة بشكل صحيح عن 3 أسئلة على الأقل.</strong></p>
+      </div>
+      <div class="s22-video-wrap s22-video-wrap--compact" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s0-char-video" muted loop playsinline preload="auto"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source src="../unit-assets/videos/turquoise-avatar-weighting.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-continue" id="s0-continue" onclick="advanceScreen()">يمكن البدء!</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 2 (data-screen="1") — TransitionScreen LongText + בועת דיבור (שקף 42) ============
+       תבנית: TransitionScreen LongText (Figma 4924:25927/4924:25836) — בלוק טקסט 540 רחב, top:70,
+       כותרת H-5 (56/700), שורת סגירה B-1, דמות במרכז צמודה לסרגל ובועת דיבור משמאלה (202×94).
+       תוכן: שקף 42 — כותרת "ברוכים הבאים וברוכות הבאות / למעבדת הצפיפות", שורת סגירה "בואו ניכנס
+       לנעלי המדענים...", בועה "הולך להיות צפוף ומגניב", כפתור "קחו אותי למעבדה".
+       הדמות: turquoise-avatar-laboratory.mp4, מתנגן פעם אחת. -->
+  <section class="screen" data-screen="1" id="s1">
+
+    <div class="s22-content">
+      <div class="s22-text s22-text--long" data-reveal="1">
+        <h1 class="s22-title s22-title--h5">مرحبًا بكم وبكن<br>في مختبر الكثافة</h1>
+        <p class="s22-body">لنضع أنفسنا في موضع العلماء ونحسب بأنفسنا كثافة مواد مختلفة.</p>
+      </div>
+      <div class="s22-char-ph" data-reveal="2" data-reveal-fade>
+        <video class="s22-char-video" id="s1-char-video" muted loop playsinline preload="none"
+               disablepictureinpicture
+               controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+               aria-hidden="true">
+          <source data-lazy-src="assets/videos/turquoise-avatar-laboratory.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="s22-bubble" data-reveal="3">
+        <svg class="s22-bubble-svg" width="250" height="93" viewBox="0 0 250 93" fill="none" aria-hidden="true"><path d="M12.5 1.5H222.5A11 11 0 0 1 233.5 12.5V31L248.5 46.5L233.5 62V80.5A11 11 0 0 1 222.5 91.5H12.5A11 11 0 0 1 1.5 80.5V12.5A11 11 0 0 1 12.5 1.5Z" fill="#fff" stroke="#019DE5" stroke-width="3"/></svg>
+        <p>سيكون كثيفًا ورائعًا</p>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s1-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s1-continue" onclick="advanceScreen()">خذوني إلى المختبر</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 3 (data-screen="2") — ValueInputQuestion + יישומון מעבדה (שקפים 43+44) ============
+       תבנית: ValueInputQuestion Variant C (table-cell) בשילוב יישומון גרירה (הערת מפיקה: "ValueInputQuestion
+       בשילוב של יישומון גרירה"). Figma: מצב התחלתי 196:3341, פוקוס 196:3381, אחרי הזנה 196:3389, שגוי 196:3405,
+       נכון 196:3397. פריסה: כמו מסך 17 בסיין 1 (יישומון בצד) אך היישומון קטן יותר ומשותף למסך עם הטבלה;
+       הכותרת וההנחיות הועלו לראש המסך כדי שהכול ייכנס בלי גלילה.
+       תוכן: תסריט ההפקה, שקפים 43+44 (מילה במילה). 9 שדות (מסה/נפח/צפיפות × 3 חומרים) — שאלה אחת מנוקדת
+       כיחידה, סימון ✓/✕ לכל שדה (Scoring vs feedback granularity — Case A). 2 ניסיונות (התסריט שותק),
+       אין רמז (אין תוכן רמז בתסריט). כפתורי "?" בכותרות הנפח והצפיפות פותחים הרחבות (שקף 44).
+       משוב סופי שגוי: View My Answer Toggle ("מעבר לתשובה שלי" / "התשובה הנכונה").
+       הפופאפ מחוץ ל-.screen, ישירות ב-#app. מזהים s2q-*. -->
+  <section class="screen" data-screen="2" id="s2">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s2-text" data-reveal="1">
+      <p class="s2-title"><strong>مختبر الكثافة</strong></p>
+      <p class="s2-intro">أ. وصلت إلى المختبر ثلاث مواد غير معروفة.<br>ساعدوا العلماء على تحديد ماهية كل مادة من خلال الحساب <strong>قيمة الكثافة</strong> خاصته.</p>
+      <p>1. اسحبوا كل مادة إلى الميزان، قيسوا الكتلة، ودوّنوها في الجدول.</p>
+      <p>2. اسحبوا كل مادة إلى المخبار المدرج، احسبوا <span class="s2-term">الحجم<button class="s2-info" id="s2-info-vol" type="button" aria-label="شرح عن حساب الحجم" aria-expanded="false" aria-controls="s2-tip-vol" onclick="s2ShowTip('vol', event)" onmouseenter="s2ShowTip('vol')" onmouseleave="s2CloseTips()" onfocus="s2ShowTip('vol')" onblur="s2CloseTips()"><img src="../unit-assets/icons/icon-info-blue.svg" alt="" loading="lazy"></button><span class="s2-tip m-popup hidden" id="s2-tip-vol" role="note"><span class="s2-tip__body">تحقّقوا من ارتفاع مستوى الماء قبل إدخال المادة وبعد إدخالها. الفرق بين القياسين هو <strong>حجم</strong> <strong>المادة.</strong></span></span></span> خاصته، ودوّنوا ذلك في الجدول.</p>
+      <p>3. بالاستعانة بآلة حاسبة، احسبوا <span class="s2-term">الكثافة<button class="s2-info" id="s2-info-den" type="button" aria-label="شرح حول قيمة الكثافة" aria-expanded="false" aria-controls="s2-tip-den" onclick="s2ShowTip('den', event)" onmouseenter="s2ShowTip('den')" onmouseleave="s2CloseTips()" onfocus="s2ShowTip('den')" onblur="s2CloseTips()"><img src="../unit-assets/icons/icon-info-blue.svg" alt="" loading="lazy"></button><span class="s2-tip m-popup hidden" id="s2-tip-den" role="note"><span class="s2-tip__body">قيمة الكثافة:<span class="s26-minifrac" aria-hidden="true"><span>كتلة</span><span class="s26-minifrac__line"></span><span>حجم</span></span></span></span></span> لكل مادة ودوّنوها في الجدول.</p>
+    </div>
+
+    <div class="s2-applet" id="s2-applet" role="region" aria-label="مختبر تطبيقي: ميزان، مخبار مدرج وثلاث مواد" data-reveal="2" data-reveal-fade></div>
+
+    <div class="s2-tablewrap" data-reveal="3">
+      <table class="s2-table" id="s2q-table">
+        <thead>
+          <tr>
+            <th scope="col">مادة</th>
+            <th scope="col">كتلة<br>(جرام)</th>
+            <th scope="col">حجم<br>(سم³)</th>
+            <th scope="col">الكثافة<br>(جرام/سم³)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">أ</th>
+            <td><span class="viq-field" id="s2q-field-a-mass"><input class="viq-input" id="s2q-input-a-mass" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="كتلة المادة أ بالجرام"><span class="viq-ico" aria-hidden="true"></span></span></td>
+            <td><span class="viq-field" id="s2q-field-a-vol"><input class="viq-input" id="s2q-input-a-vol" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="حجم المادة أ بـ سم³"><span class="viq-ico" aria-hidden="true"></span></span></td>
+            <td><span class="viq-field" id="s2q-field-a-den"><input class="viq-input" id="s2q-input-a-den" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="كثافة المادة أ بالجرام لكل سم³"><span class="viq-ico" aria-hidden="true"></span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">ب</th>
+            <td><span class="viq-field" id="s2q-field-b-mass"><input class="viq-input" id="s2q-input-b-mass" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="كتلة المادة ب بالجرام"><span class="viq-ico" aria-hidden="true"></span></span></td>
+            <td><span class="viq-field" id="s2q-field-b-vol"><input class="viq-input" id="s2q-input-b-vol" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="حجم المادة ب بسم³"><span class="viq-ico" aria-hidden="true"></span></span></td>
+            <td><span class="viq-field" id="s2q-field-b-den"><input class="viq-input" id="s2q-input-b-den" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="كثافة المادة ب بالجرام لكل سم³"><span class="viq-ico" aria-hidden="true"></span></span></td>
+          </tr>
+          <tr>
+            <th scope="row">ت</th>
+            <td><span class="viq-field" id="s2q-field-c-mass"><input class="viq-input" id="s2q-input-c-mass" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="كتلة المادة ج بالجرام"><span class="viq-ico" aria-hidden="true"></span></span></td>
+            <td><span class="viq-field" id="s2q-field-c-vol"><input class="viq-input" id="s2q-input-c-vol" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="حجم المادة ج بالسم³"><span class="viq-ico" aria-hidden="true"></span></span></td>
+            <td><span class="viq-field" id="s2q-field-c-den"><input class="viq-input" id="s2q-input-c-den" type="text" inputmode="decimal" dir="ltr" autocomplete="off" aria-label="كثافة المادة ج بالجرام لكل سم³"><span class="viq-ico" aria-hidden="true"></span></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s2q-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s2q-check" type="button" disabled onclick="s2qCheck()">هل إجابتي صحيحة؟</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 4 (data-screen="3") — שאלת גרירה: שאלה 1 סעיף ב' (שקף 45) ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (720-templates → "Prefer a local template variant"):
+       שם המסך בהערת המפיקה: ImageTopDragAndDropQuestion (סטנדרטי א', שאלה 1 – סעיף ב'); Figma 5340:25539
+       (מצבי אזור שחרור / פריט נגרר / נכון / שגוי) + Drag&Drop State 1249:32691. הפריסה — לפי רינדור השקף:
+       גרף נפח/מסה משמאל (קווים: נחושת / אלומיניום / עץ אורן), שלושה אזורי שחרור בקצה כל קו, שלושה כרטיסי
+       חומר (תמונת קובייה + שם + צפיפות) בטור מימין. כל אזור מחזיק פריט אחד.
+       תשובה נכונה (הערת מפיקה): הקו התלול ביותר (העליון) — נחושת; האמצעי — אלומיניום; המתון ביותר (התחתון) — עץ אורן.
+       2 ניסיונות (ברירת-מחדל — התסריט שותק), רמז זמין מההתחלה (שקף 45), משוב: שקף 45.
+       סרגל התקדמות: שאלה 1 מתוך 4 (סעיף ב' של אותה שאלה כמו מסך 3 — פריט ההתקדמות הוא שאלה, לא מסך).
+       הפופאפים — מחוץ ל-.screen (ישירות ב-#app), מזהים s3q-*. -->
+  <section class="screen" data-screen="3" id="s3">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s3-stage">
+      <div class="s3-text" data-reveal="1">
+        <p>ب. أمامكم رسم بياني للحجم / الكتلة لـ3 مواد.</p>
+        <p><strong>اسحبوا كل مادة إلى الخط المناسب لها في الرسم البياني.</strong></p>
+      </div>
+
+      <div class="s3-graph" data-reveal="2">
+        <svg class="s3-graph-svg" viewBox="0 0 1280 636" role="img" aria-label="رسم بياني للحجم / الكتلة (الكتلة بالجرام مقابل الحجم بسم³، الحجم من 0 إلى 5، الكتلة من 0 إلى 45). ثلاثة خطوط تنطلق من نقطة الأصل (تقاطع المحورين). الخط العلوي، الأكثر انحدارًا: 17.92 جرام عند 2 سم³ و26.88 جرام عند 3 سم³. الخط الأوسط: 5.4 جرام عند 2 سم³ و8.1 جرام عند 3 سم³. الخط السفلي، الأقل انحدارًا: 1 جرام عند 2 سم³ و1.5 جرام عند 3 سم³.">
+          <g class="s3-grid">
+            <line x1="150" y1="523.0" x2="650" y2="523.0"/>
+            <line x1="150" y1="484.0" x2="650" y2="484.0"/>
+            <line x1="150" y1="445.0" x2="650" y2="445.0"/>
+            <line x1="150" y1="406.0" x2="650" y2="406.0"/>
+            <line x1="150" y1="367.0" x2="650" y2="367.0"/>
+            <line x1="150" y1="328.0" x2="650" y2="328.0"/>
+            <line x1="150" y1="289.0" x2="650" y2="289.0"/>
+            <line x1="150" y1="250.0" x2="650" y2="250.0"/>
+            <line x1="150" y1="211.0" x2="650" y2="211.0"/>
+            <line x1="250" y1="211.0" x2="250" y2="562"/>
+            <line x1="350" y1="211.0" x2="350" y2="562"/>
+            <line x1="450" y1="211.0" x2="450" y2="562"/>
+            <line x1="550" y1="211.0" x2="550" y2="562"/>
+            <line x1="650" y1="211.0" x2="650" y2="562"/>
+          </g>
+          <g class="s3-axes"><line x1="150" y1="204" x2="150" y2="562"/><line x1="150" y1="562" x2="657" y2="562"/><path class="s3-arrow" d="M150 190 L144.5 204 L155.5 204 Z"/><path class="s3-arrow" d="M670 562 L656 556.5 L656 567.5 Z"/></g>
+          <text class="s3-axis-name" x="150" y="180" text-anchor="middle" aria-hidden="true">محور Y</text>
+          <text class="s3-axis-name" x="702" y="586" text-anchor="middle" aria-hidden="true">محور X</text>
+          <g class="s3-ticks s3-ticks--y">
+            <text x="132" y="568.0" text-anchor="end">0</text>
+            <text x="132" y="529.0" text-anchor="end">5</text>
+            <text x="132" y="490.0" text-anchor="end">10</text>
+            <text x="132" y="451.0" text-anchor="end">15</text>
+            <text x="132" y="412.0" text-anchor="end">20</text>
+            <text x="132" y="373.0" text-anchor="end">25</text>
+            <text x="132" y="334.0" text-anchor="end">30</text>
+            <text x="132" y="295.0" text-anchor="end">35</text>
+            <text x="132" y="256.0" text-anchor="end">40</text>
+            <text x="132" y="217.0" text-anchor="end">45</text>
+          </g>
+          <g class="s3-ticks s3-ticks--x">
+            <text x="150" y="592" text-anchor="middle">0</text>
+            <text x="250" y="592" text-anchor="middle">1</text>
+            <text x="350" y="592" text-anchor="middle">2</text>
+            <text x="450" y="592" text-anchor="middle">3</text>
+            <text x="550" y="592" text-anchor="middle">4</text>
+            <text x="650" y="592" text-anchor="middle">5</text>
+          </g>
+          <text class="s3-axis-title" x="400.0" y="626" text-anchor="middle">الحجم (سم³)</text>
+          <text class="s3-axis-title" transform="translate(66 386) rotate(-90)" text-anchor="middle">الكتلة (غرام)</text>
+          <g class="s3-line s3-line--cu">
+            <line class="s3-leader" x1="650" y1="212.6" x2="672" y2="212.6"/>
+            <line class="s3-line__path" x1="150" y1="562" x2="650" y2="212.6"/>
+            <g class="s3-pt" tabindex="-1"><circle class="s3-pt__hit" cx="350" cy="422.2" r="15"/><circle cx="350" cy="422.2" r="7"/><g class="s3-pt__tip"><rect x="366.0" y="408.2" width="117" height="28" rx="6"/><text x="424.5" y="428.2" text-anchor="middle">(2 , 17.92)</text></g></g>
+            <g class="s3-pt" tabindex="-1"><circle class="s3-pt__hit" cx="450" cy="352.3" r="15"/><circle cx="450" cy="352.3" r="7"/><g class="s3-pt__tip"><rect x="466.0" y="338.3" width="117" height="28" rx="6"/><text x="524.5" y="358.3" text-anchor="middle">(3 , 26.88)</text></g></g>
+          </g>
+          <g class="s3-line s3-line--al">
+            <line class="s3-leader" x1="650" y1="456.7" x2="672" y2="456.7"/>
+            <line class="s3-line__path" x1="150" y1="562" x2="650" y2="456.7"/>
+            <g class="s3-pt" tabindex="-1"><circle class="s3-pt__hit" cx="350" cy="519.9" r="15"/><circle cx="350" cy="519.9" r="7"/><g class="s3-pt__tip"><rect x="366.0" y="505.9" width="99" height="28" rx="6"/><text x="415.5" y="525.9" text-anchor="middle">(2 , 5.4)</text></g></g>
+            <g class="s3-pt" tabindex="-1"><circle class="s3-pt__hit" cx="450" cy="498.8" r="15"/><circle cx="450" cy="498.8" r="7"/><g class="s3-pt__tip"><rect x="466.0" y="484.8" width="99" height="28" rx="6"/><text x="515.5" y="504.8" text-anchor="middle">(3 , 8.1)</text></g></g>
+          </g>
+          <g class="s3-line s3-line--pine">
+            <line class="s3-leader" x1="650" y1="542.5" x2="672" y2="542.5"/>
+            <line class="s3-line__path" x1="150" y1="562" x2="650" y2="542.5"/>
+            <g class="s3-pt" tabindex="-1"><circle class="s3-pt__hit" cx="350" cy="554.2" r="15"/><circle cx="350" cy="554.2" r="7"/><g class="s3-pt__tip"><rect x="366.0" y="540.2" width="81" height="28" rx="6"/><text x="406.5" y="560.2" text-anchor="middle">(2 , 1)</text></g></g>
+            <g class="s3-pt" tabindex="-1"><circle class="s3-pt__hit" cx="450" cy="550.3" r="15"/><circle cx="450" cy="550.3" r="7"/><g class="s3-pt__tip"><rect x="466.0" y="536.3" width="99" height="28" rx="6"/><text x="515.5" y="556.3" text-anchor="middle">(3 , 1.5)</text></g></g>
+          </g>
+        </svg>
+        <div class="s3-zone s3-zone--cu" id="s3-zone-cu" data-zone="cu" role="button" tabindex="0" aria-label="منطقة الإفلات: الخط العلوي في الرسم البياني" onclick="s3ZoneClick('cu', event)" onkeydown="s3ZoneKey(event,'cu')"></div>
+        <div class="s3-zone s3-zone--al" id="s3-zone-al" data-zone="al" role="button" tabindex="0" aria-label="منطقة التحرير: الخط الأوسط في الرسم البياني" onclick="s3ZoneClick('al', event)" onkeydown="s3ZoneKey(event,'al')"></div>
+        <div class="s3-zone s3-zone--pine" id="s3-zone-pine" data-zone="pine" role="button" tabindex="0" aria-label="منطقة الإفلات: الخط السفلي في الرسم البياني" onclick="s3ZoneClick('pine', event)" onkeydown="s3ZoneKey(event,'pine')"></div>
+      </div>
+
+      <div class="s3-tray" id="s3-tray" data-reveal="3" onclick="s3TrayClick(event)">
+        <div class="s3-slot"><div class="s3-card" id="s3-d-al" data-id="al" role="button" tabindex="0" aria-pressed="false" aria-label="الألومنيوم، الكثافة 2.7 جرام/سم³"><img class="s3-card__img" src="assets/images/cube-aluminum.png" alt="" loading="lazy"><span class="s3-card__text"><span class="s3-card__name">الألومنيوم</span><span class="s3-card__dens">الكثافة: 2.7</span></span></div></div>
+        <div class="s3-slot"><div class="s3-card" id="s3-d-pine" data-id="pine" role="button" tabindex="0" aria-pressed="false" aria-label="خشب الصنوبر، الكثافة 0.5 جرام/سم³"><img class="s3-card__img" src="assets/images/cube-pine.png" alt="" loading="lazy"><span class="s3-card__text"><span class="s3-card__name">خشب الصنوبر</span><span class="s3-card__dens">الكثافة: 0.5</span></span></div></div>
+        <div class="s3-slot"><div class="s3-card" id="s3-d-cu" data-id="cu" role="button" tabindex="0" aria-pressed="false" aria-label="النحاس، الكثافة 8.96 جرام لكل سم³"><img class="s3-card__img" src="assets/images/cube-copper.png" alt="" loading="lazy"><span class="s3-card__text"><span class="s3-card__name">نحاس</span><span class="s3-card__dens">الكثافة: 8.96</span></span></div></div>
+      </div>
+      <p class="sr-only" id="s3-live" aria-live="polite"></p>
+      <!-- מחוות-יד (גרירה) — אותו נכס כמו בסיין 1; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s3-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s3q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s3q-hint" type="button" onclick="s3OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s3q-check" type="button" disabled onclick="s3Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 4) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s3q-popup" onpointerdown="s3PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s3q-popup-title"></p>
+    <div class="s8q-popup-body" id="s3q-popup-body"></div>
+    <div class="s19-popup-actions" id="s3q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 4) — Hint Card; הטקסט: שקף 45. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s3q-hint-overlay" onclick="s3CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>قارنوا ميل (انحدار) الخطوط:<br>كلما كان الخط أكثر انحدارًا، زادت الكتلة أكثر لكل سم³.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s3CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 5 (data-screen="4") — שאלת גרירה לגרף: שאלה 2 (שקף 46) ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (יעד גרירה יחיד על הגרף, 4 כרטיסי מספר מהם נכון אחד).
+       שם המסך בהערת המפיקה: ImageTopDragAndDropQuestion; Figma 5340:25539 (מצבי אזור שחרור / פריט נגרר /
+       נכון / שגוי). תוכן: שקף 46 — מילה במילה. תשובה נכונה (הערת מפיקה): 16.2. כרטיסים (ימין→שמאל בשקף):
+       8.7 · 13.5 · 16.2 · 12 גרם. 2 ניסיונות (התסריט שותק), רמז זמין מההתחלה (שקף 46).
+       סרגל התקדמות: שאלה 2 מתוך 4. הפופאפים — מחוץ ל-.screen (ישירות ב-#app), מזהים s4q-*. -->
+  <section class="screen" data-screen="4" id="s4">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s4-stage">
+      <div class="s4-text" data-reveal="1">
+        <p>انظروا إلى الرسم البياني واحسبوا ما ستكون كتلة جسم من الألومنيوم حجمه 6 سم³؟</p>
+        <p><strong>اسحبوا الرقم إلى المكان المناسب في الرسم البياني.</strong></p>
+      </div>
+
+      <div class="s4-tray" id="s4-tray" data-reveal="2" onclick="s4TrayClick(event)">
+        <div class="s4-slot"><div class="s4-card" id="s4-d-a" data-id="a" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__icon" aria-hidden="true"></span><span class="s4-card__text">8.7 جرام</span></div></div>
+        <div class="s4-slot"><div class="s4-card" id="s4-d-b" data-id="b" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__icon" aria-hidden="true"></span><span class="s4-card__text">13.5 جرام</span></div></div>
+        <div class="s4-slot"><div class="s4-card" id="s4-d-c" data-id="c" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__icon" aria-hidden="true"></span><span class="s4-card__text">16.2 جرام</span></div></div>
+        <div class="s4-slot"><div class="s4-card" id="s4-d-d" data-id="d" role="button" tabindex="0" aria-pressed="false"><span class="s4-card__icon" aria-hidden="true"></span><span class="s4-card__text">12 جرام</span></div></div>
+      </div>
+
+      <div class="s4-graph" data-reveal="3">
+        <svg class="s4-graph-svg" viewBox="0 0 1280 636" role="img" aria-label="رسم بياني للكتلة مقابل الحجم للألومنيوم (الحجم بـ سم³ من 0 إلى 6، الكتلة بالجرام من 0 إلى 18). خط مستقيم ينطلق من نقطة الأصل ويمر عبر النقاط: 2.7 جرام عند 1 سم³، 5.4 عند 2، 8.1 عند 3، 10.8 عند 4 و13.5 عند 5. النقطة الخاصة بـ 6 سم³ مفقودة — وهي منطقة الإفلات."><g transform="translate(30 0)">
+          <g class="s4-grid">
+            <line x1="170" y1="524" x2="1100" y2="524"/>
+            <line x1="170" y1="492" x2="1100" y2="492"/>
+            <line x1="170" y1="460" x2="1100" y2="460"/>
+            <line x1="170" y1="428" x2="1100" y2="428"/>
+            <line x1="170" y1="396" x2="1100" y2="396"/>
+            <line x1="170" y1="364" x2="1100" y2="364"/>
+            <line x1="170" y1="332" x2="1100" y2="332"/>
+            <line x1="170" y1="300" x2="1100" y2="300"/>
+            <line x1="170" y1="268" x2="1100" y2="268"/>
+            <line x1="320" y1="268" x2="320" y2="556"/>
+            <line x1="470" y1="268" x2="470" y2="556"/>
+            <line x1="620" y1="268" x2="620" y2="556"/>
+            <line x1="770" y1="268" x2="770" y2="556"/>
+            <line x1="920" y1="268" x2="920" y2="556"/>
+            <line x1="1070" y1="268" x2="1070" y2="556"/>
+          </g>
+          <g class="s4-axes"><line x1="170" y1="260" x2="170" y2="556"/><line x1="170" y1="556" x2="1107" y2="556"/><path class="s4-arrow" d="M170 246 L164.5 260 L175.5 260 Z"/><path class="s4-arrow" d="M1121 556 L1107 550.5 L1107 561.5 Z"/></g>
+          <text class="s4-axis-name" x="170" y="236" text-anchor="middle" aria-hidden="true">محور Y</text>
+          <text class="s4-axis-name" x="1158" y="562" text-anchor="middle" aria-hidden="true">محور X</text>
+          <g class="s4-ticks s4-ticks--y">
+            <text x="148" y="562" text-anchor="end">0</text>
+            <text x="148" y="530" text-anchor="end">2</text>
+            <text x="148" y="498" text-anchor="end">4</text>
+            <text x="148" y="466" text-anchor="end">6</text>
+            <text x="148" y="434" text-anchor="end">8</text>
+            <text x="148" y="402" text-anchor="end">10</text>
+            <text x="148" y="370" text-anchor="end">12</text>
+            <text x="148" y="338" text-anchor="end">14</text>
+            <text x="148" y="306" text-anchor="end">16</text>
+            <text x="148" y="274" text-anchor="end">18</text>
+          </g>
+          <g class="s4-ticks s4-ticks--x">
+            <text x="170" y="582" text-anchor="middle">0</text>
+            <text x="320" y="582" text-anchor="middle">1</text>
+            <text x="470" y="582" text-anchor="middle">2</text>
+            <text x="620" y="582" text-anchor="middle">3</text>
+            <text x="770" y="582" text-anchor="middle">4</text>
+            <text x="920" y="582" text-anchor="middle">5</text>
+            <text x="1070" y="582" text-anchor="middle">6</text>
+          </g>
+          <text class="s4-axis-title" x="635" y="624" text-anchor="middle">الحجم (سم³)</text>
+          <text class="s4-axis-title" transform="translate(88 412) rotate(-90)" text-anchor="middle">الكتلة (غرام)</text>
+          <g class="s4-line">
+            <line class="s4-line__path" x1="170" y1="556" x2="1070" y2="296.8"/>
+            <g class="s4-pt"><circle class="s4-pt__hit" cx="320" cy="512.8" r="15"/><circle cx="320" cy="512.8" r="7"/><g class="s4-pt__tip"><rect x="336.0" y="498.79999999999995" width="99" height="28" rx="6"/><text x="385.5" y="518.8" text-anchor="middle">(1 , 2.7)</text></g></g>
+            <g class="s4-pt"><circle class="s4-pt__hit" cx="470" cy="469.6" r="15"/><circle cx="470" cy="469.6" r="7"/><g class="s4-pt__tip"><rect x="486.0" y="455.6" width="99" height="28" rx="6"/><text x="535.5" y="475.6" text-anchor="middle">(2 , 5.4)</text></g></g>
+            <g class="s4-pt"><circle class="s4-pt__hit" cx="620" cy="426.4" r="15"/><circle cx="620" cy="426.4" r="7"/><g class="s4-pt__tip"><rect x="636.0" y="412.4" width="99" height="28" rx="6"/><text x="685.5" y="432.4" text-anchor="middle">(3 , 8.1)</text></g></g>
+            <g class="s4-pt"><circle class="s4-pt__hit" cx="770" cy="383.2" r="15"/><circle cx="770" cy="383.2" r="7"/><g class="s4-pt__tip"><rect x="786.0" y="369.2" width="108" height="28" rx="6"/><text x="840.0" y="389.2" text-anchor="middle">(4 , 10.8)</text></g></g>
+            <g class="s4-pt"><circle class="s4-pt__hit" cx="920" cy="340.0" r="15"/><circle cx="920" cy="340.0" r="7"/><g class="s4-pt__tip"><rect x="936.0" y="326.0" width="108" height="28" rx="6"/><text x="990.0" y="346.0" text-anchor="middle">(5 , 13.5)</text></g></g>
+          </g>
+        </g></svg>
+        <div class="s4-zone" id="s4-zone" data-zone="t" role="button" tabindex="0" aria-label="منطقة الإفلات: كتلة 6 سم³ في الرسم البياني" onclick="s4ZoneClick(event)" onkeydown="s4ZoneKey(event)"></div>
+      </div>
+      <p class="sr-only" id="s4-live" aria-live="polite"></p>
+      <!-- מחוות-יד (גרירה) — אותו נכס כמו במסך 4; ממוקמת ב-JS בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s4-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s4q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s4q-hint" type="button" onclick="s4OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s4q-check" type="button" disabled onclick="s4Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 5) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s4q-popup" onpointerdown="s4PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s4q-popup-title"></p>
+    <div class="s8q-popup-body" id="s4q-popup-body"></div>
+    <div class="s19-popup-actions" id="s4q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 5) — Hint Card; הטקסט: שקף 46 (מילה במילה). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s4q-hint-overlay" onclick="s4CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>انظروا إلى الرسم البياني وأوجدوا ما هي كتلة 1 سم³ من الألومنيوم. إذن، ما هي كتلة 6 سم³؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s4CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 6 (data-screen="5") — נכון/לא נכון: שאלה 3 מתוך 4 (שקף 47) ============
+       תבנית: TrueFalseQuestion (Figma 4827:28896 ברירת מחדל · 4827:28903 בחירה · 4827:28910 חיווי נכון · 4827:28918 נכון/לא נכון);
+       שם המסך בהערת המפיקה: StatementAssessmentQuestion. תוכן: שקף 47 — מילה במילה. מפתח: א נכון · ב לא נכון · ג נכון · ד נכון.
+       יחידת ניקוד אחת (נכונה רק אם כל 4 ההיגדים נכונים). 2 ניסיונות (התסריט שותק → ברירת המחדל), רמז זמין מההתחלה (שקף 47).
+       הגרף (במקום תמונת השאלה) — SVG חי עם הגדלה (data-zoom-source); נתוני הקווים מגרף השקף: אלון 0.7 · זכוכית 2.5 · מים 1 · עופרת 11.3 (גרם/סמ"ק).
+       "?" ליד "תלול": טולטיפ (הערת מפיקה). הפופאפים — מחוץ ל-.screen, ישירות ב-#app, מזהים s5q-*. -->
+  <section class="screen" data-screen="5" id="s5">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s5-stage">
+      <div class="s5-img methodica-image-zoom-frame" data-reveal="2" data-zoom-source>
+        <svg class="s5-graph-svg" viewBox="-14 -14 414 414" role="img" aria-label="رسم بياني للكتلة مقابل الحجم (الحجم بالـسم³ من 0 إلى 5، الكتلة بالجرام من 0 إلى 60) لأربعة خطوط مستقيمة تنطلق من نقطة الأصل. الرصاص، الأكثر انحدارًا: 11.3 جرام لكل سم³. الزجاج: 2.5 جرام لكل سم³. الماء: 1 جرام لكل سم³. خشب البلوط، الأكثر اعتدالًا: 0.7 جرام لكل سم³.">
+          <g class="s5-grid"><line x1="58" y1="284" x2="328" y2="284"/><line x1="58" y1="240" x2="328" y2="240"/><line x1="58" y1="196" x2="328" y2="196"/><line x1="58" y1="152" x2="328" y2="152"/><line x1="58" y1="108" x2="328" y2="108"/><line x1="58" y1="64" x2="328" y2="64"/><line x1="112" y1="64" x2="112" y2="328"/><line x1="166" y1="64" x2="166" y2="328"/><line x1="220" y1="64" x2="220" y2="328"/><line x1="274" y1="64" x2="274" y2="328"/><line x1="328" y1="64" x2="328" y2="328"/></g>
+          <g class="s5-axes"><line x1="58" y1="56" x2="58" y2="328"/><line x1="58" y1="328" x2="337" y2="328"/><path class="s5-arrow" d="M58 45 L53.5 56 L62.5 56 Z"/><path class="s5-arrow" d="M348 328 L337 323.5 L337 332.5 Z"/></g><text class="s5-axis-name" x="58" y="38" text-anchor="middle" aria-hidden="true">محور Y</text><text class="s5-axis-name" x="367" y="332" text-anchor="middle" aria-hidden="true">محور X</text>
+          <g class="s5-ticks"><text x="50" y="332" text-anchor="end">0</text><text x="50" y="288" text-anchor="end">10</text><text x="50" y="244" text-anchor="end">20</text><text x="50" y="200" text-anchor="end">30</text><text x="50" y="156" text-anchor="end">40</text><text x="50" y="112" text-anchor="end">50</text><text x="50" y="68" text-anchor="end">60</text><text x="58" y="346" text-anchor="middle">0</text><text x="112" y="346" text-anchor="middle">1</text><text x="166" y="346" text-anchor="middle">2</text><text x="220" y="346" text-anchor="middle">3</text><text x="274" y="346" text-anchor="middle">4</text><text x="328" y="346" text-anchor="middle">5</text></g>
+          <text class="s5-axis-title" x="193" y="372" text-anchor="middle">الحجم (سم³)</text>
+          <text class="s5-axis-title" transform="translate(16 196) rotate(-90)" text-anchor="middle">الكتلة (غرام)</text>
+          <g class="s5-line s5-line--oak"><line class="s5-line__path" x1="58" y1="328" x2="328" y2="312.6"/></g><g class="s5-line s5-line--glass"><line class="s5-line__path" x1="58" y1="328" x2="328" y2="273.0"/></g><g class="s5-line s5-line--water"><line class="s5-line__path" x1="58" y1="328" x2="328" y2="306.0"/></g><g class="s5-line s5-line--lead"><line class="s5-line__path" x1="58" y1="328" x2="328" y2="79.4"/></g>
+          <g class="s5-pts"><g class="s5-pt s5-line s5-line--oak"><circle class="s5-pt__hit" cx="112" cy="324.9" r="8"/><circle cx="112" cy="324.9" r="3.5"/><g class="s5-pt__tip"><rect x="121.0" y="314.9" width="73" height="20" rx="5"/><text x="157.5" y="328.9" text-anchor="middle">(1 , 0.7)</text></g></g><g class="s5-pt s5-line s5-line--oak"><circle class="s5-pt__hit" cx="166" cy="321.8" r="8"/><circle cx="166" cy="321.8" r="3.5"/><g class="s5-pt__tip"><rect x="175.0" y="311.8" width="73" height="20" rx="5"/><text x="211.5" y="325.8" text-anchor="middle">(2 , 1.4)</text></g></g><g class="s5-pt s5-line s5-line--oak"><circle class="s5-pt__hit" cx="220" cy="318.8" r="8"/><circle cx="220" cy="318.8" r="3.5"/><g class="s5-pt__tip"><rect x="229.0" y="308.8" width="73" height="20" rx="5"/><text x="265.5" y="322.8" text-anchor="middle">(3 , 2.1)</text></g></g><g class="s5-pt s5-line s5-line--oak"><circle class="s5-pt__hit" cx="274" cy="315.7" r="8"/><circle cx="274" cy="315.7" r="3.5"/><g class="s5-pt__tip"><rect x="283.0" y="305.7" width="73" height="20" rx="5"/><text x="319.5" y="319.7" text-anchor="middle">(4 , 2.8)</text></g></g><g class="s5-pt s5-line s5-line--oak"><circle class="s5-pt__hit" cx="328" cy="312.6" r="8"/><circle cx="328" cy="312.6" r="3.5"/><g class="s5-pt__tip"><rect x="246.0" y="302.6" width="73" height="20" rx="5"/><text x="282.5" y="316.6" text-anchor="middle">(5 , 3.5)</text></g></g><g class="s5-pt s5-line s5-line--glass"><circle class="s5-pt__hit" cx="112" cy="317.0" r="8"/><circle cx="112" cy="317.0" r="3.5"/><g class="s5-pt__tip"><rect x="121.0" y="307.0" width="73" height="20" rx="5"/><text x="157.5" y="321.0" text-anchor="middle">(1 , 2.5)</text></g></g><g class="s5-pt s5-line s5-line--glass"><circle class="s5-pt__hit" cx="166" cy="306.0" r="8"/><circle cx="166" cy="306.0" r="3.5"/><g class="s5-pt__tip"><rect x="175.0" y="296.0" width="60" height="20" rx="5"/><text x="205.0" y="310.0" text-anchor="middle">(2 , 5)</text></g></g><g class="s5-pt s5-line s5-line--glass"><circle class="s5-pt__hit" cx="220" cy="295.0" r="8"/><circle cx="220" cy="295.0" r="3.5"/><g class="s5-pt__tip"><rect x="229.0" y="285.0" width="73" height="20" rx="5"/><text x="265.5" y="299.0" text-anchor="middle">(3 , 7.5)</text></g></g><g class="s5-pt s5-line s5-line--glass"><circle class="s5-pt__hit" cx="274" cy="284.0" r="8"/><circle cx="274" cy="284.0" r="3.5"/><g class="s5-pt__tip"><rect x="283.0" y="274.0" width="66" height="20" rx="5"/><text x="316.0" y="288.0" text-anchor="middle">(4 , 10)</text></g></g><g class="s5-pt s5-line s5-line--glass"><circle class="s5-pt__hit" cx="328" cy="273.0" r="8"/><circle cx="328" cy="273.0" r="3.5"/><g class="s5-pt__tip"><rect x="239.0" y="263.0" width="80" height="20" rx="5"/><text x="279.0" y="277.0" text-anchor="middle">(5 , 12.5)</text></g></g><g class="s5-pt s5-line s5-line--water"><circle class="s5-pt__hit" cx="112" cy="323.6" r="8"/><circle cx="112" cy="323.6" r="3.5"/><g class="s5-pt__tip"><rect x="121.0" y="313.6" width="60" height="20" rx="5"/><text x="151.0" y="327.6" text-anchor="middle">(1 , 1)</text></g></g><g class="s5-pt s5-line s5-line--water"><circle class="s5-pt__hit" cx="166" cy="319.2" r="8"/><circle cx="166" cy="319.2" r="3.5"/><g class="s5-pt__tip"><rect x="175.0" y="309.2" width="60" height="20" rx="5"/><text x="205.0" y="323.2" text-anchor="middle">(2 , 2)</text></g></g><g class="s5-pt s5-line s5-line--water"><circle class="s5-pt__hit" cx="220" cy="314.8" r="8"/><circle cx="220" cy="314.8" r="3.5"/><g class="s5-pt__tip"><rect x="229.0" y="304.8" width="60" height="20" rx="5"/><text x="259.0" y="318.8" text-anchor="middle">(3 , 3)</text></g></g><g class="s5-pt s5-line s5-line--water"><circle class="s5-pt__hit" cx="274" cy="310.4" r="8"/><circle cx="274" cy="310.4" r="3.5"/><g class="s5-pt__tip"><rect x="283.0" y="300.4" width="60" height="20" rx="5"/><text x="313.0" y="314.4" text-anchor="middle">(4 , 4)</text></g></g><g class="s5-pt s5-line s5-line--water"><circle class="s5-pt__hit" cx="328" cy="306.0" r="8"/><circle cx="328" cy="306.0" r="3.5"/><g class="s5-pt__tip"><rect x="259.0" y="296.0" width="60" height="20" rx="5"/><text x="289.0" y="310.0" text-anchor="middle">(5 , 5)</text></g></g><g class="s5-pt s5-line s5-line--lead"><circle class="s5-pt__hit" cx="112" cy="278.3" r="8"/><circle cx="112" cy="278.3" r="3.5"/><g class="s5-pt__tip"><rect x="121.0" y="268.3" width="80" height="20" rx="5"/><text x="161.0" y="282.3" text-anchor="middle">(1 , 11.3)</text></g></g><g class="s5-pt s5-line s5-line--lead"><circle class="s5-pt__hit" cx="166" cy="228.6" r="8"/><circle cx="166" cy="228.6" r="3.5"/><g class="s5-pt__tip"><rect x="175.0" y="218.6" width="80" height="20" rx="5"/><text x="215.0" y="232.6" text-anchor="middle">(2 , 22.6)</text></g></g><g class="s5-pt s5-line s5-line--lead"><circle class="s5-pt__hit" cx="220" cy="178.8" r="8"/><circle cx="220" cy="178.8" r="3.5"/><g class="s5-pt__tip"><rect x="229.0" y="168.8" width="80" height="20" rx="5"/><text x="269.0" y="182.8" text-anchor="middle">(3 , 33.9)</text></g></g><g class="s5-pt s5-line s5-line--lead"><circle class="s5-pt__hit" cx="274" cy="129.1" r="8"/><circle cx="274" cy="129.1" r="3.5"/><g class="s5-pt__tip"><rect x="283.0" y="119.1" width="80" height="20" rx="5"/><text x="323.0" y="133.1" text-anchor="middle">(4 , 45.2)</text></g></g><g class="s5-pt s5-line s5-line--lead"><circle class="s5-pt__hit" cx="328" cy="79.4" r="8"/><circle cx="328" cy="79.4" r="3.5"/><g class="s5-pt__tip"><rect x="239.0" y="69.4" width="80" height="20" rx="5"/><text x="279.0" y="83.4" text-anchor="middle">(5 , 56.5)</text></g></g></g><rect class="s5-legend-bg" x="72" y="68" width="112" height="76" rx="6"/>
+          <g class="s5-line s5-line--lead"><line class="s5-line__path" x1="156" y1="82" x2="178" y2="82"/><text class="s5-legend-t" x="150" y="86" text-anchor="end">الرصاص</text></g><g class="s5-line s5-line--glass"><line class="s5-line__path" x1="156" y1="100" x2="178" y2="100"/><text class="s5-legend-t" x="150" y="104" text-anchor="end">زجاج</text></g><g class="s5-line s5-line--water"><line class="s5-line__path" x1="156" y1="118" x2="178" y2="118"/><text class="s5-legend-t" x="150" y="122" text-anchor="end">ماء</text></g><g class="s5-line s5-line--oak"><line class="s5-line__path" x1="156" y1="136" x2="178" y2="136"/><text class="s5-legend-t" x="150" y="140" text-anchor="end">خشب البلوط</text></g>
+        </svg>
+      </div>
+
+      <div class="s5-content">
+        <div class="s5-text" data-reveal="1">
+          <p>للرسم البياني للكتلة-الحجم الخاص بخشب البلوط والزجاج والرصاص، أُضيف أيضًا خط الماء.</p>
+          <p><strong>بعد النظر إلى الرسم البياني، حددوا بالنسبة لكل عبارة: صحيحة أو غير صحيحة.</strong></p>
+        </div>
+        <div class="s5-rows" data-reveal="3">
+        <div class="s5-row" data-row="0">
+          <span class="s5-num" aria-hidden="true">أ.</span>
+          <p class="s5-stmt" id="s5-stmt-0">خشب البلوط يطفو في الماء</p>
+          <div class="s5-opts" role="radiogroup" aria-labelledby="s5-stmt-0">
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="T" onclick="s5Pick(0,'T')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">صحيح</span></button>
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="F" onclick="s5Pick(0,'F')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">غير صحيح</span></button>
+          </div>
+        </div>
+        <div class="s5-row" data-row="1">
+          <span class="s5-num" aria-hidden="true">ب.</span>
+          <p class="s5-stmt" id="s5-stmt-1">الزجاج سيطفو في الماء</p>
+          <div class="s5-opts" role="radiogroup" aria-labelledby="s5-stmt-1">
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="T" onclick="s5Pick(1,'T')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">صحيح</span></button>
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="F" onclick="s5Pick(1,'F')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">غير صحيح</span></button>
+          </div>
+        </div>
+        <div class="s5-row" data-row="2">
+          <span class="s5-num" aria-hidden="true">ج.</span>
+          <p class="s5-stmt" id="s5-stmt-2">سيغوص الرصاص في الماء</p>
+          <div class="s5-opts" role="radiogroup" aria-labelledby="s5-stmt-2">
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="T" onclick="s5Pick(2,'T')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">صحيح</span></button>
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="F" onclick="s5Pick(2,'F')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">غير صحيح</span></button>
+          </div>
+        </div>
+        <div class="s5-row" data-row="3">
+          <span class="s5-num" aria-hidden="true">د.</span>
+          <p class="s5-stmt" id="s5-stmt-3">مادة خطها <span class="s2-term">شديد الانحدار<button class="s2-info" id="s5-info" type="button" aria-label="شرح لمصطلح شديد الانحدار" aria-expanded="false" aria-controls="s5-tip" onclick="s5ShowTip(event)" onmouseenter="s5ShowTip()" onmouseleave="s5CloseTips()" onfocus="s5ShowTip()" onblur="s5CloseTips()"><img src="../unit-assets/icons/icon-info-blue.svg" alt="" loading="lazy"></button><span class="s2-tip m-popup hidden" id="s5-tip" role="note"><span class="s2-tip__body"><strong>شديد الانحدار:</strong> خط يرتفع بشكل أكثر حدة، تمامًا كمنحدر يُسار عليه.</span></span></span> أكثر<br>من خط الماء سيغوص في الماء.</p>
+          <div class="s5-opts" role="radiogroup" aria-labelledby="s5-stmt-3">
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="T" onclick="s5Pick(3,'T')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">صحيح</span></button>
+            <button class="s5-opt" type="button" role="radio" aria-checked="false" data-v="F" onclick="s5Pick(3,'F')"><span class="s5-radio" aria-hidden="true"></span><span class="s5-opt-text">غير صحيح</span></button>
+          </div>
+        </div>
+        </div>
+      </div>
+      <p class="sr-only" id="s5-live" aria-live="polite"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s5q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s5q-hint" type="button" onclick="s5OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s5q-check" type="button" disabled onclick="s5Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 6) — מחוץ לכל .screen; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s5q-popup" onpointerdown="s5PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s5q-popup-title"></p>
+    <div class="s8q-popup-body" id="s5q-popup-body"></div>
+    <div class="s19-popup-actions" id="s5q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 6) — Hint Card; הטקסט: שקף 47 (מילה במילה). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s5q-hint-overlay" onclick="s5CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>قارنوا كل خط بخط الماء. الخط الأقل انحدارًا يمثل كثافة أقل، والخط الأكثر انحدارًا يمثل كثافة أعلى.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s5CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 7 (data-screen="6") — שאלת גרירה: יצוף / ישקע, שאלה 4 מתוך 4 (שקף 48) ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (720-templates → "Prefer a local template variant"):
+       אותו וריאנט כמו מסך 20 בסיין 1 (שני אזורי שחרור מרובי-פריטים: יצוף / ישקע), 5 כרטיסי גוף (תמונה + שם + צפיפות)
+       פזורים לפי הגיאומטריה של השקף, ורקע-ים (תמונת השקף) מתחת לאזור "ישקע". שם המסך בהערת המפיקה:
+       ImageTopDragAndDropQuestion; Figma 5340:25539 (מצבי אזור שחרור / פריט נגרר / נכון / שגוי) + Drag&Drop State 1249:32691.
+       מפתח (הערת מפיקה): יצוף — רפסודה מעץ אלון, כדור עופרת חלול, בקבוק זכוכית; ישקע — גולת זכוכית מלאה, כדור עופרת מלא.
+       2 ניסיונות (ברירת-מחדל — התסריט שותק), רמז זמין מההתחלה (שקף 48), משוב: שקף 48.
+       סרגל התקדמות: שאלה 4 מתוך 4. הפופאפים — מחוץ ל-.screen (ישירות ב-#app), מזהים s6q-*. -->
+  <section class="screen" data-screen="6" id="s6">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s6-stage">
+      <div class="s6-sea" data-reveal="3" data-reveal-fade aria-hidden="true"></div>
+      <div class="s6-text" data-reveal="1">
+        <p>من نفس المواد (خشب البلّوط، الزجاج، الرصاص) تم صنع أجسام جديدة.</p>
+        <p><strong>اسحبوا كل جسم إلى المكان المناسب (سيطفو أو سيغوص في الماء):</strong></p>
+      </div>
+      <div class="s6-tray" id="s6-tray" data-reveal="2" onclick="s6TrayClick(event)">
+        <div class="s6-slot" style="right:803px;top:182px"><div class="s6-card" id="s6-d-hollowlead" data-id="hollowlead" role="button" tabindex="0" aria-pressed="false" aria-label="كرة رصاص مجوَّفة (فارغة من الداخل)، كثافتها 0.8 جرام لكل سم³"><span class="s6-card__text"><span class="s6-card__name">كرة رصاص مجوَّفة (فارغة من الداخل)</span><span class="s6-card__dens">الكثافة: 0.8<span class="s6-card__unit"> (جرام/سم³)</span></span></span><img class="s6-card__img" src="assets/images/lead-ball.png" alt="" loading="lazy"></div></div>
+        <div class="s6-slot" style="right:449px;top:182px"><div class="s6-card" id="s6-d-marble" data-id="marble" role="button" tabindex="0" aria-pressed="false" aria-label="كرة زجاجية مصمتة، الكثافة 2.5 جرام/سم³"><span class="s6-card__text"><span class="s6-card__name">كرة زجاجية مصمتة</span><span class="s6-card__dens">الكثافة: 2.5<span class="s6-card__unit"> (جرام/سم³)</span></span></span><img class="s6-card__img" src="assets/images/glass-marble.png" alt="" loading="lazy"></div></div>
+        <div class="s6-slot" style="right:81px;top:182px"><div class="s6-card" id="s6-d-raft" data-id="raft" role="button" tabindex="0" aria-pressed="false" aria-label="طوّافة من خشب البلّوط، الكثافة 0.7 جرام/سم³"><span class="s6-card__text"><span class="s6-card__name">طوّافة من خشب البلوط</span><span class="s6-card__dens">الكثافة: 0.7<span class="s6-card__unit"> (جرام/سم³)</span></span></span><img class="s6-card__img" src="assets/images/raft-oak.png" alt="" loading="lazy"></div></div>
+        <div class="s6-slot" style="left:40px;top:262px"><div class="s6-card" id="s6-d-solidlead" data-id="solidlead" role="button" tabindex="0" aria-pressed="false" aria-label="كرة من الرصاص المصمت، كثافتها 11.3 جرام/سم³"><span class="s6-card__text"><span class="s6-card__name">كرة رصاص مصمتة</span><span class="s6-card__dens">الكثافة: 11.3<span class="s6-card__unit"> (جرام/سم³)</span></span></span><img class="s6-card__img" src="assets/images/lead-ball.png" alt="" loading="lazy"></div></div>
+        <div class="s6-slot" style="right:20px;top:262px"><div class="s6-card" id="s6-d-bottle" data-id="bottle" role="button" tabindex="0" aria-pressed="false" aria-label="قنينة زجاجية فارغة ومغلقة، الكثافة 0.6 جرام/سم³"><span class="s6-card__text"><span class="s6-card__name">قنينة زجاجية فارغة ومغلقة</span><span class="s6-card__dens">الكثافة: 0.6<span class="s6-card__unit"> (جرام/سم³)</span></span></span><img class="s6-card__img" src="assets/images/glass-bottle.png" alt="" loading="lazy"></div></div>
+      </div>
+      <div class="s6-zone s6-zone--float" id="s6-zone-float" data-zone="float" data-reveal="3" role="button" tabindex="0" aria-label="يطفو — منطقة الإفلات" onclick="s6ZoneClick('float', event)" onkeydown="s6ZoneKey(event,'float')">
+        <span class="s6-zone__label">يطفو</span>
+      </div>
+      <div class="s6-zone s6-zone--sink" id="s6-zone-sink" data-zone="sink" data-reveal="3" role="button" tabindex="0" aria-label="سيغوص — منطقة الإفلات" onclick="s6ZoneClick('sink', event)" onkeydown="s6ZoneKey(event,'sink')">
+        <span class="s6-zone__label">يغوص</span>
+      </div>
+      <p class="sr-only" id="s6-live" aria-live="polite"></p>
+      <!-- מחוות-יד (גרירה) — אותו נכס כמו מסכים 4–5; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s6-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s6q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s6q-hint" type="button" onclick="s6OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s6q-check" type="button" disabled onclick="s6Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 7) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s6q-popup" onpointerdown="s6PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s6q-popup-title"></p>
+    <div class="s8q-popup-body" id="s6q-popup-body"></div>
+    <div class="s19-popup-actions" id="s6q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 7) — Hint Card; הטקסט: שקף 48 (מילה במילה, כולל ההדגשות). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s6q-hint-overlay" onclick="s6CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>تَذَكَّروا: في الأجسام المجوّفة (الفارغة من الداخل) تُحسَب الكثافة <strong>المتوسطة</strong> للجسم بأكمله، بما في ذلك<strong>الهواء</strong> الموجود بداخله.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s6CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- פופאפ משוב (מסך 3) — מחוץ לכל .screen, ישירות ב-#app. אותו עיצוב כמו s26q-popup בסיין 1. -->
+  <div class="s8q-popup m-popup hidden" id="s2q-popup" onpointerdown="s2qPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s2q-popup-title"></p>
+    <div class="s8q-popup-body" id="s2q-popup-body"></div>
+    <div class="s19-popup-actions" id="s2q-popup-actions"></div>
+  </div>
+
+  <!-- כפתור דיווח בעיות גלובלי — ויזואלי בלבד, כמו בסיין 1 (720-templates → _global-components.md → "Report / Issue button") -->
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen, ישירות ב-#app
+       (720-templates _global-components.md). Wired by delegation in ../unit-js/25-report.js — no onclick. -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل وجدتم مشكلة؟" title="هل وجدتم مشكلة؟">
+    <span class="flag-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 12 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.397164 17C0.177722 17 0 16.8239 0 16.6065V0.393501C0 0.176082 0.177722 0 0.397164 0C0.616607 0 0.794329 0.176082 0.794329 0.393501V16.607C0.794329 16.8245 0.616607 17.0005 0.397164 17.0005V17Z" fill="currentColor"/>
+        <g transform="translate(0, 0.5933)">
+          <path d="M2.76227 9.31542C1.91972 9.31542 1.06958 9.15545 0.213483 8.71363C0.0823588 8.64599 0 8.51124 0 8.36469V0.950975C0 0.814619 0.0715221 0.687925 0.188558 0.615989C0.305594 0.54459 0.45189 0.537611 0.574886 0.598811C0.577053 0.599884 0.578679 0.600958 0.580846 0.602032C2.31309 1.49586 4.05563 1.046 5.90003 0.569821C7.80946 0.0770055 9.78336 -0.431915 11.7865 0.601495C11.9176 0.669136 12 0.803882 12 0.950438V8.36415C12 8.4946 11.9344 8.617 11.8255 8.69001C11.7166 8.76302 11.5774 8.77805 11.4555 8.72974C11.443 8.7249 11.4311 8.71954 11.4197 8.71363C9.68745 7.8198 7.94491 8.26967 6.10051 8.7453C5.00709 9.02714 3.89199 9.31489 2.76281 9.31489L2.76227 9.31542ZM0.793787 8.11935C2.45559 8.87307 4.13094 8.44038 5.90003 7.98407C7.62469 7.53903 9.40191 7.08057 11.2062 7.75806V1.19631C9.54441 0.442591 7.86906 0.875281 6.09997 1.33159C4.37531 1.77663 2.59755 2.23509 0.793787 1.5576V8.11935Z" fill="currentColor"/>
+        </g>
+      </svg>
+    </span>
+    <span class="flag-btn__label">هل وجدتم مشكلة؟</span>
+  </button>
+
+  <!-- ═══ "מצאתם בעיה?" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-body-matter-01-02 (2026-11-02). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما ينبغي؟<br>أخبرونا بما حدث حتى نتعامل معه.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ما حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال تبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقينا التبليغ وسنهتم بالأمر بأقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق لن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261102c"></script>
+<script src="../unit-js/20-xapi.js?v=20261102c"></script>
+<script src="../unit-js/25-report.js?v=20261102c"></script>
+<script src="../unit-js/40-resume.js?v=20261102c"></script>
+<script src="../unit-js/50-loader.js?v=20261102c"></script>
+<script src="../unit-js/05-media.js?v=20261102c"></script>
+<script src="../unit-js/05-motion.js?v=20261102c"></script>
+<script src="../unit-js/07-btn-width.js?v=20261103"></script>
+<script src="applet/applet.js?v=20261102c"></script>
+<script src="script.js?v=20261102c"></script>
+<script src="../unit-js/90-boot.js?v=20261102c"></script>
+</body>
+</html>

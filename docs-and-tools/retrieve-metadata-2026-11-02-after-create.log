@@ -1,0 +1,15 @@
+=== retrieve-metadata ===
+[INFO] Base URL   : https://kata.cet.ac.il
+[INFO] Output dir : C:\Users\Vadim\OneDrive - methodic.co.il\Projects_ACTIVE\MOE\720\2026\methodica-science-mass-density-01\git-repo\methodica-science-mass-density-01\metadata-from
+[INFO] Unit key   : methodica-science-mass-density-01 (from methodica-science-mass-density-01_unit.json)
+[INFO] RAW     methodica-science-mass-density-01.json
+[INFO] Auditing against C:\Users\Vadim\OneDrive - methodic.co.il\Projects_ACTIVE\MOE\720\2026\methodica-science-mass-density-01\git-repo\methodica-science-mass-density-01\metadata (7 components, 29 items)
+[INFO] WROTE   methodica-science-mass-density-01_unit.json
+[INFO] WROTE   methodica-science-mass-density-01-01.json (12 items)
+[INFO] WROTE   methodica-science-mass-density-01-02.json (4 items)
+[INFO] WROTE   methodica-science-mass-density-01-03.json (6 items)
+[INFO] WROTE   methodica-science-mass-density-01-04.json (1 items)
+[INFO] WROTE   methodica-science-mass-density-01-05.json (4 items)
+[INFO] WROTE   methodica-science-mass-density-01-06.json (1 items)
+[INFO] WROTE   methodica-science-mass-density-01-07.json (1 items)
+[INFO] Done. unit=1 components=7 items=29 warnings=0

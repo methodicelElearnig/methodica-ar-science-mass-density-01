@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | علوم الهدف 10 | سيان 1</title>
+<link rel="stylesheet" href="styles.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/motion.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261102c">
+<link rel="stylesheet" href="applet/applet.css?v=20261102c">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-body-matter-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<div id="app">
+
+  <!-- ============ מסך 1 — FullImageWithTextOverlay ============
+       Figma: "720 - UI Templates" (eSbp4bKHgBky0rakDb8l9N), node 1038:19205
+       ("FullImageWithTextOverlay - A"). תבנית: 720-templates →
+       FullImageWithTextOverlay.md — ראו ARCHITECTURE.md לפירוט המלא
+       (מבנה/גיאומטריה שנגזרו מ-Figma, מה שנשאר קבוע מהתבנית).
+       הבחירה בתבנית זו מאומתת גם ע"י המפיקה: תסריט ההפקה (מדעים_יעד
+       10_310826_להפקה.pptx), שקף 3, הערת דובר: "מסף בפיגמה:
+       FullImageWithTextOverlay" [כך במקור, "מסך"] + "לג'נרט את התמונה
+       לסרטון רץ עם סאונד של מים" + "שם תמונה: ירדן" (תואם
+       assets/videos/jordan-river.mp4) + "כפתור נתחיל עולה אחרון".
+
+       ⚠️ אין בלומדה הזו מסך בחירת-דמות (סטייה מכוונת מיעד 2/3, לפי
+       הנחיית המפיקה) — ראו PROJECT_BRIEF.md. דמות מלווה יחידה (ללא
+       בחירה) תופיע במסכים מסוימים בהמשך היחידה — טרם מומשה.
+
+       הסרטון (נהר הירדן) סופק ע"י המפיקה — assets/videos/jordan-river.mp4.
+       וידאו הוראתי (learner-facing) → controls טבעיים, לא decorative
+       (ראו figma-lomda-builder → "Non-negotiable video rules"). ללא
+       gate על ההמשך בשלב זה (FullImageWithTextOverlay.md §D: Continue
+       תמיד פעיל למסך תוכן שאינו שאלה — אין הנחיה מאושרת שדורשת אחרת). -->
+  <section class="screen active" data-screen="0" id="s0">
+
+    <!-- רצועת תמונה/וידאו מלאה — fade-only reveal (band לא זז) -->
+    <div class="fito-img" data-reveal="1" data-reveal-fade>
+      <video class="fito-video" id="s0-video" autoplay playsinline preload="auto"
+             disablepictureinpicture tabindex="-1" aria-hidden="true">
+        <source src="assets/videos/jordan-river.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- כרטיס טקסט צף — hugging width (fit-content + max-width guard),
+         ראו FullImageWithTextOverlay.md §B. תוכן: תסריט ההפקה, שקף 3
+         (paragraph יחיד, שני runs — ה-run השני מודגש ב-bold במקור;
+         אין line-break מפורש בין ה-runs, ראו pptx-script-extraction →
+         "Authored line breaks are not the same as rendered wrapping"). -->
+    <div class="fito-text" data-reveal="2">
+      <p>أضاع ماهر حقيبته أثناء ركوب الزوارق في نهر الأردن. أما القبعة فقد وجدها تطفو على الماء، لكن المفاتيح والحقيبة غاصت إلى الأسفل. <strong>لماذا هما تحديدًا؟ في هذه الوحدة سنشرح السبب (وأشياء أخرى مثيرة للاهتمام).</strong></p>
+    </div>
+
+    <!-- כפתור השתקה/הפעלת קול לסרטון הפותח — הדפדפן עלול להתחיל מושתק (חסימת autoplay עם קול) -->
+    <button class="fito-sound" id="s0-sound" type="button" aria-label="تشغيل الصوت" aria-pressed="true">
+      <svg class="fito-sound__off" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6"/></svg>
+      <svg class="fito-sound__on" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+    </button>
+
+    <!-- כפתור עצירה/הפעלה לסרטון הפותח (נגישות: וידאו מעל 3 שניות חייב אפשרות עצירה). הסרטון נעצר אוטומטית בסיומו ואפשר לצפות שוב. -->
+    <button class="fito-sound fito-play" id="s0-play" type="button" aria-label="إيقاف الفيديو">
+      <span class="fito-play__pause" aria-hidden="true"><img class="fi-pause-circle" src="../unit-assets/icons/icon-pause-circle.svg" alt=""><img class="fi-pause-bars" src="../unit-assets/icons/icon-pause-bars.svg" alt=""></span>
+      <span class="fito-play__play" aria-hidden="true"><img class="fi-play-circle" src="../unit-assets/icons/icon-play-large-circle.svg" alt=""><img class="fi-play-tri" src="../unit-assets/icons/icon-play-large-triangle.svg" alt=""></span>
+    </button>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <!-- תווית "נתחיל" (לא "המשך" הגנרי) — תסריט שקף 3. אין data-reveal:
+             animation-system → DECISIONS.md → "Navigation exclusions" מחריג
+             באופן גורף כפתורי continue/back מחשיפת-מסך (כלל binding, לא
+             תלוי-פרויקט) — גובר על הערת המפיקה "כפתור נתחיל עולה אחרון"
+             (שלא תואמת שום outlet חריג מתועד, כמו recall-button בגוף
+             התוכן). הכפתור פעיל ונראה תמיד, ללא gate (FullImageWithText
+             Overlay.md §D). -->
+        <button class="btn-continue" onclick="advanceScreen()">نبدأ</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 2 — כרטיסיות תמונה (Image Cards → Popups) ============
+       Figma: node 4504:21693 ("Component 11" / "FlipCardsReveal - State 01 -
+       Before interaction") — פריים בספריית הרכיבים המשותף לתבנית
+       FlipCardsReveal, אך המפיקה קבעה במפורש שהמסך הזה **אינו** flip-cards:
+       לחיצה על כרטיסייה פותחת פופאפ ייעודי משלה (טרם נבנה בשלב זה — ראו
+       PROJECT_BRIEF.md/ARCHITECTURE.md), לא הופכת אותה במקום. נלקחו מה-
+       Figma רק המבנה/גיאומטריה הרלוונטיים (מסגרת כרטיס 283×283/ריווח
+       22px/שורת ניווט) — לא מנגנון ה-flip/reveal-state-02 ולא כפתורי
+       "צפייה/קריאה" (מצב-תצוגה) שאינם רלוונטיים כאן.
+       תסריט ההפקה מזוהה לפי תוכן (pptx-script-extraction), לא לפי מספר
+       שקף מונח מראש: שקף 4 = המסך הזה עצמו (הערת דובר: "שם המסך:
+       PopupPage... מסך זה מוביל לפופאפים בלחיצה על התמונות"); שקפים 5/6 =
+       תוכן שני הפופאפים (טרם ממומשים כרגע — ראו openImageCardPopup ב-
+       script.js). מיפוי כרטיסייה→פופאפ נקבע לפי תוכן, לא לפי מיקום/שם-
+       קובץ גרידא: שקף 5 ("התיק והמפתחות שקעו... צפיפות") ממשיך את סיפור
+       נהר-הירדן ממסך 1 → כרטיסיית נהר-הירדן (הימנית, לפי מיקום shape
+       בשקף 4: left גבוה יותר = ימני יותר); שקף 6 ("ארכימדס וכתר המלך") →
+       כרטיסיית האיש-עם-הכתר (השמאלית). -->
+  <section class="screen" data-screen="1" id="s1">
+
+    <div class="s1-content">
+      <!-- הנחיה — שורה אחת בלבד מהתסריט (לא מבנה 3-השורות הגנרי שה-Figma
+           מציג: אין כאן תוכן ל-title/subtitle נפרדים — content may flex
+           the template, per figma-lomda-builder). -->
+      <div class="s1-text" data-reveal="1">
+        <p>للتحقق مما إذا كنتم محقين، اضغطوا على الصور وستكتشفون معلومات تساعد في تفسير الظاهرة.</p>
+      </div>
+
+      <!-- שורת כרטיסיות — group אחד (animation-system: "Question text +
+           answer options"-style row, לא stagger per-card). DOM ימין-לפני-
+           שמאל: RTL אמיתי (בניגוד למסך-בחירת-הדמות שהוסר — כאן אין צורך
+           בסדר-סלוטים פיזי קבוע תלוי-כיוון, אז direction:ltr לא נחוץ). -->
+      <div class="s1-cards-row" data-reveal="2" role="group" aria-label="بطاقات — اضغطوا لاكتشاف المعلومات">
+        <button class="img-card" type="button" data-popup="density-jordan"
+                aria-label="صورة: نهر الأردن. اضغطوا للكشف عن المعلومات"
+                onclick="openImageCardPopup('density-jordan')">
+          <span class="img-card-inner">
+            <img src="assets/images/yarden-river.png" alt="نهر الأردن" loading="lazy">
+          </span>
+        </button>
+        <button class="img-card" type="button" data-popup="density-crown"
+                aria-label="صورة: رجل يحمل تاجًا. انقروا لاكتشاف المعلومات"
+                onclick="openImageCardPopup('density-crown')">
+          <span class="img-card-inner">
+            <img src="assets/images/man-holds-crown.png" alt="رجل يحمل تاجًا ذهبيًا" loading="lazy">
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s1-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s1-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 3 — קוביות ברזל מתהפכות + טבלת מסה/נפח ============
+       Figma: node 4504:21687 ("FlipCardsReveal - State 01", אותו component-
+       library frame כמו מסך 2, אך **כאן זה כן flip-cards אמיתי** — הנחיית
+       מפיקה מפורשת) + node 1126:21308 ("Table", מותאם) + node 1013:15054
+       ("scrolling", רפרנס לעיצוב פס-גלילה). תבנית: 720-templates →
+       FlipCardsReveal.md (חוזה הפיכה/unlock; הגיאומטריה כאן היא מה-Figma
+       של הפרויקט הזה, לא ה-325×325 שבדוגמת ה-md). זוהה לפי תוכן (pptx-
+       script-extraction, לא לפי מספר שקף בלבד): שקף 7 = מסך זה במצב
+       "לפני הפיכה" (הערת דובר, notesSlide5 — הערת-דוברים אינה ממוספרת
+       כמו השקף, ראו pptx-script-extraction → "Presenter-notes part
+       numbering is not slide numbering"; אומת דרך slide7.xml.rels בפועל):
+       "שם המסך בפיגמה: FlipCardsReveal בשילוב של valueinput. מסך קלפים
+       מתהפכים מימין וטבלה למילוי משמאל. הלומד הופך את הקלף ובהתאם לנתונים
+       עליו הוא משלים ערכים בטבלה – מסה ונפח (בשבר), והחישוב של התוצאה
+       מתבצע אוטומטית... אם הטבלה לא נכנסת כולה באותו מסך – לאפשר גלילה."
+       שקף 8 = מצב "אחרי הפיכה", עם תוכן הקוביות בפועל (4 תיבות טקסט
+       נפרדות + טבלה עם 2 עמודות/5 שורות).
+
+       נתוני הקוביות (שקף 8, TextBox 1/6/8/14 — כל הקוביות עשויות מאותו
+       חומר [ברזל], אז היחס מסה/נפח [=צפיפות] זהה לכולן, 7.9 — זו הנקודה
+       הפדגוגית של המסך, לא מקריות):
+       א: מסה 7.9 גרם, נפח 1 סמ"ק → 7.9/1=7.9
+       ב: מסה 15.8 גרם, נפח 2 סמ"ק → 15.8/2=7.9
+       ג: מסה 23.7 גרם, נפח 3 סמ"ק → 23.7/3=7.9
+       ד: מסה 31.6 גרם, נפח 4 סמ"ק → 31.6/4=7.9
+       (מקור: TextBox 1/6/8/14 בשקף 8, ראו ARCHITECTURE.md לפירוט המלא.)
+
+       סדר עמודות הטבלה (פיזי, לא לפי ניחוש): נגזר ממיקומי-EMU בפועל של
+       ה-graphicFrame/gridCol מול ה-overlay של הפרש/תוצאה (ראו ARCHITECTURE.
+       md) — עמודת "קובייה" (א/ב/ג/ד) פיזית ימנית, עמודת "מסה/נפח"
+       (שבר+תוצאה) פיזית שמאלית — תואם גם למוסכמת קריאה RTL רגילה
+       (מזהה-שורה מימין, נתון משמאלו).
+
+       ⚠️ לא מומש: תמונת-קובייה ייעודית לכל כרטיסייה. שקף 7 מפנה לאותה
+       תמונה (image7.png) בכל 4 מופעי ה-"Picture" — נכס גנרי/placeholder
+       יחיד, לא 4 תצלומים שונים של קוביות בגדלים שונים (כפי שהנושא
+       הפדגוגי דורש) — הוחלט להשתמש ב-placeholder מתועד לכל כרטיסייה
+       (per figma-lomda-builder → "Missing asset — stop and report") ולא
+       בתמונת ה-stock הגנרית החוזרת, כדי לא להטעות ("4 קוביות זהות").
+
+       ⚠️ Continue/"בדיקה" מגודר (gate) — לפי FlipCardsReveal.md: תלוי
+       בכך שכל 4 הכרטיסיות הופכו לפחות פעם אחת (frcRevealed.every)
+       **וגם** שכל 12 שדות-הטבלה מלאים ונבדקו בהצלחה (ראו למטה). בשונה
+       מהתבנית הקנונית (הפיכה חד-כיוונית), כאן ההפיכה **דו-כיוונית**
+       (לחיצה נוספת הופכת בחזרה) — הנחיית מפיקה מפורשת ("תאפשר גם הפיכה
+       בחזרה בלחיצה נוספת"); ה-unlock עוקב אחרי seen-at-least-once,
+       בלתי-תלוי במצב ההפיכה הנוכחי (כמו שה-md כבר קובע לגרסה הדו-כיוונית
+       שלו: "flip-state array tracks the current visual state" בנפרד
+       מ-frcRevealed).
+
+       ⚠️ עדכון-הנחיה מפורש (סבב-תיקונים נפרד, דורס את "מילוי/חישוב
+       אוטומטי" בהערת-הדובר למעלה): הטבלה היא כעת שאלת-אינפוט — הלומד
+       מזין בעצמו מסה/נפח/תוצאה לכל קובייה לפי מה שראה בגב הקלף ההפוך,
+       ולא מילוי אוטומטי. כפתור אחד ("בדיקה"↔"המשך") בודק/נועל/מסמן
+       נכון-שגוי per-field, לפי רפרנס מפורש: יעד 2 →
+       methodica-science-mass-measure-02-04 (מסך 2, טבלת-אינפוטים) —
+       ראו ARCHITECTURE.md לפירוט המלא, כולל תיקון סדר-העמודות שנדרש
+       בעקבותיו. -->
+  <section class="screen" data-screen="2" id="s2">
+
+   <div class="s2-content">
+    <div class="s2-header">
+      <!-- כותרת — מיפוי ל-tier "2" הגנרי (40px bold) של Figma; תוכן
+           אמיתי משקף 7/8 (תיבת טקסט 12), לא placeholder. -->
+      <h1 class="s2-title" data-reveal="1">اعثروا على النسبة بين الكتلة والحجم</h1>
+      <!-- הנחיה — מיפוי ל-tier "Text" (28px); run ראשון bold + "." רגיל,
+           פסקה שנייה רגילה לגמרי (שני runs/פסקאות נפרדות במקור — נשמר). -->
+      <div class="s2-instructions" data-reveal="1">
+        <p><strong>أمامكم مكعبات حديد بأحجام مختلفة</strong>.</p>
+        <p>اضغطوا على كل مكعب لاكتشاف كتلته وحجمه، وأكملوا الجدول.</p>
+      </div>
+    </div>
+
+    <!-- חלוקה חצי-חצי: טבלה משמאל, כרטיסיות מימין — הנחיית מפיקה מפורשת
+         (בשונה מה-Figma הגנרי, ששם שורת-4-כרטיסיות תופסת את כל הרוחב).
+         ⚠️ סדר-DOM: כרטיסיות (ימין) קודם, טבלה (שמאל) אחריה — תחת RTL
+         אמיתי (ברירת המחדל בפרויקט), ילד ראשון ב-flex row = פיזית ימני
+         (patterns.md → gotcha #1/#3) — לא ניחוש; אומת ב-Playwright. -->
+    <div class="s2-split">
+
+      <div class="s2-cards-half" data-reveal="2">
+        <!-- שורת-4-כרטיסיות הפכה לרשת 2×2 (2 בכל שורה) — הנחיית מפיקה
+             מפורשת, מותאם לשטח החצי הימני. גודל כרטיסייה נגזר מהשטח
+             המוקצה (per figma-lomda-builder), לא מ-283px הליטרלי
+             שב-Figma (זה נועד לשורה של 4 ברוחב מלא, לא רשת 2×2 בחצי-
+             רוחב). position:relative — עוגן למחוות-היד (ראו למטה). -->
+        <div class="s2-cards-grid" id="s2-cards-grid" role="group" aria-label="مكعبات الحديد — اضغطوا على كل مكعب لاكتشاف كتلته وحجمه">
+          <button class="frc-card" type="button" data-cube="a" data-mass="7.9" data-volume="1"
+                  aria-expanded="false" aria-label="المكعب أ. اضغطوا للقلب ولمعرفة الكتلة والحجم"
+                  onclick="frcFlip(this)">
+            <div class="frc-card-inner">
+              <div class="frc-card-front">
+                <img class="frc-cube-img frc-cube-img--a" src="assets/images/cube-a.png" alt="مكعب أ" loading="lazy">
+              </div>
+              <div class="frc-card-back" aria-hidden="true">
+                <div class="frc-card-back-content">
+                  <p class="frc-letter">أ</p>
+                  <p>الكتلة: 7.9 جرام</p>
+                  <p>الحجم: 1 سم³</p>
+                </div>
+              </div>
+            </div>
+          </button>
+          <button class="frc-card" type="button" data-cube="b" data-mass="15.8" data-volume="2"
+                  aria-expanded="false" aria-label="المكعب ب. اضغطوا لقلب المكعب واكتشاف الكتلة والحجم"
+                  onclick="frcFlip(this)">
+            <div class="frc-card-inner">
+              <div class="frc-card-front">
+                <img class="frc-cube-img frc-cube-img--b" src="assets/images/cube-b.png" alt="مكعب ب" loading="lazy">
+              </div>
+              <div class="frc-card-back" aria-hidden="true">
+                <div class="frc-card-back-content">
+                  <p class="frc-letter">ب</p>
+                  <p>الكتلة: 15.8 جرام</p>
+                  <p>الحجم: 2 سم³</p>
+                </div>
+              </div>
+            </div>
+          </button>
+          <button class="frc-card" type="button" data-cube="c" data-mass="23.7" data-volume="3"
+                  aria-expanded="false" aria-label="المكعب ج. اضغطوا للقلب ومعرفة الكتلة والحجم"
+                  onclick="frcFlip(this)">
+            <div class="frc-card-inner">
+              <div class="frc-card-front">
+                <img class="frc-cube-img frc-cube-img--c" src="assets/images/cube-c.png" alt="مكعب ج" loading="lazy">
+              </div>
+              <div class="frc-card-back" aria-hidden="true">
+                <div class="frc-card-back-content">
+                  <p class="frc-letter">ت</p>
+                  <p>الكتلة: 23.7 جرام</p>
+                  <p>الحجم: 3 سم³</p>
+                </div>
+              </div>
+            </div>
+          </button>
+          <button class="frc-card" type="button" data-cube="d" data-mass="31.6" data-volume="4"
+                  aria-expanded="false" aria-label="مكعب د. اضغطوا لتقليب المكعب ومعرفة الكتلة والحجم"
+                  onclick="frcFlip(this)">
+            <div class="frc-card-inner">
+              <div class="frc-card-front">
+                <img class="frc-cube-img frc-cube-img--d" src="assets/images/cube-d.png" alt="مكعّب د" loading="lazy">
+              </div>
+              <div class="frc-card-back" aria-hidden="true">
+                <div class="frc-card-back-content">
+                  <p class="frc-letter">ث</p>
+                  <p>الكتلة: 31.6 جرام</p>
+                  <p>الحجم: 4 سم³</p>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <!-- מחוות-יד (Cursor Click) — 720-templates → _gesture-hints.md +
+               תבנית-פתיחה-לפרויקט-לומדה-חדש.md → "מחוות-יד מונפשות". יד
+               סטטית + שתי טבעות-אדווה מונפשות (לופ 2000ms). ממוקם ע"י JS
+               מעל הכרטיסייה הלא-הפוכה הראשונה (עוגן מהגיאומטריה האמיתית
+               של הכרטיס, לא ניחוש) — ראו script.js. Assets: node 2915:35189
+               ("Cursor Click"), וריאנט Science/כחול (מאומת בפועל מול
+               fill/stroke של ה-SVG שהורד — לא לפי שם-הפונקציה שה-MCP
+               ייצא, שהיה הפוך: הפונקציה "…Science" הכילה בפועל את צבעי
+               Purple/Math ולהפך — ראו ARCHITECTURE.md/תבנית-פתיחה). -->
+          <div class="s2-gh hidden" id="s2-gh" aria-hidden="true">
+            <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+            <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+            <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <div class="s2-table-half" data-reveal="3">
+        <p class="s2-table-caption"><strong>جدول - بيانات الكتلة والحجم لمكعبات الحديد والنسبة بينهما:</strong></p>
+        <!-- עטיפת-גלילה פנימית — Figma node 1013:15054 ("scrolling") הוא
+             הרפרנס לעיצוב פס-הגלילה (track/thumb מותאמים, לא native
+             מלא) — ראו styles.css. בפועל 5 השורות כנראה נכנסות בלי
+             גלילה, אבל התשתית מוכנה למקרה שהתוכן יגדל (הנחיית מפיקה:
+             "אם הטבלה לא נכנסת כולה — לאפשר גלילה"). -->
+        <div class="s2-table-scroll">
+          <!-- ⚠️ סדר-עמודות תוקן: קובייה (עמודה צרה, אות בודדת) ראשונה
+               ב-DOM → פיזית ימין תחת RTL אמיתי (ברירת-המחדל בפרויקט);
+               תשובה (עמודה רחבה, שבר-אינפוט + "=" + תוצאה) שנייה ב-DOM →
+               פיזית שמאל. זה תואם את המסקנה שנגזרה מ-EMU בפועל בשקף 8
+               (gridCol[0]=מסה/נפח=שמאל, gridCol[1]=קובייה=ימין, ראו
+               ARCHITECTURE.md) — הגרסה הקודמת (עמודת-קובייה אחרונה
+               ב-DOM) הציגה בפועל את ההפך (אומת ב-Playwright לפני התיקון:
+               th-ratio x=350/th-cube x=44, כלומר טבלה-תשובה ימין/קובייה
+               שמאל) — סטייה בין הקוד לתיעוד-המקור, תוקנה כאן לפי בקשת
+               מפיקה מפורשת ("העמודה הימנית צריכה להיות השמאלית ולהפך"). -->
+          <table class="s2-table">
+            <thead>
+              <tr>
+                <!-- עמודה ימנית (קובייה) — צרה, bold רגיל (700). -->
+                <th class="s2-th-cube">مكعب</th>
+                <!-- עמודה שמאלית (תשובה: מסה/נפח = תוצאה) — רחבה, bold
+                     רגיל (700), לא סמי-בולד (600) — סטייה מכוונת מה-Figma
+                     הגנרי (SemiBold), לפי הנחיית מפיקה מפורשת. -->
+                <th class="s2-th-answer">
+                  <span class="s2-th-frac"><span class="s2-th-frac-num">كتلة</span><span class="s2-th-frac-den">حجم</span></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- כל שורה: אות-הקובייה (קריאה בלבד) + שלושה אינפוטים —
+                   מסה, נפח (שבר מוערם, לפי מה שמופיע על גב הקלף שהתהפך)
+                   ותוצאה (החלק מימין ל"=", היחס המחושב = הצפיפות). הלומד
+                   מזין את הערכים בעצמו לפי הקלף ההפוך — לא מילוי אוטומטי
+                   (סטייה מכוונת, מבוקשת במפורש, מהערת-המפיק המקורית על
+                   מילוי/חישוב אוטומטיים; ראו ARCHITECTURE.md). בדיקה +
+                   סימון נכון/שגוי per-field — לפי רפרנס מפורש: יעד 2 →
+                   methodica-science-mass-measure-02-04 (מסך 2, טבלת
+                   אינפוטים) → `.tbl-input`/`.tbl-input-correct`/
+                   `.tbl-input-wrong`. -->
+              <tr>
+                <td class="s2-td-cube">أ</td>
+                <td class="s2-td-answer">
+                  <div class="s2-answer-group" dir="ltr">
+                    <div class="s2-input-frac">
+                      <input class="s2-num-input" id="s2-input-a-mass" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="كتلة المكعب أ، بالجرام">
+                      <div class="s2-frac-line" aria-hidden="true"></div>
+                      <input class="s2-num-input" id="s2-input-a-vol" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="حجم المكعب أ، بسم³">
+                    </div>
+                    <span class="s2-eq" aria-hidden="true">=</span>
+                    <input class="s2-num-input s2-result-input" id="s2-input-a-result" type="text" inputmode="decimal" dir="ltr" placeholder=" " readonly tabindex="-1" aria-label="كثافة المكعب أ، الكتلة مقسومة على الحجم">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="s2-td-cube">ب</td>
+                <td class="s2-td-answer">
+                  <div class="s2-answer-group" dir="ltr">
+                    <div class="s2-input-frac">
+                      <input class="s2-num-input" id="s2-input-b-mass" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="كتلة المكعب ب، بالجرام">
+                      <div class="s2-frac-line" aria-hidden="true"></div>
+                      <input class="s2-num-input" id="s2-input-b-vol" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="حجم المكعب ب، بسم³">
+                    </div>
+                    <span class="s2-eq" aria-hidden="true">=</span>
+                    <input class="s2-num-input s2-result-input" id="s2-input-b-result" type="text" inputmode="decimal" dir="ltr" placeholder=" " readonly tabindex="-1" aria-label="كثافة المكعب ب، الكتلة مقسومة على الحجم">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="s2-td-cube">ت</td>
+                <td class="s2-td-answer">
+                  <div class="s2-answer-group" dir="ltr">
+                    <div class="s2-input-frac">
+                      <input class="s2-num-input" id="s2-input-c-mass" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="كتلة المكعب ج، بالجرام">
+                      <div class="s2-frac-line" aria-hidden="true"></div>
+                      <input class="s2-num-input" id="s2-input-c-vol" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="حجم المكعب ج، بسم³">
+                    </div>
+                    <span class="s2-eq" aria-hidden="true">=</span>
+                    <input class="s2-num-input s2-result-input" id="s2-input-c-result" type="text" inputmode="decimal" dir="ltr" placeholder=" " readonly tabindex="-1" aria-label="كثافة المكعب ج، الكتلة مقسومة على الحجم">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="s2-td-cube">ث</td>
+                <td class="s2-td-answer">
+                  <div class="s2-answer-group" dir="ltr">
+                    <div class="s2-input-frac">
+                      <input class="s2-num-input" id="s2-input-d-mass" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="كتلة المكعب د، بالجرام">
+                      <div class="s2-frac-line" aria-hidden="true"></div>
+                      <input class="s2-num-input" id="s2-input-d-vol" type="text" inputmode="decimal" dir="ltr" placeholder=" " oninput="s2OnTableInput()" aria-label="حجم المكعب د، بسم³">
+                    </div>
+                    <span class="s2-eq" aria-hidden="true">=</span>
+                    <input class="s2-num-input s2-result-input" id="s2-input-d-result" type="text" inputmode="decimal" dir="ltr" placeholder=" " readonly tabindex="-1" aria-label="كثافة المكعب د، الكتلة مقسومة على الحجم">
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+   </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s2-back" onclick="backScreen()">عودة</button>
+        <!-- כפתור זה משמש גם כ"בדיקה" (לפני שהטבלה נבדקה בהצלחה) וגם
+             כ"המשך" (אחרי) — אותו כפתור מתחלף, לפי הדפוס ב-
+             methodica-science-mass-measure-02-04 (`tblSetBtnCheck`),
+             ולא שני כפתורים נפרדים. ראו script.js → s2ContinueClick(). -->
+        <button class="btn-continue" id="s2-continue" disabled onclick="s2ContinueClick()">اختبار</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 3, טבלת מסה/נפח) — מחוץ לכל .screen, ישירות ב-#app. עיצוב כמו מסך 20 (s8q-*), גריר חופשי (Pointer Events).
+       אזור-הפעולה: "מעבר לתשובה שלי" / "מעבר לתשובה נכונה" (View My Answer Toggle) — רק בתוצאה "שגוי". -->
+  <div class="s8q-popup m-popup hidden" id="s2tq-popup" onpointerdown="s2tPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s2tq-popup-title"></p>
+    <div class="s19-popup-actions" id="s2tq-popup-actions"></div>
+  </div>
+
+  <!-- ============ מסך 4 — שאלת בחירה יחידה + טבלה פתורה ============
+       אין node חדש בפיגמה למסך הזה — הנחיית מפיקה מפורשת: מבנה ה-split
+       זהה למסך 3 (node 4504:21687, layout בלבד, כבר ממומש שם) + תבנית
+       SingleChoiceQuestion הקנונית (720-templates → SingleChoiceQuestion.md
+       + _question-template-defaults.md) לחצי-השאלה עצמו. ראו ARCHITECTURE.md
+       → "מסך 4" לפירוט המלא של החילוץ מהתסריט וההחלטות.
+
+       תסריט הפקה: שקף 9 (מזוהה לפי תוכן — pptx-script-extraction, לא לפי
+       מספר סופר; הערת-דובר ב-notesSlide7.xml, מאותרת דרך slide9.xml.rels
+       בפועל: "שם המסך בפיגמה: SingleChoiceQuestion"). שקף 9 עצמו כולל גם
+       עותק חוזר, מילה-במילה, של כיתוב טבלת מסה/נפח/יחס ממסך 3 ("טבלה -
+       נתוני מסה ונפח של קוביות ברזל והיחס ביניהם:") + ערכי הטבלה הפתורה
+       המלאים — מאשר את הנחיית המפיקה: חצי ימני = שאלת-בחירה, חצי שמאלי =
+       טבלה פתורה (recap של מסך 3, לא אינטראקטיבית).
+
+       ⚠️ סדר-חשיפה (data-reveal) הפוך מהכלל הרגיל (ימין-לפני-שמאל): השאלה
+       עצמה מצטטת את התוכן של הטבלה ("...בעמודה שמאלית?") — לפי
+       animation-system → DECISIONS.md → Rule precedence #4 ("explicit
+       pedagogical considerations override... answer options that quote
+       data from a reference panel should reveal AFTER that panel"), הטבלה
+       (שמאל) מקבלת data-reveal="1" והשאלה (ימין) data-reveal="2". -->
+  <section class="screen" data-screen="3" id="s3">
+
+    <div class="s2-content">
+      <div class="s2-split">
+
+        <!-- חצי ימני (ראשון ב-DOM → פיזית ימני תחת RTL, כמו במסך 3) —
+             שאלת בחירה יחידה (SingleChoiceQuestion). מחלקות בקידומת
+             s3q- (לא scq-/s2- הגנריות) כדי לא להתנגש עם עבודה מקבילה
+             שמתבצעת על מסך 3 עצמו. -->
+        <div class="s2-cards-half s3q-half" data-reveal="2">
+          <div class="s3q-question">
+            <!-- שקף 9, "תיבת טקסט 5" — פסקה יחידה, run בודד, כולו בולד
+                 במקור (תואם את ברירת-המחדל של SingleChoiceQuestion.md:
+                 "Question text Assistant Bold 24 Subject/500"). -->
+            <p class="s3q-qtext">ماذا اكتشفتم حول العلاقة بين الكتلة والحجم في جميع أحجام مكعبات الحديد؟</p>
+            <!-- אפשרויות — סדר פיזי/DOM לפי מיקום-y עולה בשקף 9 (לא ניחוש):
+                 קבוצה 10 (y≈1.92M)=א, קבוצה 26 (y≈2.69M)=ב [נכון, תואם
+                 משוב "היחס...נשאר קבוע"], קבוצה 32 (y≈3.46M)=ג, קבוצה 36
+                 (y≈4.23M)=ד. -->
+            <div class="s3q-answers" role="radiogroup" aria-label="خيارات الإجابة">
+              <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s3qSelect('a')">
+                <span class="s3q-opt-text">العلاقة بين الكتلة والحجم تغيّرت في كل مرة ازداد فيها الحجم.</span>
+                <span class="s3q-radio"></span>
+              </div>
+              <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s3qSelect('b')">
+                <span class="s3q-opt-text">العلاقة بين الكتلة والحجم تبقى ثابتة في جميع المكعبات.</span>
+                <span class="s3q-radio"></span>
+              </div>
+              <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s3qSelect('c')">
+                <span class="s3q-opt-text">العلاقة بين الكتلة والحجم كانت تعتمد على حجم المكعب.</span>
+                <span class="s3q-radio"></span>
+              </div>
+              <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s3qSelect('d')">
+                <span class="s3q-opt-text">الـنِّسبة بين الكتلة والحجم كانت مختلفة في كل مكعب من المكعبات.</span>
+                <span class="s3q-radio"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- חצי שמאלי (שני ב-DOM → פיזית שמאלי) — אותה טבלת מסה/נפח/יחס
+             כמו מסך 3, אך פתורה במלואה וללא אינטראקציה (אין inputs, אין
+             הפיכת-קלפים). מחלקות בקידומת s3- עצמאית (לא s2-table/th/td)
+             לפי הנחיה מפורשת — כדי לא להתנגש עם שכפול-CSS מקביל שמתבצע
+             על טבלת מסך 3 באותו זמן. -->
+        <div class="s2-table-half s3-solved-half" data-reveal="1">
+          <p class="s3-table-caption"><strong>جدول - بيانات الكتلة والحجم لمكعبات الحديد والنسبة بينهما:</strong></p>
+          <!-- ⚠️ סדר-עמודות: קובייה (עמודה צרה) ראשונה ב-DOM → פיזית ימין
+               תחת RTL אמיתי; מסה/נפח=תוצאה (עמודה רחבה) שנייה ב-DOM →
+               פיזית שמאל. נגזר מ-2 מקורות עצמאיים: (1) שקף 9 עצמו, שאלת
+               ה-SCQ מתייחסת במפורש ל"עמודה שמאלית" = עמודת מסה/נפח; (2)
+               אותה מוסכמת-DOM שאומתה ותוקנה זה-עתה בטבלת-האינפוט של מסך 3
+               עצמו (קובייה ראשונה=ימין, ראו ההערה שם) — נבדק כאן מחדש
+               ועצמאית ב-Playwright, לא הועתק בעיוורון (ראו ARCHITECTURE.md). -->
+          <div class="s3-table-scroll">
+            <table class="s3-table">
+              <thead>
+                <tr>
+                  <th class="s3-th-cube">مكعب</th>
+                  <th class="s3-th-ratio"><span class="s3-th-frac"><span class="s3-th-frac-num">كتلة</span><span class="s3-th-frac-den">حجم</span></span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="s3-td-cube">أ</td>
+                  <td class="s3-td-ratio"><span class="s3-ratio-value"><span class="s3-frac"><span class="s3-frac-num">7.9</span><span class="s3-frac-den">1</span></span><span>=</span><span>7.9</span></span></td>
+                </tr>
+                <tr>
+                  <td class="s3-td-cube">ب</td>
+                  <td class="s3-td-ratio"><span class="s3-ratio-value"><span class="s3-frac"><span class="s3-frac-num">15.8</span><span class="s3-frac-den">2</span></span><span>=</span><span>7.9</span></span></td>
+                </tr>
+                <tr>
+                  <td class="s3-td-cube">ت</td>
+                  <td class="s3-td-ratio"><span class="s3-ratio-value"><span class="s3-frac"><span class="s3-frac-num">23.7</span><span class="s3-frac-den">3</span></span><span>=</span><span>7.9</span></span></td>
+                </tr>
+                <tr>
+                  <td class="s3-td-cube">ث</td>
+                  <td class="s3-td-ratio"><span class="s3-ratio-value"><span class="s3-frac"><span class="s3-frac-num">31.6</span><span class="s3-frac-den">4</span></span><span>=</span><span>7.9</span></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- שורת ניווט — SingleChoiceQuestion.md → "Markup contract": "#scq-check
+         + #scq-hint (left), #scq-back (right)". כפתור הבדיקה עצמו הופך
+         לפעולת-ההמשך לאחר פתרון (relabel+onclick, per _global-components.md
+         → "Completion state and primary button") — אין כפתור-המשך נפרד. -->
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s3q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s3q-hint" type="button" onclick="s3qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s3q-check" type="button" disabled onclick="s3qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 5 — סגירת ה"הוק" + נוסחת הצפיפות (HookClosing) ============
+       Figma: קובץ "720 - UI Templates" (eSbp4bKHgBky0rakDb8l9N), section
+       "HookClosingText" (node 3684:30820) → frame "HookClosing-02-
+       TextCharacter-Science" (node 3684:30877, Science theme, דמות+בועת-
+       דיבור מוצגות — לא hidden).
+       https://www.figma.com/design/eSbp4bKHgBky0rakDb8l9N/720---UI-Templates?node-id=3684-30820
+
+       ⚠️ אין תבנית "HookClosing" מתועדת ב-720-templates (רשימת 14
+       התבניות אינה כוללת שם כזה). הקרובה ביותר קונספטואלית היא
+       TransitionScreen.md (מעברון לא-אינטראקטיבי + דמות-מלווה דקורטיבית,
+       Continue תמיד פעיל) — אך לפריים הזה בפיגמה יש גיאומטריה/הרכב
+       עצמאיים, לא זהים ל-TransitionScreen.md (בלוק-טקסט מלא בפינה
+       הימנית-עליונה עם נוסחה מוצבת, לא כותרת-ממורכזת; דמות+בועה נערמות
+       אנכית בפינה השמאלית-תחתונה, לא זו-לצד-זו) — נבנה structure ייעודי
+       תואם-לפיגמה-במדויק כאן, לא כווריאנט מאולץ של TransitionScreen. מה
+       שכן הושאל משם/מ-_global-components.md: חוזה הווידאו הדקורטיבי
+       (muted, ללא controls) והכלל ש-Continue תמיד פעיל במסך-תוכן לא-
+       אינטראקטיבי. הפריים-האח באותו section (`3663:29608`,
+       "HookClosing-01-Text-Science") נבדק ונמצא זהה מבנית לזה שנבחר
+       כרפרנס-גיאומטריה (3684:30877) — לא הומצא/נוחש.
+
+       תוכן: מדעים_יעד 10_310826_להפקה.pptx, שקף 10 (מזוהה לפי תוכן —
+       pptx-script-extraction; notesSlide8.xml, מאותר דרך slide10.xml.rels
+       בפועל — ריק מהערת-דובר מהותית, רק שדה slidenum). המשך ישיר של שקף
+       9 (=מסך 4): "כמו ברזל..." מצטט במפורש את מסקנת מסך 4. שלוש קבוצות
+       תוכן בשקף: (1) תיבת-טקסט עליונה — פסקה עם run מודגש, פסקת-רווח
+       ריקה (שבירת-פסקה מכוונת במקור), פסקה שנייה עם "צפיפות" מודגש; (2)
+       נוסחה מוצבת (שקף: קבוצה מקוננת "מסה"[עליון]/מחבר-קו/"נפח"[תחתון]
+       = שבר, "=" , "צפיפות החומר" מודגש — סדר-פיזי נגזר מ-x בפועל
+       בתוך ה-XML: שבר הכי-שמאלי, "=" באמצע, "צפיפות החומר" הכי-ימני)
+       וכיתוב-יחידות מתחתיה (TextBox 11, ללא בולד במקור); (3) "מקום לגיף"
+       + תמונת-רפרנס (image3.png ב-media — דמות ה-turquoise_point הכחולה
+       המסופקת, מצביעה עם אצבע, תואמת בדיוק) + בועת-דיבור ("חשבו על זה
+       כך:<br>אנחנו בודקים כמה מסה יש בכל יחידת נפח.", ללא בולד במקור).
+       מיקום-הבועה/הדמות בפועל (נערמות אנכית, לא זו-ליד-זו כמו ב-mockup
+       הגס של השקף) נגזר מה-Figma (מקור-האמת לגיאומטריה, לא ה-PPTX) —
+       ראו ARCHITECTURE.md לפירוט המלא כולל מדידות EMU/px.
+
+       דמות מלווה — מימוש ראשון בפרויקט הזה. קבוע פשוט (נתיב-נכס יחיד),
+       *לא* מנגנון ה-asset-map הדו-דמותי (720-templates →
+       _global-components.md → "Companion character system" — מיועד
+       לבחירה בין 2+ דמויות, לא רלוונטי כאן; ראו ARCHITECTURE.md/
+       PROJECT_BRIEF.md להחלטה המתועדת מראש שאין מסך בחירת-דמות ביחידה
+       הזו). נכס: assets/videos/turquoise_point.mp4 (720×720px, ~6
+       שניות). דקורטיבי בלבד — muted, loop, בלי controls נטיביים, בלי
+       pointer-events על ה-video עצמו (per figma-lomda-builder →
+       "Non-negotiable video rules": זהו וידאו-דמות דקורטיבי, קטגוריה
+       נפרדת מווידאו הוראתי-ללומד → *לא* מקבל controls; ראו גם
+       _global-components.md → "Decorative character video"). **הלופ
+       האינסופי הוא סטייה מפורשת ומאושרת-הפקה** מהחוזה הקנוני של
+       TransitionScreen ("autoplay once, no loop, holds final frame") —
+       הנחיית המפיק המפורשת כאן ("להריץ בלופ, מושתק") גוברת, לפי
+       720-templates: "explicit, sufficiently detailed instance behavior
+       may override a canonical default".
+
+       סדר-חשיפה (data-reveal, מדורג): 1=תיבת-הטקסט העליונה, 2=נוסחה+
+       כיתוב, 3=דמות+בועה (fade בלבד — per animation-system →
+       DECISIONS.md → "Video zones"). ⚠️ **חריגה מתועדת מהכלל הגורף**:
+       ברירת-המחדל של animation-system לאזור-וידאו היא "מתחיל יחד עם
+       שאר-הכניסה (group 1)" — כאן, לפי הנחיית-מפיק מפורשת ("האלמנטים
+       מופיעים בהדרגה... הדמות המלווה מופיעה אחרונה"), הדמות מקובצת
+       ב-group האחרון והיחיד-לה בלבד, לא ב-group 1. אין בכך התנגשות עם
+       כלל-ה-RTL (ימין-לפני-שמאל) — הטקסט (ימין) ממילא מקדים את הדמות
+       (שמאל) גם לפי הכלל הרגיל; ההנחיה המפורשת רק מוסיפה שהדמות **חייבת**
+       להיות ה-group האחרון (גם אחרי הנוסחה, לא רק אחרי הטקסט העליון).
+       ה-video עצמו ממשיך "לרוץ מתחת למסכה" מרגע טעינת ה-DOM (autoplay,
+       muted) גם לפני שתור ה-group שלו מגיע — לא נחסם/מתעכב ב-JS, לפי
+       animation-system → DECISIONS.md → "Video zones": "Playback logic
+       is always untouched: autoplay fires normally and simply plays
+       under the fade". אין gate על ההמשך תלוי-בדמות (וגם לא תלוי-שום-
+       דבר אחר במסך הזה).
+
+       Continue — פעיל תמיד (מסך-תוכן לא-אינטראקטיבי, אין שאלה/בדיקה
+       בשקף 10; per FullImageWithTextOverlay.md §D / TransitionScreen.md:
+       "Continue is always enabled"). Back — לתבנית-הניווט הרגילה
+       (goTo(currentScreen-1) → מסך 4). -->
+  <section class="screen" data-screen="4" id="s4">
+
+    <div class="s4-text-wrap">
+      <div class="s4-text" data-reveal="1">
+        <p>كما هو الحال في الحديد، في مواد أخرى أيضًا <strong>تبقى النسبة بين الكتلة والحجم ثابتة.</strong></p>
+        <p>تُسمّى هذه النسبة <strong>الكثافة</strong>، وهو فريد لكل مادة.</p>
+      </div>
+
+      <!-- נוסחה מוצבת: שבר (מסה/נפח) — "=" — "צפיפות החומר" (מודגש).
+           מבודד כיחידת LTR אחת (כמו .s2-answer-group/.s3-ratio-value
+           באותו פרויקט) כדי לשמר סדר-פיזי נכון של שבר/"="/תווית מעורבבים
+           עם עברית — patterns.md gotcha #2. רקע התיבה: --subject-100
+           (התג הכחלחל-הקליל הקיים בפרויקט לרקעי-הדגשה, למשל כותרת-טבלה/
+           גב-כרטיסייה-הפוכה) — לא ה-#cec7ff הסגול-גנרי שמופיע ב-Figma
+           (ערך-ברירת-מחדל של טוקן Subject/200 שלא הוחלף ל-Science
+           בקומפוננטת-הספרייה הכללית; אין בפרויקט הזה טוקן subject-200
+           נפרד, וזה אותו תפקיד-חזותי [רקע-הדגשה קליל] כמו subject-100
+           הקיים — לא הומצא ערך חדש). -->
+      <div class="s4-formula-wrap" data-reveal="2">
+        <div class="s4-formula-pill">
+          <span class="s4-frac">
+            <span class="s4-frac-num">كتلة</span>
+            <span class="s4-frac-line" aria-hidden="true"></span>
+            <span class="s4-frac-den">حجم</span>
+          </span>
+          <span class="s4-formula-label"><span class="s4-eq">=</span> <strong>كثافة المادة</strong></span>
+        </div>
+        <p class="s4-caption">تُقاس الكتلة بالجرام، ويُقاس الحجم بـسم³، وتُقاس الكثافة بالجرام لكل سم³ (جرام/سم³).</p>
+      </div>
+    </div>
+
+    <!-- דמות מלווה + בועת-דיבור — עוגן פיזי לפינה השמאלית-תחתונה, ישירות
+         מעל פס-הניווט (bottom:74px — זהה לגובה-הניווט של הפריים הזה
+         עצמו בפיגמה, 74px, אין כאן פער-74-מול-75 כמו במסך 1). לפי Figma
+         "Frame 2147223501" (בתוך 3684:30877): רוחב-עמודה 158px, בועה
+         (188px גובה) מעל כרטיס-הדמות (171px גובה). data-reveal="3" +
+         data-reveal-fade — group אחרון, fade-בלבד (video zone), ראו
+         הערה למעלה. -->
+    <div class="s4-char-wrap" data-reveal="3" data-reveal-fade>
+      <div class="s4-bubble">
+        <img class="s4-bubble-bg" src="assets/images/s4-speech-bubble.svg" alt="" aria-hidden="true" loading="lazy">
+        <div class="s4-bubble-text">
+          <p>فكروا في الأمر كما يلي:<br>نحن نفحص كم كتلة توجد في كل وحدة حجم.</p>
+        </div>
+      </div>
+      <div class="s4-char-card">
+        <div class="s4-char-clip">
+          <video class="s4-char-video" id="s4-char-video" data-autoplay muted loop playsinline
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true" preload="none">
+            <source data-lazy-src="assets/videos/turquoise_point.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s4-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 6 (data-screen="5") — טבלת צפיפויות + דמות קוסם ============
+       Figma: node 3663:29503 ("HookClosing-01-Character-Math", קובץ
+       720 - UI Templates) — תבנית טקסט-פשוט עם דמות+בועה. הותאם לתוכן:
+       תסריט ההפקה, שקף 11 (שם המסך בפיגמה לפי הערות: HookClosingText).
+       ה-Figma אינו כולל טבלה — עיצוב הטבלה נלקח ממסך 3 (.s2-table).
+
+       סדר עמודות: הטבלה בשקף LTR (אין rtl ב-tblPr), סדר ה-XML משמאל לימין
+       = צפיפות | מצב צבירה | חומר. תחת RTL אמיתי הילד הראשון ב-DOM = ימין,
+       לכן ה-DOM הפוך: חומר | מצב צבירה | צפיפות — אותו סדר פיזי כמו בשקף.
+
+       חשיפה: data-reveal 1 כותרת, 2 טקסט, 3 טבלה (כותרת-עמודות בלבד),
+       4 דמות (fade בלבד). אחר כך רצף הקוסם (script.js, s5*): סרטון
+       turquoise-avatar-magic-wand.mp4 מתנגן פעם אחת, לא בלולאה, ושורה
+       נחשפת בכל נגיעה לפי התקדמות הסרטון. בסופו הדמות זזה שמאלה לצד
+       המסך, הבועה עולה והסרטון עובר ללולאה. -->
+  <section class="screen" data-screen="5" id="s5">
+
+    <div class="s5-content">
+      <h1 class="s5-title" data-reveal="1">جدول الكثافات - "دليل بصمة الإصبع" للمواد:</h1>
+
+      <div class="s5-text" data-reveal="2">
+        <p>إليكم جدول يعرض قيم الكثافة لبعض المواد الشائعة في درجة حرارة الغرفة (المعرّفة في العلم بـ-<span dir="ltr">25°C</span>).</p>
+        <p>لكل مادة قيمة كثافة تميّزها، يمكن الاستناد إليها <strong>كـ"البصمة الفريدة"</strong> الخاصة بتلك المادة.</p>
+      </div>
+
+      <table class="s5-table" id="s5-table" data-reveal="3">
+        <thead>
+          <tr>
+            <th scope="col">مادة</th>
+            <th scope="col">حالة المادة</th>
+            <th scope="col">الكثافة<br>(جرام / سم³)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="s5-row" data-row="0"><td class="s5-td-material">الذهب</td><td>صلب</td><td dir="ltr"><span class="s5-val">19.32</span></td></tr>
+          <tr class="s5-row" data-row="1"><td class="s5-td-material">نحاس</td><td>صلب</td><td dir="ltr"><span class="s5-val">8.96</span></td></tr>
+          <tr class="s5-row" data-row="2"><td class="s5-td-material">الحديد</td><td>صلب</td><td dir="ltr"><span class="s5-val">7.87</span></td></tr>
+          <tr class="s5-row" data-row="3"><td class="s5-td-material">ماء</td><td>سائل</td><td dir="ltr"><span class="s5-val">1.00</span></td></tr>
+          <tr class="s5-row" data-row="4"><td class="s5-td-material">ثاني أكسيد الكربون</td><td>غاز</td><td dir="ltr"><span class="s5-val">0.00197</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- דמות מלווה + בועה — אותה גיאומטריה כמו מסך 5 (.s4-char-wrap).
+         .s5-at-table = הדמות עומדת ליד הטבלה (translateX) בזמן חשיפת השורות;
+         בסיום היא זזה למקומה בצד שמאל. -->
+    <div class="s5-char-wrap s5-at-table" id="s5-char-wrap" data-reveal="4" data-reveal-fade>
+      <div class="s5-bubble" id="s5-bubble">
+        <p>توجد جداول مفصّلة تتضمّن قيم الكثافة لمئات بل آلاف المواد.</p>
+      </div>
+      <div class="s5-char-card">
+        <div class="s5-char-clip">
+          <video class="s5-char-video" id="s5-char-video" muted loop playsinline preload="none"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source data-lazy-src="assets/videos/turquoise-avatar-magic-wand.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s5-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s5-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 7 (data-screen="6") — הדגשת שורת "מים" (שקף 12) ============
+       זהה למסך 6 (אותם title/text/table, אותה גיאומטריה — מחלקות s5-*),
+       בלי הדמות. הטבלה בשקף LTR; סדר ה-DOM הפוך (חומר | מצב צבירה | צפיפות)
+       כמו במסך 6. עולה בהדרגה (data-reveal 1 כותרת, 2 טקסט, 3 טבלה), ואז
+       השורה המסומנת s5-hl נצבעת בצהוב בהנפשה עדינה (startScreenHl ב-script.js).
+       הטבלה מוצמדת לטקסט (בלי גובה מינימלי) ועולה למעלה — לפי הנחיית מפיקה. -->
+  <section class="screen" data-screen="6" id="s6">
+
+    <div class="s5-content">
+      <h1 class="s5-title" data-reveal="1">ماء</h1>
+
+      <div class="s5-text" data-reveal="2">
+        <p><strong>كثافة الماء هي 1 جرام / سم³.</strong></p>
+        <p>في تتمة الوحدة سنكتشف لماذا هذه القيمة بالتحديد مهمة لفهم ظواهر <strong>طفو وغرق</strong>.</p>
+      </div>
+
+      <table class="s5-table" data-reveal="3">
+        <thead>
+          <tr>
+            <th scope="col">مادة</th>
+            <th scope="col">حالة المادة</th>
+            <th scope="col">الكثافة<br>(جرام / سم³)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="s5-row" data-row="0"><td class="s5-td-material">الذهب</td><td>صلب</td><td dir="ltr">19.32</td></tr>
+          <tr class="s5-row" data-row="1"><td class="s5-td-material">نحاس</td><td>صلب</td><td dir="ltr">8.96</td></tr>
+          <tr class="s5-row" data-row="2"><td class="s5-td-material">الحديد</td><td>صلب</td><td dir="ltr">7.87</td></tr>
+          <tr class="s5-row s5-hl" data-row="3"><td class="s5-td-material">ماء</td><td>سائل</td><td dir="ltr">1.00</td></tr>
+          <tr class="s5-row" data-row="4"><td class="s5-td-material">ثاني أكسيد الكربون</td><td>غاز</td><td dir="ltr">0.00197</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 8 (data-screen="7") — הדגשת שורת "גז" (שקף 13) ============
+       זהה למסך 6 (אותם title/text/table, אותה גיאומטריה — מחלקות s5-*),
+       בלי הדמות. הטבלה בשקף LTR; סדר ה-DOM הפוך (חומר | מצב צבירה | צפיפות)
+       כמו במסך 6. עולה בהדרגה (data-reveal 1 כותרת, 2 טקסט, 3 טבלה), ואז
+       השורה המסומנת s5-hl נצבעת בצהוב בהנפשה עדינה (startScreenHl ב-script.js).
+       הטבלה מוצמדת לטקסט (בלי גובה מינימלי) ועולה למעלה — לפי הנחיית מפיקה. -->
+  <section class="screen" data-screen="7" id="s7">
+
+    <div class="s5-content">
+      <h1 class="s5-title" data-reveal="1">غاز</h1>
+
+      <div class="s5-text" data-reveal="2">
+        <p>للغاز خاصيّة مميزة. تتأثر كثافته بشكل كبير <strong>من درجة الحرارة والضغط</strong></p>
+        <p>(على عكس معظم المواد الصلبة والسوائل التي لا تتغير فيها قيمة الكثافة تقريبًا مع تغيرات درجة الحرارة).</p>
+      </div>
+
+      <table class="s5-table" data-reveal="3">
+        <thead>
+          <tr>
+            <th scope="col">مادة</th>
+            <th scope="col">حالة المادة</th>
+            <th scope="col">الكثافة<br>(جرام / سم³)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="s5-row" data-row="0"><td class="s5-td-material">الذهب</td><td>صلب</td><td dir="ltr">19.32</td></tr>
+          <tr class="s5-row" data-row="1"><td class="s5-td-material">نحاس</td><td>صلب</td><td dir="ltr">8.96</td></tr>
+          <tr class="s5-row" data-row="2"><td class="s5-td-material">الحديد</td><td>صلب</td><td dir="ltr">7.87</td></tr>
+          <tr class="s5-row" data-row="3"><td class="s5-td-material">ماء</td><td>سائل</td><td dir="ltr">1.00</td></tr>
+          <tr class="s5-row s5-hl" data-row="4"><td class="s5-td-material">ثاني أكسيد الكربون</td><td>غاز</td><td dir="ltr">0.00197</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 9 (data-screen="8") — שאלת בחירה יחידה עם תמונה ============
+       Figma (קובץ 720 - UI Templates, eSbp4bKHgBky0rakDb8l9N):
+         196:3445 State 02 Selected · 615:10605 State 03 Hint ·
+         196:3458 State 04 Correct · 196:3471 State 05 Incorrect Attempt 1 ·
+         615:10183 State 06 Incorrect Attempt 2.
+       תבנית: SingleChoiceQuestionImage (720-templates → SingleChoiceQuestion.md).
+       תוכן: תסריט ההפקה, שקף 14 ("שם המסך בפיגמה: SingleChoiceQuestionImage").
+       לפי הנחיית מפיקה: שני ניסיונות, בלי סרגל התקדמות (Progress question לא
+       נבנה), התמונה — PLACEHOLDER בינתיים.
+       מחלקות: .s8-* לפריסה; רכיבי האפשרויות (.s3q-opt/radio) משותפים למסך 4
+       (אותו עיצוב Figma); פופאפ משוב ורמז — s8q-* (לפי Figma, שונים מעט מאלה
+       של מסך 4: מיקום 16/365, רקע-רמז לבן 80%, בלי כותרת "רמז").
+       סדר DOM: עמודת הטקסט קודם (פיזית ימין), התמונה אחריה (פיזית שמאל). -->
+  <section class="screen" data-screen="8" id="s8">
+
+    <div class="s8-question">
+
+      <div class="s8-col">
+        <div class="s8-text" data-reveal="1">
+          <p class="s8-title">لحظة للتفكير...</p>
+          <div class="s8-body">
+            <div class="s8-plain">
+              <p>وجد العلماء مادة غير معروفة.</p>
+              <p>قاموا بقياس كثافتها وحصلوا على قيمة قدرها <span dir="ltr">8.96</span> جرام لكل سم³.</p>
+            </div>
+            <p class="s8-q"><strong>برأيكم، هل يمكن معرفة من أي مادة صُنِعَت؟</strong></p>
+          </div>
+        </div>
+
+        <!-- אפשרויות לפי מיקום-y עולה בשקף 14: א (נכון — תואם משוב "לכל חומר יש
+             ערך צפיפות אופייני לו"), ב, ג, ד -->
+        <div class="s8-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s8qSelect('a')">
+            <span class="s3q-opt-text">نعم، لأن لكل مادة قيمة كثافة خاصة بها.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s8qSelect('b')">
+            <span class="s3q-opt-text">نعم، لكن فقط إذا عُرفت الكتلة أيضًا.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s8qSelect('c')">
+            <span class="s3q-opt-text">لا، لأن العديد من المواد لديها نفس الكثافة.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s8qSelect('d')">
+            <span class="s3q-opt-text">لا، لأن الكثافة تتغير في كل قياس.</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- תמונת השאלה (assets/images/scientists.png, 1402×1122). מסגרת 380×380,
+           padding 8, מסגרת פנימית r16 (Figma 521:13249); התמונה בתוכה
+           object-fit: contain. כפתור ההגדלה ופופאפ ההגדלה — מודול Image Zoom
+           Popup (script.js → "Image Zoom Popup"), Figma 2194:11509/2197:11866. -->
+      <div class="s8-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+        <div class="s8-img-frame">
+          <img class="zoomable-image s8-photo" src="assets/images/scientists.png"
+               alt="فريق من العلماء في المختبر" loading="lazy">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s8q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s8q-hint" type="button" onclick="s8qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s8q-check" type="button" disabled onclick="s8qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (SCQ, מסך 4) — מחוץ לכל .screen, ישירות ב-#app.
+       ⚠️ ללא כפתור-סגירה: החלטת-מוצר מאושרת (2026-07-26, כל פרויקטי 720,
+       720-templates → _global-components.md → Feedback popup system →
+       "No manual close") — לא הועתק מ-reference-ים ישנים (יעד 2/other
+       lomdot) שעדיין מכילים X כזה; זו סטייה שלהם מהחוזה הנוכחי, לא דפוס
+       לשכפול. גרירה חופשית (popupMouseDown) בתוך גבולות הקנבס/מעל
+       ה-bottom-bar (ראו _global-components.md → "Drag bounds"). m-popup:
+       fade-in בכל פתיחה (animation-system → DECISIONS.md → popup-motion). -->
+  <div class="scq-popup m-popup hidden" id="s3q-popup"
+       onmousedown="s3qPopupMouseDown(event)" role="status" aria-live="polite">
+    <p class="scq-popup-title" id="s3q-popup-title"></p>
+    <div class="scq-popup-body" id="s3q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (SCQ, מסך 4) — מחוץ לכל .screen, ישירות ב-#app. גוף-רמז
+       בלבד בתסריט (ללא כותרת מפורשת) → כותרת גנרית קנונית "רמז"
+       (_question-template-defaults.md → Hint policy → "Title and body").
+       זמין מההתחלה (לא hidden-until-first-wrong): כפתור "אפשר רמז?" מופיע
+       על-גבי מצג-ברירת-המחדל של שקף 9 עצמו (לא ב-state נפרד "אחרי ניסיון
+       שגוי"). -->
+  <div class="scq-hint-overlay m-popup hidden" id="s3q-hint-overlay"
+       onclick="s3qCloseHintOnBackdrop(event)">
+    <div class="scq-hint-popup" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="scq-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <p class="scq-hint-body">تعاملوا مع النتيجة وليس مع قيم الكتلة والحجم.</p>
+      <button class="scq-hint-close" type="button" onclick="s3qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+    <!-- פופאפ משוב (מסך 9, SingleChoiceQuestionImage) — מחוץ לכל .screen, ישירות
+       ב-#app. Figma "Popup Feedback" 525:9012: 426×258, מיקום 16/365, padding
+       24, gap 24, r12, מסגרת 0.3px #aeaeae. ללא כפתור-סגירה (החלטת-מוצר
+       מאושרת, _global-components.md → "No manual close"); גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s8q-popup"
+       onmousedown="s8qPopupMouseDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s8q-popup-title"></p>
+    <div class="s8q-popup-body" id="s8q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 9) — Figma "Hint Card" 4954:43323 (542×354, r48, padding
+       40, gap 24; נורה בימין-למעלה, טקסט 24 לבן, כפתור "חזרה לשאלה" 196px)
+       על רקע "Blur bg" 1304:23657 (לבן 80%). אין כותרת "רמז" — לא ב-Figma. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s8q-hint-overlay"
+       onclick="s8qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>فكروا فيما تعلمتموه حتى الآن.</p>
+        <p>هل توجد مواد ذات كثافة متطابقة، أم أن لكل مادة<br>قيمة كثافة ("بصمة") خاصة به؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s8qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+<!-- Report/issue button — chrome גלובלי, מחוץ לכל .screen, בתוך #app
+       בלבד (720-templates → _global-components.md → "Report / Issue
+       button"). מיקום 32/32 לפי Figma הנוכחי של הפרויקט הזה (ולא ה-16/16
+       המתועד כברירת-מחדל ממקורות אחרים — ראו ARCHITECTURE.md). ללא
+       התנהגות קליק עדיין (ויזואלי בלבד, כמו במקור). -->
+  <!-- ============ מסכים 10–12 (data-screen 9/10/11) — בניית צירי הגרף ============
+       תסריט: שקפים 15 / 16 / 17. Figma: 1731:45011/45019/45445 (AreaSelectionHotspot,
+       מצבי State — מסגרת, סרגל תחתון, טיפוגרפיה), 422:8539 (עיצוב מספר לחיץ:
+       עיגול Subject/500 + ספרה 22 SemiBold לבן), 982:17031 (בועת-דיבור,
+       צורת הזנב הותאמה לכיוון לפי שקפים 16/17: בועת X — זנב שמאלה לציר האופקי;
+       בועת Y — זנב ימינה לציר האנכי). אין סרגל התקדמות (לא בשקפים).
+       גיאומטריה (px עיצוב = EMU × 0.000105): תמונת-הצירים = כל ה"קבוצה" בשקף
+       (גודל/מיקום מדויקים — היחס תואם ל-2761×1495 / 2772×1487). הצירים
+       "מעובים בשחור" (הערת מפיקה, שקף 17) — קווי CSS שחורים 3px מעל הציר
+       הבהיר שבתמונה (חיתוך-מסכה משותף, כך שנחשפים יחד עם התמונה).
+       .s9-stage = מסגרת העיצוב 1280 ממורכזת בקנבס הרחב (--ex). -->
+  <section class="screen" data-screen="9" id="s9">
+    <div class="s9-stage">
+      <div class="s9-text" data-reveal="1">
+        <p>حتى الآن استعنّا بجداول لتمثيل بيانات الكتلة والحجم للمواد، ولفهم العلاقة بينهما (الكثافة).</p>
+        <p>الآن سنرى كيف يمكن تمثيل كثافة المواد أيضًا <strong>بواسطة رسم بياني.</strong></p>
+        <p class="s9-cta"><strong>اضغطوا على الأزرار لبناء المحاور الخاصة بالرسم البياني:</strong></p>
+      </div>
+      <!-- מספרים: 1 מהבהב ולחיץ (→ מסך 11, "מסרטט" את ציר X); 2 נראה אך לא פעיל עדיין -->
+      <div class="s9-nums" data-reveal="2">
+        <button class="s9-num s9-num--active" type="button" style="left:1038px;top:522px"
+                aria-label="رقم 1 — اضغطوا لبناء محور X" onclick="advanceScreen()">
+          <span class="s9-ring"></span><span class="s9-ring s9-ring--2"></span><span class="s9-dot">1</span><img class="s9-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+        </button>
+        <span class="s9-num s9-num--idle" style="left:379px;top:211px" aria-hidden="true">
+          <span class="s9-dot">2</span>
+        </span>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" type="button" disabled>متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- מסך 11 (שקף 16): ציר X נפתח + בועה; 2 מהבהב → מסך 12 -->
+  <section class="screen s9-axscreen" data-screen="10" id="s10">
+    <div class="s9-stage">
+      <div class="s9-text">
+        <p>حتى الآن استعنّا بجداول لتمثيل بيانات الكتلة والحجم للمواد، ولفهم العلاقة بينهما (الكثافة).</p>
+        <p>الآن سنرى كيف يمكن تمثيل كثافة المواد أيضًا <strong>بواسطة رسم بياني.</strong></p>
+        <p class="s9-cta"><strong>اضغطوا على الأزرار لبناء الرسم البياني:</strong></p>
+      </div>
+      <div class="s9-graph" style="left:280.5px;top:197.3px;width:803.2px;height:434.8px">
+        <div class="s9-draw s9-draw--x">
+          <img src="assets/images/axes-x.png" alt="محور X للرسم البياني، مع سهم في نهايته: الحجم (سم³)، القيم من 1 إلى 4" loading="lazy"><span class="ax-name ax-name--x" aria-hidden="true">محور X</span>
+        </div>
+      </div>
+      <!-- בועת ציר X — Figma 982:17031, זנב למטה (716:24318, BeakAngle=Bottom) לפי הערת לקוחה — מעל קצה הציר, בלי לכסות את החץ -->
+      <div class="s9-bubble s9-bubble--down s9-bubble--new" data-beak="0.2" style="left:985.6px;top:380px;width:272.8px">
+        <div class="s9-bubble__body">
+          <p>الـمحور الأفقي (<span dir="ltr">X</span>) يعرض<br><strong>حجم المادة بسم³.</strong></p>
+          <p>كلما تقدمنا نحو اليمين،<br>الحجم أكبر.</p>
+        </div>
+      </div>
+      <div class="s9-nums">
+        <button class="s9-num s9-num--active s9-num--late" type="button" style="left:379px;top:211px"
+                aria-label="رقم 2 — اضغطوا لبناء المحور Y" disabled onclick="advanceScreen()">
+          <span class="s9-ring"></span><span class="s9-ring s9-ring--2"></span><span class="s9-dot">2</span><img class="s9-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+        </button>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" type="button" disabled>متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- מסך 12 (שקף 17): ציר Y נפתח + בועה; "המשך" מהבהב -->
+  <section class="screen s9-axscreen" data-screen="11" id="s11">
+    <div class="s9-stage">
+      <div class="s9-text">
+        <p>حتى الآن استعنّا بجداول لتمثيل بيانات الكتلة والحجم للمواد، ولفهم العلاقة بينهما (الكثافة).</p>
+        <p>الآن سنرى كيف يمكن تمثيل كثافة المواد أيضًا <strong>بواسطة رسم بياني.</strong></p>
+        <p class="s9-cta"><strong>اضغطوا على الأزرار لبناء الرسم البياني:</strong></p>
+      </div>
+      <!-- ציר X (axes-x.png): סטטי כבר מהכניסה, זהה למסך הקודם;
+           ציר Y + תוויות (axes-y.png): נחשף מלמטה למעלה ("מסרטט").
+           שתי התמונות נגזרו מ-axes-img02 (חצים + "ציר X"/"ציר Y"), בלי רקע. -->
+      <div class="s9-graph" style="left:277.3px;top:197.3px;width:806.4px;height:432.6px">
+        <div class="s9-draw s9-draw--rest">
+          <img src="assets/images/axes-x.png" alt="" loading="lazy"><span class="ax-name ax-name--x" aria-hidden="true">محور X</span>
+        </div>
+        <div class="s9-draw s9-draw--y">
+          <img src="assets/images/axes-y.png" alt="محورا الرسم البياني، مع سهم في نهاية كل محور: الحجم (سم³) في المحور الأفقي والكتلة (جرام) في المحور الرأسي" loading="lazy"><span class="ax-name ax-name--y" aria-hidden="true">محور Y</span>
+        </div>
+      </div>
+      <div class="s9-bubble s9-bubble--down" data-beak="0.2" style="left:985.6px;top:380px;width:272.8px">
+        <div class="s9-bubble__body">
+          <p>الـمحور الأفقي (<span dir="ltr">X</span>) يعرض<br><strong>حجم المادة بسم³.</strong></p>
+          <p>كلما تقدمنا نحو اليمين،<br>الحجم أكبر.</p>
+        </div>
+      </div>
+      <!-- בועת ציר Y — זנב ימינה. שקף 17: x=25.6 y=163.2 (250.5×151.8) -->
+      <div class="s9-bubble s9-bubble--right s9-bubble--new" style="left:25.6px;top:205px;width:250.5px">
+        <div class="s9-bubble__body">
+          <p>المحور العمودي (<span dir="ltr">Y</span>) يعرض <strong>كتلة المادة بالجرام.</strong></p>
+          <p>كلما ارتفعنا إلى الأعلى،<br>تكون الكتلة أكبر.</p>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s11-continue" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 13 (data-screen="12") — TransitionScreen (שקף 18) ============
+       Figma: node 3710:34387 ("TransitionScreen - Short Video (gif)", קובץ
+       720 - UI Templates). תבנית: 720-templates → TransitionScreen.md.
+       תוכן: תסריט ההפקה, שקף 18 — כותרת בלבד (אין שורת פתיחה/סגירה
+       בתסריט, שתיהן אופציונליות בתבנית). תווית ההמשך "בואו נגלה" (תיבת
+       הטקסט של הכפתור בשקף), כמו "נתחיל" במסך 1.
+       דמות: turquoise-avatar-holding-diagram.mp4 (הדמות מחזיקה טבלה וגרף),
+       דקורטיבי, מתנגן פעם אחת ללא לולאה ונשאר על הפריים האחרון. -->
+  <section class="screen" data-screen="12" id="s12">
+
+    <div class="s12-content">
+      <h1 class="s12-title" data-reveal="1">كيف ننقل بيانات<br>الكتلة / الحجم لمادة من جدول إلى رسم بياني؟</h1>
+      <div class="s12-video-wrap" data-reveal="2" data-reveal-fade>
+        <div class="s12-video-clip">
+          <video class="s12-char-video" id="s12-char-video" muted loop playsinline preload="none"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source data-lazy-src="assets/videos/turquoise-avatar-holding-diagram.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s12-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s12-continue" onclick="advanceScreen()">هيا نكتشف</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 14 (data-screen="13") — שקפים 19–22 כמסך אחד ============
+       ארבעה שקפים רצופים (אותה טבלה, אותו גרף) מוצגים כמסך אחד: כל לחיצה על
+       החץ מעבירה נקודה אחת מהטבלה לגרף (שקף 19 → נקודה 1 ... שקף 22 → נקודה 4).
+       לפני כל לחיצה: השורה הנוכחית בטבלה מסומנת בצהוב והחץ מהבהב; אחרי
+       הלחיצה: הנקודה מופיעה בגרף (עם קווי-עזר + בועה), ואז נוספת השורה הבאה.
+       אחרי הנקודה הרביעית מהבהב "המשך" (שקף 23 עוד לא נבנה).
+       תמונת הצירים: axes-img03.png (נקודת (0,0) כתומה כבר בתמונה; הנקודות
+       הנוספות מצוירות ב-CSS לפי מיקומי הגריד בתמונה). הטבלה: עיצוב .s2-table.
+       בועה: Figma 3139:28961 (קו-מתאר כחול, מקור) — כאן עם מקור כלפי מטה.
+       מסך-שקפים: ה-state (s13State) נשמר בין כניסות; חזרה למסך מציגה את המצב
+       הסופי מיד, בלי לשחזר את האנימציה. -->
+  <section class="screen s9-axscreen" data-screen="13" id="s13">
+    <div class="s9-stage">
+      <div class="s9-text s13-text" data-reveal="1">
+        <p class="s13-line1"><strong>اضغطوا على السهم لنقل البيانات من الجدول إلى الرسم البياني.</strong></p>
+        <p class="s13-line2"><strong>بيانات الكتلة / الحجم في الحديد:</strong></p>
+      </div>
+
+      <div class="s13-graph" id="s13-graph" data-reveal="2">
+        <img src="assets/images/axes-graph.png" alt="الرسم البياني: المحور الأفقي — الحجم (سم³) من 0 إلى 5؛ المحور الرأسي — الكتلة (جرام) من 0 إلى 35. النقاط المضافة: (1؛ 7.9)، (2؛ 15.8)، (3؛ 23.7)، (4؛ 31.6)" loading="lazy">
+        <span class="ax3-title ax3-title--x">الحجم (سم³)</span><span class="ax3-title ax3-title--y">الكتلة (غرام)</span><span class="ax3-axis ax3-axis--x" aria-hidden="true">محور X</span><span class="ax3-axis ax3-axis--y" aria-hidden="true">محور Y</span>
+        <div class="s13-layer" id="s13-layer" aria-hidden="true">
+          <span class="s13-pt s13-pt--origin is-on" style="--x:11.56%;--y:80.5%"><span class="s13-pt__label" dir="ltr">(0 , 0)</span></span>
+          <span class="s13-guide s13-guide--h" data-k="1" style="--x:28.31%;--y:64.08%"></span>
+          <span class="s13-guide s13-guide--v" data-k="1" style="--x:28.31%;--y:64.08%"></span>
+          <span class="s13-pt" data-k="1" style="--x:28.31%;--y:64.08%"><span class="s13-pt__label" dir="ltr">(1 , 7.9)</span></span>
+          <div class="s13-bubble" data-k="1" data-beak="0.06" data-say="تم تحديد النقطة 1 على الرسم البياني: الحجم 1 سم³، الكتلة 7.9 جرام"><div class="s9-bubble__body"><p>مع كل زيادة مقدارها <strong>1 سم³ </strong>في الحجم، تزداد كتلة الحديد بمقدار<strong>7.9 جرام</strong></p></div></div>
+          <span class="s13-guide s13-guide--h" data-k="2" style="--x:45.06%;--y:47.66%"></span>
+          <span class="s13-guide s13-guide--v" data-k="2" style="--x:45.06%;--y:47.66%"></span>
+          <span class="s13-pt" data-k="2" style="--x:45.06%;--y:47.66%"><span class="s13-pt__label" dir="ltr">(2 , 15.8)</span></span>
+          <div class="s13-bubble" data-k="2" data-beak="0.41" data-say="تم تحديد النقطة 2 على الرسم البياني: الحجم 2 سم³، الكتلة 15.8 جرام"><div class="s9-bubble__body"><p>بـ-<strong>2 سم³</strong>, يوجد <strong>15.8 جرام </strong>كتلة</p></div></div>
+          <span class="s13-guide s13-guide--h" data-k="3" style="--x:61.81%;--y:31.24%"></span>
+          <span class="s13-guide s13-guide--v" data-k="3" style="--x:61.81%;--y:31.24%"></span>
+          <span class="s13-pt" data-k="3" style="--x:61.81%;--y:31.24%"><span class="s13-pt__label" dir="ltr">(3 , 23.7)</span></span>
+          <div class="s13-bubble" data-k="3" data-beak="0.94" data-say="تم تحديد النقطة 3 على الرسم البياني: الحجم 3 سم³، الكتلة 23.7 جرام"><div class="s9-bubble__body"><p>بـ-<strong>3 سم³</strong> حجم، يوجد <strong>23.7 جرام</strong> كتلة</p></div></div>
+          <span class="s13-guide s13-guide--h" data-k="4" style="--x:78.56%;--y:14.82%"></span>
+          <span class="s13-guide s13-guide--v" data-k="4" style="--x:78.56%;--y:14.82%"></span>
+          <span class="s13-pt" data-k="4" style="--x:78.56%;--y:14.82%"><span class="s13-pt__label" dir="ltr">(4 , 31.6)</span></span>
+          <div class="s13-bubble" data-k="4" data-beak="0.94" data-say="تم تحديد النقطة 4 على الرسم البياني: الحجم 4 سم³، الكتلة 31.6 جرام"><div class="s9-bubble__body"><p>بـ-<strong>4 سم³</strong> حجم، يوجد <strong>31.6 جرام</strong> كتلة</p></div></div>
+        </div>
+      </div>
+
+      <div class="s13-table-wrap" data-reveal="2">
+        <table class="s2-table s13-table" id="s13-table">
+          <caption class="sr-only">بيانات الكتلة والحجم للحديد</caption>
+          <thead>
+            <tr>
+              <th class="s13-th-mass">الكتلة (غرام)</th>
+              <th class="s13-th-vol">الحجم (سم³)</th>
+              <th class="s13-th-ratio">
+                <span class="s13-frac"><span>كتلة</span><span class="s13-frac__line"></span><span>حجم</span></span>
+                <span class="s13-unit">(جرام/سم³)</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="s13-row" data-row="1"><td>7.9</td><td>1</td><td class="s13-td-ratio"><span class="s13-eq"><span class="s13-frac"><span>7.9</span><span class="s13-frac__line"></span><span>1</span></span><span class="s13-eq__sign">=</span><span>7.9</span></span></td></tr>
+            <tr class="s13-row" data-row="2"><td>15.8</td><td>2</td><td class="s13-td-ratio"><span class="s13-eq"><span class="s13-frac"><span>15.8</span><span class="s13-frac__line"></span><span>2</span></span><span class="s13-eq__sign">=</span><span>7.9</span></span></td></tr>
+            <tr class="s13-row" data-row="3"><td>23.7</td><td>3</td><td class="s13-td-ratio"><span class="s13-eq"><span class="s13-frac"><span>23.7</span><span class="s13-frac__line"></span><span>3</span></span><span class="s13-eq__sign">=</span><span>7.9</span></span></td></tr>
+            <tr class="s13-row" data-row="4"><td>31.6</td><td>4</td><td class="s13-td-ratio"><span class="s13-eq"><span class="s13-frac"><span>31.6</span><span class="s13-frac__line"></span><span>4</span></span><span class="s13-eq__sign">=</span><span>7.9</span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- החץ (שקפים 19–22: "גרפיקה 54", חץ שמאלה) — מהבהב עד הלחיצה -->
+      <button class="s13-arrow" id="s13-arrow" type="button" data-reveal="3"
+              aria-label="انقلوا البيانات من الجدول إلى الرسم البياني" onclick="s13Step()">
+        <span class="s13-ring"></span><span class="s13-ring s13-ring--2"></span>
+        <span class="s13-arrow__dot">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <img class="s9-hand s13-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </button>
+      <p class="sr-only" id="s13-live" aria-live="polite"></p>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s13-continue" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 15 (data-screen="14") — שקפים 23+24 כמסך אחד ============
+       שקף 23: הגרף במלואו — קו ברזל (#C62828) נחבר בין הנקודות + בועה "צפיפות
+       ברזל"; כפתור "להוספת חומר נוסף". לחיצה → שקף 24: קו עץ אורן (#609E12) נוסף
+       + בועה "צפיפות עץ אורן", הכותרת מתחלפת, ורק אז "המשך" נדלק (הערת מפיקה).
+       Figma: מסך 3684:30825 (HookClosingText), בועה על הציר 4070:22364 (קו כחול,
+       מקור כלפי מטה). הערת מפיקה מזכירה בועיות "אפורות" — לפי הנחיית המשתמש
+       נעשה שימוש בבועה הכחולה מה-Figma. הגרף: axes-img03.png (אותה תמונה כמו
+       מסך 14) + שכבת SVG באותו viewBox (2501×1628) לקווי הנתונים. -->
+  <section class="screen s9-axscreen" data-screen="14" id="s14">
+    <div class="s9-stage">
+      <div class="s9-text s13-text s14-text" data-reveal="1">
+        <p id="s14-title"><strong>الآن نَصِل النقاط بخط، وها هو الرسم البياني للحجم / الكتلة كاملًا:</strong></p>
+      </div>
+      <div class="s14-graph" id="s14-graph" data-reveal="2">
+        <img src="assets/images/axes-graph.png" alt="رسم بياني للحجم / الكتلة: المحور الأفقي — الحجم (سم³) من 0 إلى 5؛ المحور الرأسي — الكتلة (جرام) من 0 إلى 35. خط الحديد يرتفع من 0 إلى 31.6 جرام عند 4 سم³؛ خط خشب الصنوبر يرتفع من 0 إلى 2 جرام عند 4 سم³" loading="lazy">
+        <span class="ax3-title ax3-title--x">الحجم (سم³)</span><span class="ax3-title ax3-title--y">الكتلة (غرام)</span><span class="ax3-axis ax3-axis--x" aria-hidden="true">محور X</span><span class="ax3-axis ax3-axis--y" aria-hidden="true">محور Y</span>
+        <svg class="s14-lines" viewBox="0 0 2501 1628" preserveAspectRatio="none" aria-hidden="true">
+          <g class="s14-line s14-line--pine" id="s14-pine">
+            <polyline points="289.1,1310.5 708.0,1293.6 1127.0,1276.7 1545.9,1259.8 1964.8,1242.9"/>
+            <circle cx="708.0" cy="1293.6" r="17"/><circle cx="1127.0" cy="1276.7" r="17"/><circle cx="1545.9" cy="1259.8" r="17"/><circle cx="1964.8" cy="1242.9" r="17"/>
+          </g>
+          <g class="s14-line s14-line--iron" id="s14-iron">
+            <polyline pathLength="1" points="289.1,1310.5 708.0,1043.3 1127.0,776.0 1545.9,508.8 1964.8,241.5"/>
+            <circle cx="708.0" cy="1043.3" r="17"/><circle cx="1127.0" cy="776.0" r="17"/><circle cx="1545.9" cy="508.8" r="17"/><circle cx="1964.8" cy="241.5" r="17"/>
+          </g>
+        </svg>
+        <!-- נקודות לחיצות/ריחוף: מעבר עכבר (או פוקוס מקלדת) פותח את הערכים (X , Y). מופיעות רק אחרי שהקו צויר. -->
+        <div class="s14-hots" id="s14-hots">
+          <button type="button" class="s14-hot" data-line="iron" style="--x:11.56%;--y:80.5%" aria-label="نقطة (0 ، 0)"><span class="s14-tip" dir="ltr">(0 , 0)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:28.31%;--y:64.08%" aria-label="الحديد: الحجم 1 سم³، الكتلة 7.9 جرام"><span class="s14-tip" dir="ltr">(1 , 7.9)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:45.06%;--y:47.66%" aria-label="الحديد: الحجم 2 سم³، الكتلة 15.8 جرام"><span class="s14-tip" dir="ltr">(2 , 15.8)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:61.81%;--y:31.25%" aria-label="الحديد: الحجم 3 سم³، الكتلة 23.7 جرام"><span class="s14-tip" dir="ltr">(3 , 23.7)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:78.56%;--y:14.83%" aria-label="الحديد: الحجم 4 سم³، الكتلة 31.6 جرام"><span class="s14-tip" dir="ltr">(4 , 31.6)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:28.31%;--y:79.46%" aria-label="خشب الصنوبر: الحجم 1 سم³، الكتلة 0.5 جرام"><span class="s14-tip" dir="ltr">(1 , 0.5)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:45.06%;--y:78.42%" aria-label="خشب الصنوبر: الحجم 2 سم³، الكتلة 1 جرام"><span class="s14-tip" dir="ltr">(2 , 1)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:61.81%;--y:77.38%" aria-label="خشب الصنوبر: الحجم 3 سم³، الكتلة 1.5 جرام"><span class="s14-tip" dir="ltr">(3 , 1.5)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:78.56%;--y:76.35%" aria-label="خشب الصنوبر: الحجم 4 سم³، الكتلة 2 جرام"><span class="s14-tip" dir="ltr">(4 , 2)</span></button>
+        </div>
+        <div class="s13-bubble s14-bubble" id="s14-b-iron"data-tipx="61.81" data-tipy="31.25" data-beak="0.9">
+          <div class="s9-bubble__body"><p>كثافة الحديد: <strong>7.9 (جرام / سم³)</strong></p></div>
+        </div>
+        <div class="s13-bubble s14-bubble" id="s14-b-pine" data-tipx="61.81" data-tipy="77.38" data-beak="0.5">
+          <div class="s9-bubble__body"><p>كثافة خشب الصنوبر: <strong>0.5 (جرام / سم³)</strong></p></div>
+        </div>
+      </div>
+      <p class="sr-only" id="s14-live" aria-live="polite"></p>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s14-next" type="button" disabled>لإضافة مادة إضافية</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 16 (data-screen="15") — שאלת בחירה יחידה עם גרף (שקף 25) ============
+       תבנית: SingleChoiceQuestionImage (שם המסך בפיגמה לפי הערת התסריט), כשבמקום
+       התמונה — הגרף ממסך 15 (axes-img03.png + קווי ברזל/עץ אורן, אותו SVG/viewBox).
+       תוכן: תסריט ההפקה, שקף 25. שני ניסיונות; הרמז זמין מההתחלה; אין סרגל התקדמות.
+       אפשרויות לפי מיקום-y עולה בשקף: א (נכון — "לברזל צפיפות גבוהה יותר..."), ב, ג, ד.
+       מונח "תלול" + אייקון סימן שאלה (Figma 2045:20208, Tooltip/Button/Science) —
+       הוברה/פוקוס פותחים פופאפ לבן מעל האייקון (Figma 649:10925: 260px, border #aeaeae,
+       r12, צל, טקסט 18 #222); לחיצה מחליפה מצב (למגע).
+       הגרף ללא זום: הוא תמונה + שכבת SVG (הזום תומך ב-<img loading="lazy"> בלבד). פופאפי המשוב/הרמז
+       משתמשים בעיצוב מסך 9 (s8q-*), עם מזהים נפרדים (s15q-*). -->
+  <section class="screen" data-screen="15" id="s15">
+    <div class="s15-question">
+      <div class="s15-col">
+        <p class="s15-q" data-reveal="1">ماذا يمكن أن نستنتج من حقيقة أن خط الحديد في الرسم البياني <span class="s15-term"><i class="s15-term__word">شديد الانحدار</i><button class="s15-info" id="s15-info" type="button" aria-label="شرح مفهوم الانحدار الشديد" aria-expanded="false" aria-controls="s15-tip" onclick="s15ToggleTip(event)" onmouseenter="s15ShowTip()" onmouseleave="s15CloseTip()" onfocus="s15ShowTip()" onblur="s15CloseTip()"><img src="../unit-assets/icons/icon-info-blue.svg" alt="" loading="lazy"></button><span class="s15-tip m-popup hidden" id="s15-tip" role="note"><span class="s15-tip__body"><strong>شديد الانحدار:</strong> خط يرتفع بشكل أكثر حدّة.</span></span></span> أكثر من خط الصنوبر؟</p>
+
+        <div class="s15-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s15qSelect('a')">
+            <span class="s3q-opt-text">للحديد كثافة أعلى من كثافة خشب الصنوبر.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s15qSelect('b')">
+            <span class="s3q-opt-text">للحديد حجم أكبر من حجم خشب الصنوبر.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s15qSelect('c')">
+            <span class="s3q-opt-text">لخشب الصنوبر كتلة أكبر من كتلة الحديد.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s15qSelect('d')">
+            <span class="s3q-opt-text">للحديد ولخشب الصنوبر نفس الكثافة.</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- הגרף (במקום תמונת השאלה): אותה מסגרת כמו .s8-img-frame, בגודל הגרף -->
+      <div class="s15-graph-wrap" data-reveal="3" data-reveal-fade>
+        <div class="s15-graph-frame methodica-image-zoom-frame" data-zoom-source>
+          <div class="s15-graph">
+            <img src="assets/images/axes-graph.png" alt="رسم بياني للحجم / الكتلة: المحور الأفقي — الحجم (سم³) من 0 إلى 5؛ المحور الرأسي — الكتلة (جرام) من 0 إلى 35. خط الحديد يرتفع من 0 إلى 31.6 جرام عند 4 سم³ (شديد الانحدار)؛ خط خشب الصنوبر يرتفع من 0 إلى 2 جرام عند 4 سم³" loading="lazy">
+        <span class="ax3-title ax3-title--x">الحجم (سم³)</span><span class="ax3-title ax3-title--y">الكتلة (غرام)</span><span class="ax3-axis ax3-axis--x" aria-hidden="true">محور X</span><span class="ax3-axis ax3-axis--y" aria-hidden="true">محور Y</span>
+            <svg class="s14-lines" viewBox="0 0 2501 1628" preserveAspectRatio="none" aria-hidden="true">
+              <g class="s14-line s14-line--pine is-on">
+                <polyline points="289.1,1310.5 708.0,1293.6 1127.0,1276.7 1545.9,1259.8 1964.8,1242.9"/>
+                <circle cx="708.0" cy="1293.6" r="17"/><circle cx="1127.0" cy="1276.7" r="17"/><circle cx="1545.9" cy="1259.8" r="17"/><circle cx="1964.8" cy="1242.9" r="17"/>
+              </g>
+              <g class="s14-line s14-line--iron is-on">
+                <polyline pathLength="1" points="289.1,1310.5 708.0,1043.3 1127.0,776.0 1545.9,508.8 1964.8,241.5"/>
+                <circle cx="708.0" cy="1043.3" r="17"/><circle cx="1127.0" cy="776.0" r="17"/><circle cx="1545.9" cy="508.8" r="17"/><circle cx="1964.8" cy="241.5" r="17"/>
+              </g>
+            </svg>
+            <div class="s14-hots s15-hots">
+              <button type="button" class="s14-hot" style="--x:11.56%;--y:80.5%" aria-label="نقطة (0 ، 0)"><span class="s14-tip" dir="ltr">(0 , 0)</span></button>
+              <button type="button" class="s14-hot" style="--x:28.31%;--y:64.08%" aria-label="الحديد: الحجم 1 سم³، الكتلة 7.9 جرام"><span class="s14-tip" dir="ltr">(1 , 7.9)</span></button>
+              <button type="button" class="s14-hot" style="--x:45.06%;--y:47.66%" aria-label="الحديد: الحجم 2 سم³، الكتلة 15.8 جرام"><span class="s14-tip" dir="ltr">(2 , 15.8)</span></button>
+              <button type="button" class="s14-hot" style="--x:61.81%;--y:31.25%" aria-label="الحديد: الحجم 3 سم³، الكتلة 23.7 جرام"><span class="s14-tip" dir="ltr">(3 , 23.7)</span></button>
+              <button type="button" class="s14-hot" style="--x:78.56%;--y:14.83%" aria-label="الحديد: الحجم 4 سم³، الكتلة 31.6 جرام"><span class="s14-tip" dir="ltr">(4 , 31.6)</span></button>
+              <button type="button" class="s14-hot" style="--x:28.31%;--y:79.46%" aria-label="خشب الصنوبر: الحجم 1 سم³، الكتلة 0.5 جرام"><span class="s14-tip" dir="ltr">(1 , 0.5)</span></button>
+              <button type="button" class="s14-hot" style="--x:45.06%;--y:78.42%" aria-label="خشب الصنوبر: الحجم 2 سم³، الكتلة 1 جرام"><span class="s14-tip" dir="ltr">(2 , 1)</span></button>
+              <button type="button" class="s14-hot" style="--x:61.81%;--y:77.38%" aria-label="خشب الصنوبر: الحجم 3 سم³، الكتلة 1.5 جرام"><span class="s14-tip" dir="ltr">(3 , 1.5)</span></button>
+              <button type="button" class="s14-hot" style="--x:78.56%;--y:76.35%" aria-label="خشب الصنوبر: الحجم 4 سم³، الكتلة 2 جرام"><span class="s14-tip" dir="ltr">(4 , 2)</span></button>
+            </div>
+          </div>
+          <ul class="s15-legend" aria-label="مفتاح الرسم البياني">
+            <li class="s15-legend__item s15-legend__item--iron">الحديد</li>
+            <li class="s15-legend__item s15-legend__item--pine">خشب الصنوبر</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s15q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s15q-hint" type="button" onclick="s15qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s15q-check" type="button" disabled onclick="s15qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- פופאפ משוב (מסך 16) — מחוץ לכל .screen, ישירות ב-#app. עיצוב זהה למסך 9;
+       ללא כפתור-סגירה (_global-components.md → "No manual close"); גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s15q-popup"
+       onmousedown="s15qPopupMouseDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s15q-popup-title"></p>
+    <div class="s8q-popup-body" id="s15q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 16) — עיצוב Hint Card כמו מסך 9; טקסט הרמז: שקף 25. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s15q-hint-overlay"
+       onclick="s15qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>قارنوا بين الخطّين. أي مادة تكتسب كتلة أكبر<br>كتلة مع كل زيادة قدرها 1 سم³؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s15qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 17 (data-screen="16") — טקסט + יישומון גרירה (שקף 26) ============
+       פריסה: Figma 730:10392 (HookOpenQuestion — State 01): מסגרת 625×628 משמאל
+       (במקום התמונה), עמודת טקסט 449 מימין. בשונה מהפיגמה: אין שאלה — אין שדה
+       טקסט ואין כפתור "צדקתי?"; רק טקסט ההנחיה + היישומון.
+       תוכן: תסריט ההפקה, שקף 26 (מילה במילה). הערת מפיקה: "אחרי ניסיון אחד נדלק
+       כפתור 'המשך'; ניתן לשחק ביישומון ללא הגבלה".
+       #s16-applet — היישומון (applet/applet.js + applet.css): כוס מים, קוביות ברזל/עץ
+       אורן עם תוויות צפיפות; התמונות חולצו משקף 26. הלומד משחרר קוביה לכוס
+       (ניסיון ראשון) → s16AppletAttempted() מדליק "המשך". -->
+  <section class="screen" data-screen="16" id="s16">
+    <div class="s16-stage">
+      <div class="s16-text" data-reveal="1">
+        <p class="s16-title"><strong>الطفو، الغوص والعلاقة بقيمة الكثافة:</strong></p>
+        <p>لديكم كأس ماء ومكعبان بكثافة مختلفة:<br>الأولى من خشب الصنوبر، والثانية من الحديد.</p>
+        <p><strong>اسحبوا كل مكعب إلى الكأس وتحققوا مما يحدث.</strong></p>
+      </div>
+      <div class="s16-applet" id="s16-applet" role="region" aria-label="تطبيق سحب: كوب ماء ومكعبان" data-reveal="2" data-reveal-fade></div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s16-next" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 18 (data-screen="17") — מסקנה מהיישומון (שקף 27) ============
+       פריסה: Figma 3684:30825 (HookClosingText) — עמודת תוכן ברוחב מלא (ללא
+       היישומון של מסך 17). תוכן וסידור: תסריט ההפקה, שקף 27 (נבדק מול רינדור
+       השקף): כותרת כחולה, משפט מודגש, רצועת מים בגבול מלא עם קו פני-מים
+       מקווקו, כרטיס "צף" + קוביית עץ אורן מעל המים, כרטיס "שוקע" + קוביית ברזל
+       בתוך המים. הערת מפיקה: "אלמנטים עולים בהדרגה על המסך. לאחר הופעת כל
+       האלמנטים כפתור המשך נדלק." (טקסט → מים בקצב data-reveal; ואז כרטיס "צף" + עץ אורן, ואחריו "שוקע" + ברזל — צעדים איטיים ב-JS כמו מסך 15; ההמשך נדלק בסוף).
+       תמונות הקוביות: applet/images (אותן תמונות של מסך 17). -->
+  <section class="screen" data-screen="17" id="s17">
+    <div class="s17-water" data-reveal="2" aria-hidden="true"></div>
+    <div class="s17-waterline" data-reveal="2" aria-hidden="true"></div>
+    <div class="s17-stage">
+      <div class="s17-text" data-reveal="1">
+        <p class="s17-title"><strong>الاستنتاج هو:</strong></p>
+        <p class="s17-lead"><strong><b>للمعرفة ما إذا كانت مادة ما ستطفو أو ستغوص في الماء، تتم مقارنة كثافتها بكثافة الماء التي تساوي 1 (جرام / سم³):</b></strong></p>
+      </div>
+      <svg class="s17-ripples" data-reveal="2" viewBox="0 0 1280 710" aria-hidden="true">
+        <g>
+          <line x1="199" y1="432" x2="297" y2="432"/><line x1="263" y1="476" x2="360" y2="476"/><line x1="363" y1="431" x2="461" y2="431"/>
+          <line x1="444" y1="463" x2="541" y2="463"/><line x1="517" y1="434" x2="615" y2="434"/><line x1="127" y1="498" x2="224" y2="498"/>
+          <line x1="245" y1="538" x2="343" y2="538"/>
+          <line x1="964" y1="436" x2="1062" y2="436"/><line x1="1080" y1="478" x2="1157" y2="478"/><line x1="1125" y1="445" x2="1224" y2="445"/>
+          <line x1="1002" y1="503" x2="1099" y2="503"/><line x1="991" y1="456" x2="1088" y2="456"/><line x1="982" y1="547" x2="1079" y2="547"/>
+          <line x1="1101" y1="527" x2="1199" y2="527"/><line x1="1107" y1="564" x2="1205" y2="564"/><line x1="1123" y1="580" x2="1221" y2="580"/>
+          <line x1="1139" y1="596" x2="1237" y2="596"/>
+        </g>
+      </svg>
+      <div class="s17-card s17-card--float s17-seq" data-step="0">
+        <strong>يطفو</strong>
+        <span>كل مادة كثافتها</span>
+        <strong>أقل من 1 (جرام/سم³)</strong>
+      </div>
+      <div class="s17-cube s17-cube--pine s17-seq" data-step="0">
+        <img src="applet/images/cube-pine.png" alt="مكعب خشب صنوبر يطفو على الماء، الكثافة 0.5 جرام/سم³" loading="lazy">
+        <span class="s17-cube__tag"><b>0.5</b><i>جرام / سم³</i></span>
+      </div>
+      <div class="s17-card s17-card--sink s17-seq" data-step="1">
+        <strong>يغوص</strong>
+        <span>كل مادة كثافتها</span>
+        <strong>أعلى من 1 (جرام / سم³)</strong>
+      </div>
+      <div class="s17-cube s17-cube--iron s17-seq" data-step="1">
+        <img src="applet/images/cube-iron.png" alt="مكعب حديد يغوص في الماء، الكثافة 7.9 جرام/سم³" loading="lazy">
+        <span class="s17-cube__tag"><b>7.9</b><i>جرام / سم³</i></span>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s17-next" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 19 (data-screen="18") — הגרף עם קו המים (שקף 28) ============
+       בדיוק כמו מסך 15 (s14): אותו גרף (axes-img03.png + שכבת SVG באותו viewBox
+       2501×1628, אותו מיקום/גודל), עם קו ברזל + קו עץ אורן — ובתוספת קו המים
+       (כחול): צפיפות 1 גרם/סמ"ק → נקודות (1,1) (2,2) (3,3) (4,4); y = 1292.2 − 35.9·מסה.
+       תוכן: תסריט ההפקה, שקף 28 (מילה במילה): כותרת כחולה Bold + משפט Regular
+       (כמו מסך 18). בשקף אין בועות — לכן מקרא (ברזל / עץ אורן / מים) מימין לגרף,
+       כמו בשקף. הערת מפיקה: "אלמנטים עולים בהדרגה על המסך. לאחר הופעת כל
+       האלמנטים כפתור המשך נדלק." (טקסט → גרף; ואז הקווים מצטיירים בזה אחר זה כמו במסך 15: ברזל → עץ אורן → מים, עם פריט המקרא של כל קו; ההמשך נדלק בסוף). -->
+  <section class="screen" data-screen="18" id="s18">
+    <div class="s9-stage">
+      <div class="s18-text" data-reveal="1">
+        <p class="s18-title"><strong>يمكن عرضه أيضًا في الرسم البياني:</strong></p>
+        <p>المواد التي تقع فوق خط كثافة الماء (الأزرق) - تغوص، والمواد التي تقع تحته - تطفو.</p>
+      </div>
+      <div class="s14-graph" id="s18-graph" data-reveal="2">
+        <img src="assets/images/axes-graph.png" alt="رسم بياني للحجم / الكتلة: المحور الأفقي — الحجم (سم³) من 0 إلى 5؛ المحور العمودي — الكتلة (جرام) من 0 إلى 35. خط الحديد يرتفع من 0 إلى 31.6 جرام عند 4 سم³؛ خط خشب الصنوبر يرتفع من 0 إلى 2 جرام؛ خط الماء يرتفع من 0 إلى 4 جرام. المواد التي تقع فوق خط الماء تغوص، والمواد التي تقع تحته تطفو" loading="lazy">
+        <span class="ax3-title ax3-title--x">الحجم (سم³)</span><span class="ax3-title ax3-title--y">الكتلة (غرام)</span><span class="ax3-axis ax3-axis--x" aria-hidden="true">محور X</span><span class="ax3-axis ax3-axis--y" aria-hidden="true">محور Y</span>
+        <svg class="s14-lines" viewBox="0 0 2501 1628" preserveAspectRatio="none" aria-hidden="true">
+          <g class="s14-line s14-line--pine" id="s18-pine">
+            <polyline points="289.1,1310.5 708.0,1293.6 1127.0,1276.7 1545.9,1259.8 1964.8,1242.9"/>
+            <circle cx="708.0" cy="1293.6" r="17"/><circle cx="1127.0" cy="1276.7" r="17"/><circle cx="1545.9" cy="1259.8" r="17"/><circle cx="1964.8" cy="1242.9" r="17"/>
+          </g>
+          <g class="s14-line s14-line--iron" id="s18-iron">
+            <polyline pathLength="1" points="289.1,1310.5 708.0,1043.3 1127.0,776.0 1545.9,508.8 1964.8,241.5"/>
+            <circle cx="708.0" cy="1043.3" r="17"/><circle cx="1127.0" cy="776.0" r="17"/><circle cx="1545.9" cy="508.8" r="17"/><circle cx="1964.8" cy="241.5" r="17"/>
+          </g>
+        </svg>
+        <svg class="s14-lines s18-water-svg" viewBox="0 0 2501 1628" preserveAspectRatio="none" aria-hidden="true">
+          <g class="s14-line s18-line--water" id="s18-water">
+            <polyline points="289.1,1310.5 708.0,1276.7 1127.0,1242.9 1545.9,1209.1 1964.8,1175.2"/>
+            <circle cx="708.0" cy="1276.7" r="17"/><circle cx="1127.0" cy="1242.9" r="17"/><circle cx="1545.9" cy="1209.1" r="17"/><circle cx="1964.8" cy="1175.2" r="17"/>
+          </g>
+        </svg>
+        <div class="s14-hots s18-hots">
+          <button type="button" class="s14-hot" data-line="iron" style="--x:11.56%;--y:80.5%" aria-label="نقطة (0 ، 0)"><span class="s14-tip" dir="ltr">(0 , 0)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:28.31%;--y:64.08%" aria-label="الحديد: الحجم 1 سم³، الكتلة 7.9 جرام"><span class="s14-tip" dir="ltr">(1 , 7.9)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:45.06%;--y:47.66%" aria-label="الحديد: الحجم 2 سم³، الكتلة 15.8 جرام"><span class="s14-tip" dir="ltr">(2 , 15.8)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:61.81%;--y:31.25%" aria-label="الحديد: الحجم 3 سم³، الكتلة 23.7 جرام"><span class="s14-tip" dir="ltr">(3 , 23.7)</span></button>
+          <button type="button" class="s14-hot" data-line="iron" style="--x:78.56%;--y:14.83%" aria-label="الحديد: الحجم 4 سم³، الكتلة 31.6 جرام"><span class="s14-tip" dir="ltr">(4 , 31.6)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:28.31%;--y:79.46%" aria-label="خشب الصنوبر: الحجم 1 سم³، الكتلة 0.5 جرام"><span class="s14-tip" dir="ltr">(1 , 0.5)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:45.06%;--y:78.42%" aria-label="خشب الصنوبر: الحجم 2 سم³، الكتلة 1 جرام"><span class="s14-tip" dir="ltr">(2 , 1)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:61.81%;--y:77.38%" aria-label="خشب الصنوبر: الحجم 3 سم³، الكتلة 1.5 جرام"><span class="s14-tip" dir="ltr">(3 , 1.5)</span></button>
+          <button type="button" class="s14-hot" data-line="pine" style="--x:78.56%;--y:76.35%" aria-label="خشب الصنوبر: الحجم 4 سم³، الكتلة 2 جرام"><span class="s14-tip" dir="ltr">(4 , 2)</span></button>
+          <button type="button" class="s14-hot" data-line="water" style="--x:28.31%;--y:78.42%" aria-label="الماء: الحجم 1 سم³، الكتلة 1 جرام"><span class="s14-tip" dir="ltr">(1 , 1)</span></button>
+          <button type="button" class="s14-hot" data-line="water" style="--x:45.06%;--y:76.35%" aria-label="الماء: الحجم 2 سم³، الكتلة 2 جرام"><span class="s14-tip" dir="ltr">(2 , 2)</span></button>
+          <button type="button" class="s14-hot" data-line="water" style="--x:61.81%;--y:74.27%" aria-label="الماء: الحجم 3 سم³، الكتلة 3 جرام"><span class="s14-tip" dir="ltr">(3 , 3)</span></button>
+          <button type="button" class="s14-hot" data-line="water" style="--x:78.56%;--y:72.19%" aria-label="الماء: الحجم 4 سم³، الكتلة 4 جرام"><span class="s14-tip" dir="ltr">(4 , 4)</span></button>
+        </div>
+      </div>
+      <ul class="s18-legend" aria-label="مفتاح الرسم البياني">
+        <li class="s18-legend__item s18-legend__item--water" data-line="water">ماء</li>
+        <li class="s18-legend__item s18-legend__item--iron" data-line="iron">الحديد</li>
+        <li class="s18-legend__item s18-legend__item--pine" data-line="pine">خشب الصنوبر</li>
+      </ul>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s18-next" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 20 (data-screen="19") — שאלת גרירה: יצוף / ישקע (שקף 29) ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (720-templates → "Prefer a local template
+       variant"): שני אזורי שחרור שכל אחד מחזיק כמה פריטים (3 + 3), בלי תמונות-יעד.
+       שם המסך בהערת המפיקה: OrderedDragAndDropQuestion; מצבי הרכיבים (אזור שחרור
+       default/hover/dropped, פריט נגרר/נבחר, נכון/שגוי, כפתור "מעבר לתשובה שלי") — Figma
+       5340:25539 (ImageTopDragAndDropQuestion) + Drag&Drop State 1249:32691. הפריסה מרינדור
+       השקף: כותרת כחולה + שורת הקדמה + שורת הנחיה מודגשת, שורת 6 כרטיסי חומרים, אזור
+       "יצוף במים" מעל קו המים ואזור "ישקע במים" בתוך רצועת המים (אותה רצועה כמו מסך 18).
+       מפתח (הערת מפיקה): יצוף — קרח, שמן, עץ אלון; ישקע — זהב, זכוכית, כסף.
+       2 ניסיונות (ברירת-מחדל — התסריט שותק), רמז זמין מההתחלה (שקף 29), משוב: שקף 29.
+       פופאפים — מחוץ ל-.screen (ישירות ב-#app), מזהים s19q-*. -->
+  <section class="screen" data-screen="19" id="s19">
+    <div class="s17-water" data-reveal="3" aria-hidden="true"></div>
+    <div class="s19-stage">
+      <div class="s19-text" data-reveal="1">
+        <p class="s19-title"><strong>اختبار الفهم</strong></p>
+        <p>فيما يلي مواد مختلفة وقيم الكثافة الخاصة بها بالجرام لكل سم³.</p>
+        <p class="s19-cta"><strong>قرروا بالنسبة لكل مادة ما إذا كانت ستطفو أو ستغوص، واسحبوها إلى المكان المناسب.</strong></p>
+      </div>
+      <div class="s19-tray" id="s19-tray" data-reveal="2" onclick="s19TrayClick(event)">
+        <div class="s19-slot"><div class="s19-card" id="s19-d-ice" data-id="ice" role="button" tabindex="0" aria-pressed="false" aria-label="الجليد، الكثافة 0.9 جرام لكل سم³"><span class="s19-card__name">الجليد</span><span class="s19-card__dens">الكثافة: 0.9</span></div></div>
+        <div class="s19-slot"><div class="s19-card" id="s19-d-gold" data-id="gold" role="button" tabindex="0" aria-pressed="false" aria-label="الذهب، الكثافة 19.3 جرام/سم³"><span class="s19-card__name">الذهب</span><span class="s19-card__dens">الكثافة: 19.3</span></div></div>
+        <div class="s19-slot"><div class="s19-card" id="s19-d-oil" data-id="oil" role="button" tabindex="0" aria-pressed="false" aria-label="زيت، الكثافة 0.8 جرام/سم³"><span class="s19-card__name">زيت</span><span class="s19-card__dens">الكثافة: 0.8</span></div></div>
+        <div class="s19-slot"><div class="s19-card" id="s19-d-glass" data-id="glass" role="button" tabindex="0" aria-pressed="false" aria-label="الزجاج، الكثافة 2.5 جرام/سم³"><span class="s19-card__name">زجاج</span><span class="s19-card__dens">2.5</span></div></div>
+        <div class="s19-slot"><div class="s19-card" id="s19-d-oak" data-id="oak" role="button" tabindex="0" aria-pressed="false" aria-label="خشب البلوط، الكثافة 0.7 جرام لكل سم³"><span class="s19-card__name">خشب البلوط</span><span class="s19-card__dens">الكثافة: 0.7</span></div></div>
+        <div class="s19-slot"><div class="s19-card" id="s19-d-silver" data-id="silver" role="button" tabindex="0" aria-pressed="false" aria-label="الفضة، الكثافة 10.5 جرام/سم³"><span class="s19-card__name">الفضة</span><span class="s19-card__dens">الكثافة: 10.5</span></div></div>
+      </div>
+      <div class="s19-zone s19-zone--float" id="s19-zone-float" data-zone="float" data-reveal="3" role="button" tabindex="0" aria-label="يطفو في الماء — منطقة الإفلات" onclick="s19ZoneClick('float', event)" onkeydown="s19ZoneKey(event,'float')">
+        <span class="s19-zone__label">يطفو في الماء</span>
+      </div>
+      <div class="s19-zone s19-zone--sink" id="s19-zone-sink" data-zone="sink" data-reveal="3" role="button" tabindex="0" aria-label="يغوص في الماء — منطقة إفلات" onclick="s19ZoneClick('sink', event)" onkeydown="s19ZoneKey(event,'sink')">
+        <span class="s19-zone__label">يغوص في الماء</span>
+      </div>
+      <p class="sr-only" id="s19-live" aria-live="polite"></p>
+      <!-- מחוות-יד (גרירה) — אותו נכס כמו מסך 3; ממוקם ב-JS (dndGhStart), בתוך אותו מרחב-קואורדינטות של הכרטיסים/האזורים -->
+      <div class="s2-gh dnd-gh hidden" id="s19-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s19q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s19q-hint" type="button" onclick="s19OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s19q-check" type="button" disabled onclick="s19Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- פופאפ משוב (מסך 20) — מחוץ לכל .screen, ישירות ב-#app. עיצוב כמו מסך 9/16 (s8q-*),
+       ללא כפתור-סגירה; גריר חופשי (Pointer Events). אזור-הפעולה: "מעבר לתשובה שלי" /
+       "התשובה הנכונה" (View My Answer Toggle) — רק בתוצאה "שגוי סופי". -->
+  <div class="s8q-popup m-popup hidden" id="s19q-popup" onpointerdown="s19PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s19q-popup-title"></p>
+    <div class="s8q-popup-body" id="s19q-popup-body"></div>
+    <div class="s19-popup-actions" id="s19q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 20) — Hint Card כמו מסך 9/16; הטקסט: שקף 29. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s19q-hint-overlay" onclick="s19CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>قارنوا كثافة كل مادة بكثافة الماء (1 جرام لكل سم³). هل كثافتها أقل من 1 أم أعلى من 1؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s19CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 21 (data-screen="20") — רגע למחשבה + יישומון גרירה (שקף 30) ============
+       בדיוק כמו מסך 17 (s16): עמודת טקסט 449 מימין + מסגרת יישומון 625×628 משמאל,
+       בלי שאלה ובלי "צדקתי?". תוכן: תסריט ההפקה, שקף 30 (מילה במילה). הערת מפיקה:
+       "גוררים כל קוביה לריבוע 'גררו לכאן ושחררו'. ברגע שמשחררים רואים האם שוקעת או
+       צפה (מטבע — שוקע, סירת נחושת — צפה). אחרי ניסיון אחד נדלק כפתור 'המשך'. ניתן
+       לשחק ביישומון ללא הגבלה."
+       #s20-applet — applet/applet2.js (אותה מכניקה כמו applet.js): כוס מים (אותה תמונה
+       כמו מסך 17), מטבע נחושת ודגם סירת נחושת (תמונות חולצו משקף 30).
+       הלומד משחרר גוף לכוס (ניסיון ראשון) → s20AppletAttempted() מדליק "המשך". -->
+  <section class="screen" data-screen="20" id="s20">
+    <div class="s16-stage">
+      <div class="s16-text" data-reveal="1">
+        <p class="s16-title"><strong>لحظة للتفكير</strong></p>
+        <p>جسمان مصنوعان من نفس المادة – النحاس<br>(قيمة الكثافة: 8.9 جرام / سم³، أعلى من كثافة الماء).<br>هل سيغوص كلاهما فعلًا؟</p>
+        <p><strong>اسحبوا الأجسام إلى الماء للتحقق من ذلك.</strong></p>
+      </div>
+      <div class="s16-applet" id="s20-applet" role="region" aria-label="ميدان سَحب تفاعلي: كوب ماء، عملة نحاسية، ونموذج قارب من النحاس" data-reveal="2" data-reveal-fade></div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s20-next" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 22 (data-screen="21") — כרטיסיות מתהפכות: מטבע / סירה (שקפים 31+32) ============
+       תבנית: FlipCardsReveal (720-templates). Figma (קובץ 720 - UI Templates):
+       4943:37313 = מצב 01 (תמונות, לפני אינטראקציה, "המשך" מושבת),
+       4943:37294 = מצב 03 (כל הכרטיסיות הפוכות, "המשך" פעיל). שקף 31 = מצב 01,
+       שקף 32 = מצב 03 — שני שקפים של אותו מסך (הערת מפיקה בשניהם: FlipCardsReveal).
+       Figma מציג 4 כרטיסיות; בתסריט 2 — נשארות 2 (283×283, gap 22, ממורכזות).
+       סדר DOM (RTL): מטבע ראשון = פיזית ימין, סירה = שמאל — כמו בשקף 31.
+       הפיכה דו-כיוונית (הנחיית מפיקה: בכל מסכי הפליפ-קארדז) + מחוות-יד עד שהלומד לוחץ על כרטיסייה.
+       "המשך" נפתח אחרי שהופכו שתי הכרטיסיות. אחרי שהופכו — הדמות + בועת
+       הדיבור (שקף 32) עולות בצד שמאל, באותה גיאומטריה כמו מסך 6.
+       הדמות: turquoise_avatar-swimming.mp4 (שוחה על הגלגל) — דקורטיבי, בלופ, מתחיל עם הופעת הדמות.
+       ⚠️ כפתורי "לצפות בסרטון / להפוך קלפים" שב-Figma (Mode Buttons) לא מומשו —
+       אין סרטון במסך הזה, ובשאר המסכים בלומדה אין מתג מצבים. -->
+  <section class="screen" data-screen="21" id="s21">
+    <div class="s21-stage">
+      <!-- Text Content Layout (Figma 4943:37315 / 2638:23885): Title[tier 1 + tier 2] + Text[tier 3].
+           סדר התסריט נשמר: משפט פתיחה → שאלה → הנחיה. -->
+      <div class="s21-header" data-reveal="1">
+        <div class="s21-title">
+          <div class="s21-t1"><p>كثافة النحاس أعلى من كثافة الماء.</p></div>
+          <h1 class="s21-t2">كيف إذن يمكن أن تغوص العملة المعدنية بينما يطفو القارب؟</h1>
+        </div>
+        <p class="s21-t3">اضغطوا على البطاقات واكتشفوا:</p>
+      </div>
+
+      <div class="s21-cards" id="s21-cards" role="group" aria-label="عملة نحاسية ونموذج قارب نحاسي — اضغطوا على كل بطاقة لاكتشاف المزيد" data-reveal="2">
+        <div class="s23-item">
+          <button class="frc-card" type="button" data-index="0"
+                aria-expanded="false" aria-label="قطعة نقدية من النحاس. اضغطوا للقلب"
+                onclick="s21Flip(this)">
+          <div class="frc-card-inner">
+            <div class="frc-card-front s21-front">
+              <div class="s21-img-slot s21-img-slot--contain"><img src="assets/images/copper-coin.png" alt="نقود نحاسية" loading="lazy"></div>
+            </div>
+            <div class="frc-card-back s21-back" aria-hidden="true">
+              <div class="frc-card-back-content s21-back-content">
+                <p>قطعة النحاس المعدنية هي جسم صلب <strong>المصنوع بالكامل من النحاس</strong>.</p>
+                <p>للنحاس كثافة أعلى من كثافة الماء، لذلك الكثافة <strong>المتوسطة</strong> للعملة المعدنية أعلى من كثافة الماء، وهي تغوص.</p>
+              </div>
+            </div>
+          </div>
+        </button>
+        <span class="s21-caption s23-caption">نقود نحاسية</span>
+        </div>
+        <div class="s23-item">
+          <button class="frc-card" type="button" data-index="1"
+                aria-expanded="false" aria-label="نموذج قارب من النحاس. انقروا لقلبه"
+                onclick="s21Flip(this)">
+          <div class="frc-card-inner">
+            <div class="frc-card-front s21-front">
+              <div class="s21-img-slot s21-img-slot--contain"><img src="assets/images/copper-boat.png" alt="نموذج قارب نحاسي" loading="lazy"></div>
+            </div>
+            <div class="frc-card-back s21-back" aria-hidden="true">
+              <div class="frc-card-back-content s21-back-content">
+                <p>القارب النحاسي مجوَّف <strong>وتحتوي بداخلها على الكثير من الهواء.</strong></p>
+                <p>عند حساب الكثافة <strong>المتوسطة</strong> للجسم الكامل (النحاس والهواء الذي بداخله) يتم الحصول على قيمة أقل من كثافة الماء. لذلك، يطفو قارب النحاس.</p>
+              </div>
+            </div>
+          </div>
+        </button>
+        <span class="s21-caption s23-caption">نموذج قارب نحاسي</span>
+        </div>
+
+        <!-- מחוות-יד (Cursor Click) — אותו נכס ואותה אנימציה כמו מסך 3 (.s2-gh); ממוקם ב-JS (frcGhStart) -->
+        <div class="s2-gh hidden" id="s21-gh" aria-hidden="true">
+          <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+          <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+          <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- דמות מלווה + בועה — אותה גיאומטריה כמו מסך 6 (.s5-char-wrap/.s5-bubble/
+         .s5-char-card/.s5-char-video). מוסתרת עד שכל הכרטיסיות הופכו (s21Sync ב-script.js). -->
+    <div class="s5-char-wrap s21-char-wrap" id="s21-char-wrap">
+      <div class="s5-bubble" aria-live="polite">
+        <p>أها! يمكن للهواء أن يقلل الكثافة المتوسطة ويساعد الجسم على الطفو.</p>
+      </div>
+      <div class="s5-char-card">
+        <div class="s5-char-clip">
+          <video class="s5-char-video" id="s21-char-video" muted loop playsinline preload="none"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source data-lazy-src="assets/videos/turquoise_avatar-swimming.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s21-next" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 23 (data-screen="22") — TransitionScreen (שקף 33) ============
+       תבנית: 720-templates → TransitionScreen.md, וריאנט ShortText. Figma (קובץ
+       720 - UI Templates): 4905:25066 ("SectionIntroScreen-ShortText") — הצומת
+       הקנוני העדכני לפי הסקיל; הצומת 4492:37757 שבבקשה הוחלף על ידו (נשמרו אותם
+       טוקנים: כותרת H-4 64/700, שורת-גוף B-1 28/400, מרווח 24 בין הכותרת לשורה).
+       תוכן: תסריט ההפקה, שקף 33 — כותרת "צפיפות ממוצעת היא:" + משפט ההגדרה
+       (ללא שורת פתיחה; שורת הפתיחה אופציונלית בתבנית). הדגשות הכתב-יד-המודגש
+       בתסריט נשמרו: "המסה הכוללת", "הנפח הכולל".
+       תווית ההמשך "המשך" — כמו בתיבת הטקסט של הכפתור בשקף.
+       דמות: turquoise-avatar-putting-on-glasses.mp4 — דקורטיבי, מתנגן בלולאה
+       (החלטת המשתמש — גוברת על ברירת-המחדל "פעם אחת" של התבנית) (הערת מפיקה בשקף 34: "גיף של הדמות
+       מרכיבה משקפיים"; המשתמש הנחה להשתמש בה כאן).
+       ⚠️ הערת ההפקה שבשקף 33 עצמו ("FlipCardsReveal – צד ב'") לא נבנתה: היא
+       סותרת את הנחיית המשתמש ("מסך מעבר") ונראית כשארית משכפול שקף. -->
+  <section class="screen" data-screen="22" id="s22">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <h1 class="s22-title">الكثافة المتوسطة هي:</h1>
+        <p class="s22-body">النسبة بين <strong>الكتلة الكليّة</strong> للجسم وبين <strong>الحجم الكلّي</strong> الذي يشغله، بما في ذلك الفراغات والمواد الموجودة بداخله (مثلًا، الهواء).</p>
+      </div>
+      <div class="s22-video-wrap" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s22-char-video" muted loop data-autoplay playsinline preload="none"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source data-lazy-src="assets/videos/turquoise-avatar-putting-on-glasses.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s22-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s22-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 24 (data-screen="23") — כרטיסיות מתהפכות: גזים ותכונת הצפיפות (שקפים 34+35) ============
+       אותה תבנית כמו מסך 22 (FlipCardsReveal, דו-כיווני + מחוות-יד, "המשך" נפתח אחרי שלוש ההפיכות;
+       מחלקות s21-* משותפות). שקף 34 = לפני הפיכה, שקף 35 = אחרי. 3 כרטיסיות, ימין→שמאל:
+       בלון הליום, כדור פורח, מזגן. הכיתוב (bold) מתחת לכרטיסייה בשני המצבים (שקפים 34/35).
+       גב הכרטיסייה: תמונה קטנה ממורכזת + טקסט. אין דמות במסך הזה. -->
+  <section class="screen" data-screen="23" id="s23">
+    <div class="s21-stage s23-stage">
+      <div class="s21-header" data-reveal="1">
+        <div class="s21-title">
+          <h1 class="s21-t2">الغازات وخاصيّة الكثافة</h1>
+        </div>
+        <p class="s21-t3">اضغطوا وتعرّفوا على حقائق مثيرة للاهتمام:</p>
+      </div>
+
+      <div class="s21-cards s23-cards" id="s23-cards" role="group" aria-label="حقائق مثيرة عن الغازات والكثافة — اضغطوا على كل بطاقة لاكتشاف المزيد" data-reveal="2">
+        <div class="s23-item">
+          <button class="frc-card" type="button" data-index="0"
+                  aria-expanded="false" aria-label="ما الذي يجعل بالون الهيليوم يرتفع إلى الأعلى؟. اضغطوا للقلب"
+                  onclick="s23Flip(this)">
+            <div class="frc-card-inner">
+              <div class="frc-card-front s21-front s23-front">
+                <div class="s21-img-slot s21-img-slot--contain s23-front-media s23-front-media--rise"><img src="assets/images/helium-balloon.png" alt="بالون الهيليوم" loading="lazy"></div>
+              </div>
+              <div class="frc-card-back s21-back s23-back" aria-hidden="true">
+                <span class="s23-back-media s23-back-media--rise" aria-hidden="true"><img class="s23-back-img" src="assets/images/helium-balloon.png" alt="" loading="lazy"></span>
+                <p class="s23-back-text">الكثافة الخاصة بالهيليوم أقل من كثافة الهواء خارج البالون، ولذلك يرتفع البالون<br>(يطفو في الهواء).</p>
+              </div>
+            </div>
+          </button>
+          <span class="s21-caption s23-caption">ما الذي يجعل بالون الهيليوم يرتفع إلى الأعلى؟</span>
+        </div>
+        <div class="s23-item">
+          <button class="frc-card" type="button" data-index="1"
+                  aria-expanded="false" aria-label="كيف يرتفع المنطاد إلى الأعلى؟. انقروا للقلب"
+                  onclick="s23Flip(this)">
+            <div class="frc-card-inner">
+              <div class="frc-card-front s21-front s23-front">
+                <div class="s21-img-slot s21-img-slot--contain s23-front-media s23-front-media--rise"><img src="assets/images/hot-air-balloon.png" alt="منطاد" loading="lazy"></div>
+              </div>
+              <div class="frc-card-back s21-back s23-back" aria-hidden="true">
+                <span class="s23-back-media s23-back-media--rise" aria-hidden="true"><img class="s23-back-img" src="assets/images/hot-air-balloon.png" alt="" loading="lazy"></span>
+                <p class="s23-back-text">الهواء داخل المنطاد يسخن، وتنخفض كثافة الهواء الساخن في المنطاد، ولذلك يرتفع المنطاد (يطفو في الهواء).</p>
+              </div>
+            </div>
+          </button>
+          <span class="s21-caption s23-caption">كيف يرتفع المنطاد إلى الأعلى؟</span>
+        </div>
+        <div class="s23-item">
+          <button class="frc-card" type="button" data-index="2"
+                  aria-expanded="false" aria-label="لماذا يُركَّب المكيّف في مكان مرتفع؟. انقروا للقلب"
+                  onclick="s23Flip(this)">
+            <div class="frc-card-inner">
+              <div class="frc-card-front s21-front s23-front">
+                <div class="s21-img-slot s21-img-slot--contain s23-front-media s23-front-media--air"><img src="assets/images/air-conditioner.png" alt="مكيف الهواء" loading="lazy"><i class="s23-puff"></i><i class="s23-puff"></i><i class="s23-puff"></i><i class="s23-puff"></i><i class="s23-puff"></i></div>
+              </div>
+              <div class="frc-card-back s21-back s23-back" aria-hidden="true">
+                <span class="s23-back-media s23-back-media--air" aria-hidden="true"><img class="s23-back-img" src="assets/images/air-conditioner.png" alt="" loading="lazy"></span>
+                <p class="s23-back-text">الهواء البارد الخارج من المكيّف أكثف من الهواء الموجود في الغرفة، ولذلك فإنه يغوص ويتوزع&nbsp;في الغرفة.</p>
+              </div>
+            </div>
+          </button>
+          <span class="s21-caption s23-caption">لماذا يُركَّب المكيف في مكان مرتفع؟</span>
+        </div>
+
+        <!-- מחוות-יד (Cursor Click) — אותו נכס ואותה אנימציה כמו מסך 3 (.s2-gh); ממוקם ב-JS (frcGhStart) -->
+        <div class="s2-gh hidden" id="s23-gh" aria-hidden="true">
+          <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+          <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+          <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s23-next" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ מסך 25 (data-screen="24") — TransitionScreen (שקף 36) ============
+       זהה למסך 23 (ShortText, אותו וידאו דמות מרכיבה משקפיים בלולאה; מחלקות s22-*
+       משותפות). תוכן: תסריט ההפקה, שקף 36 — כותרת "גזים ותכונת הצפיפות" + הטקסט. -->
+  <section class="screen" data-screen="24" id="s24">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <h1 class="s22-title">الغازات وخاصيّة الكثافة</h1>
+        <p class="s22-body">في الغازات هذا هو نفس المبدأ تمامًا كما في الماء!<br>إذا كانت الكثافة الغازية أقل من كثافة الهواء، فإنه سيطفو في الهواء (سيرتفع).<br>إذا كانت كثافته أكبر من كثافة الهواء، فسوف يغوص في الهواء (ينزل).</p>
+      </div>
+      <div class="s22-video-wrap" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s24-char-video" muted loop data-autoplay playsinline preload="none"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source data-lazy-src="assets/videos/turquoise-avatar-putting-on-glasses.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s24-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s24-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 26 (data-screen="25") — TransitionScreen (שקף 37) ============
+       תבנית: TransitionScreen ShortText. Figma 3710:34387 (אותו מבנה כמו 4905:25066).
+       מחלקות s22-* משותפות עם מסכים 23/25. תוכן: כותרת "מה נשאר לנו בראש?" + שורת
+       סגירה "שתי שאלות קלילות לחימום לפני שנתקדם" (ללא שורת פתיחה). תווית ההמשך
+       "קחו אותי לשאלות" — כמו הכפתור בשקף. דמות: turquoise-avatar-warming-up.mp4,
+       מתנגן פעם אחת (ברירת-המחדל של התבנית; שורת טקסט אחת, לכן 640×360 מלא). -->
+  <section class="screen" data-screen="25" id="s25">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <h1 class="s22-title">ماذا بقيَ عالقًا في عقولنا؟</h1>
+        <p class="s22-body">سؤالان بسيطان للإحماء قبل أن نتقدم</p>
+      </div>
+      <div class="s22-video-wrap s22-video-wrap--full" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s25-char-video" muted loop playsinline preload="none"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source data-lazy-src="assets/videos/turquoise-avatar-warming-up.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s25-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s25-continue" onclick="advanceScreen()">هل نبدأ؟</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 27 (data-screen="26") — שאלת גרירה: משוואת הצפיפות (שקף 38) ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (720-templates → "Prefer a local template
+       variant"): אזור שחרור אחד לכל פריט (מונה / מכנה של שבר), 4 פריטים במאגר ("משקל" ו"זמן"
+       הם מסיחים). שם המסך בהערת המפיקה: ImageTopDragAndDropQuestion; מצבי הרכיבים — Figma
+       5340:25539 + Drag&Drop State 1249:32691. הפריסה מרינדור השקף: הנחיה כחולה, משוואה
+       "צפיפות = [ ] / [ ]" ושורת מאגר. מפתח (הערת מפיקה): צפיפות = מסה : נפח — מונה: מסה, מכנה: נפח.
+       2 ניסיונות (התסריט שותק), רמז זמין מההתחלה (שקף 38), משוב: שקף 38.
+       פופאפים — מחוץ ל-.screen (ישירות ב-#app), מזהים s26q-*. -->
+  <section class="screen" data-screen="26" id="s26">
+    <div class="s26-stage">
+      <div class="s26-text" data-reveal="1">
+        <p class="s26-cta"><strong>أكملوا من المخزون:</strong></p>
+      </div>
+      <div class="s26-eq" data-reveal="2">
+        <span class="s26-eq__label">الكثافة</span>
+        <svg class="s26-eq__equals" viewBox="0 0 67 66" aria-hidden="true"><rect x="7" y="15" width="53" height="14" rx="1"/><rect x="7" y="37" width="53" height="14" rx="1"/></svg>
+        <div class="s26-frac">
+          <div class="s26-zone" id="s26-zone-num" data-zone="num" role="button" tabindex="0" aria-label="بسط الكسر — منطقة للإفلات" onclick="s26ZoneClick('num', event)" onkeydown="s26ZoneKey(event,'num')"></div>
+          <div class="s26-frac__line" aria-hidden="true"></div>
+          <div class="s26-zone" id="s26-zone-den" data-zone="den" role="button" tabindex="0" aria-label="مقام الكسر — منطقة الإفلات" onclick="s26ZoneClick('den', event)" onkeydown="s26ZoneKey(event,'den')"></div>
+        </div>
+      </div>
+      <div class="s26-tray" id="s26-tray" data-reveal="3" onclick="s26TrayClick(event)">
+        <div class="s26-slot"><div class="s26-card" id="s26-d-mass" data-id="mass" role="button" tabindex="0" aria-pressed="false"><span class="s26-card__text">كتلة</span></div></div>
+        <div class="s26-slot"><div class="s26-card" id="s26-d-volume" data-id="volume" role="button" tabindex="0" aria-pressed="false"><span class="s26-card__text">حجم</span></div></div>
+        <div class="s26-slot"><div class="s26-card" id="s26-d-weight" data-id="weight" role="button" tabindex="0" aria-pressed="false"><span class="s26-card__text">الوزن</span></div></div>
+        <div class="s26-slot"><div class="s26-card" id="s26-d-time" data-id="time" role="button" tabindex="0" aria-pressed="false"><span class="s26-card__text">الوقت</span></div></div>
+      </div>
+      <p class="sr-only" id="s26-live" aria-live="polite"></p>
+      <!-- מחוות-יד (גרירה) — כמו מסך 20 (#s19-gh); ממוקם ב-JS (dndGhStart) -->
+      <div class="s2-gh dnd-gh hidden" id="s26-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s26q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s26q-hint" type="button" onclick="s26OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s26q-check" type="button" disabled onclick="s26Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- פופאפ משוב (מסך 27) — מחוץ לכל .screen, ישירות ב-#app. אותו עיצוב כמו מסך 20 (s19q-*). -->
+  <div class="s8q-popup m-popup hidden" id="s26q-popup" onpointerdown="s26PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s26q-popup-title"></p>
+    <div class="s8q-popup-body" id="s26q-popup-body"></div>
+    <div class="s19-popup-actions" id="s26q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 27) — Hint Card כמו מסך 20; הטקסט: שקף 38. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s26q-hint-overlay" onclick="s26CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>الكثافة تحسب مقدار الكتلة الموجودة في كل وحدة حجم<br>للمادة.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s26CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 28 (data-screen="27") — שאלת בחירה יחידה עם תמונה (שקף 39) ============
+       תבנית: SingleChoiceQuestionImage ("שם המסך בפיגמה: SingleChoiceQuestion" בהערת המפיקה) —
+       בדיוק כמו מסך 9: פריסה/עיצוב .s8-*, אפשרויות .s3q-opt, פופאפים .s8q-*, מזהים s27q-*.
+       תוכן: תסריט ההפקה, שקף 39, מילה במילה. שני ניסיונות (התסריט שותק — ברירת-מחדל),
+       רמז זמין מההתחלה (כפתור "אפשר רמז?" מופיע בשקף). בלי סרגל התקדמות.
+       אפשרויות לפי מיקום-y עולה בשקף: א (נכון — משוב: "ארכימדס מדד את מסת הכתר, חישב את
+       צפיפותו והשווה…"), ב, ג, ד. התמונה: archimedes-crown.png (1534×1025, חולצה משקף 39) — עם זום. -->
+  <section class="screen" data-screen="27" id="s27">
+
+    <div class="s8-question">
+
+      <div class="s8-col">
+        <div class="s8-text" data-reveal="1">
+          <div class="s8-body">
+            <div class="s8-plain">
+              <p>نجح أرخميدس في قياس حجم التاج.</p>
+            </div>
+            <p class="s8-q"><strong>كيف يمكنه فحص ما إذا كان التاج مصنوعًا من الذهب الخالص؟</strong></p>
+          </div>
+        </div>
+
+        <div class="s8-answers s27-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s27qSelect('a')">
+            <span class="s3q-opt-text">قياس كتلة التاج، وحساب كثافته، ومقارنته بكثافة الذهب.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s27qSelect('b')">
+            <span class="s3q-opt-text">قياس لون التاج، ومقارنته بلون الذهب، والاستنتاج بأنه ذهب خالص.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s27qSelect('c')">
+            <span class="s3q-opt-text">قياس حجم التاج، ومقارنته بحجم الذهب، واستنتاج أنه ذهب خالص.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s27qSelect('d')">
+            <span class="s3q-opt-text">وضع التاج في الماء، والتحقق مما إذا كان يغوص واستنتاج أنه ذهب خالص.</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="s8-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+        <div class="s8-img-frame">
+          <img class="zoomable-image s8-photo" src="assets/images/archimedes-crown.png"
+               alt="أرخميدس، ذو شعر مجعد ولحية، يحمل بيديه تاجًا ذهبيًا ويفحصه؛ أمامه وعاء ماء وميزان قديم" loading="lazy">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s27q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s27q-hint" type="button" onclick="s27qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s27q-check" type="button" disabled onclick="s27qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 28) — מחוץ לכל .screen, ישירות ב-#app. עיצוב זהה למסך 9;
+       ללא כפתור-סגירה (_global-components.md → "No manual close"); גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s27q-popup"
+       onmousedown="s27qPopupMouseDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s27q-popup-title"></p>
+    <div class="s8q-popup-body" id="s27q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 28) — Hint Card כמו מסך 9; הטקסט: שקף 39. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s27q-hint-overlay"
+       onclick="s27qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>لحساب الكثافة يلزم وجود معطيين.</p>
+        <p>الحجم قد قاسه أرخميدس بالفعل، فما المعطى الإضافي الذي ينقصه؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s27qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ פופאפ משותף — כרטיסיות מסך 2 ============
+       Figma: ContentPopup (node 171:3370, "720 - UI Templates" → Design
+       Guidelines) + Shared popup backdrop (720-design-guidelines →
+       shared-visual-vocabulary.md) + General Popup Close Btn (node
+       249:5261). instance אחד גלובלי, מחוץ לכל .screen, ב-#app בלבד —
+       תוכנו מוחלף לפי הכרטיסייה שנלחצה (openImageCardPopup ב-script.js),
+       באותו דפוס בדיוק כמו RecallPopup (720-templates → _global-
+       components.md): overlay+panel כיחידה אחת, סוגר ב-X/backdrop/Escape.
+
+       ⚠️ ה-mockup ב-Figma/בתסריט (275:6982, "PopupPage") מציג כל תוכן-
+       פופאפ כפריים מלא-קנבס עם סרגל-ניווט/flag-btn משלו — זו מוסכמת
+       ה-mockup הרגילה של הקובץ (כל state מוצג כקנבס מלא, ראו איך גם
+       מסך 1 הוצג כך), לא הוכחה שזו ניווט-למסך-נפרד. הפרשנות שנבחרה כאן:
+       overlay אמיתי (backdrop משותף, לא מסך נוסף) — תואמת גם את לשון
+       המפיקה/המשתמש ("פופאפ", "אין צורך בגלילה" — תיאור טבעי לפאנל
+       קומפקטי, לא למסך מלא). לא נמצא כפתור-X ב-275:6982 עצמו, אך זהו
+       "general popup" קנוני לפי 720-design-guidelines
+       (components-icons-states.md → "General Popup Close Btn": "Used to
+       dismiss general popup layers" — לא Feedback/Hint/Zoom, שהם היחידים
+       המוחרגים) — נוסף כאן לפי החוזה הקנוני, לא הומצא משום מקום.
+
+       ⚠️ לא מומש: תיבת "character" (תמונה קטנה + כיתוב, למשל "יולי
+       מרימה פסלון כבד/קל" לפי שקפים 5/6) שמופיעה ליד הכותרת ב-Figma —
+       הנכס (תצלום אדם מרים פסלון) לא סופק. ראו ARCHITECTURE.md. -->
+  <div class="popup-backdrop hidden" id="img-card-popup-backdrop"
+       onclick="closeImageCardPopupOnBackdrop(event)">
+    <div class="content-popup" role="dialog" aria-modal="true" aria-label="معلومات إضافية">
+      <button class="general-popup-close" type="button"
+              onclick="closeImageCardPopup()" aria-label="إغلاق">
+        <img class="general-popup-close__x" src="../unit-assets/icons/icon-popup-close-x.svg" alt="" loading="lazy">
+        <img class="general-popup-close__x general-popup-close__x--hover" src="../unit-assets/icons/icon-popup-close-x-hover.svg" alt="" loading="lazy">
+      </button>
+      <div class="content-popup-body" id="img-card-popup-body"></div>
+    </div>
+  </div>
+
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen, ישירות ב-#app
+       (720-templates _global-components.md). Wired by delegation in ../unit-js/25-report.js — no onclick. -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل وجدتم مشكلة؟" title="هل وجدتم مشكلة؟">
+    <span class="flag-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 12 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.397164 17C0.177722 17 0 16.8239 0 16.6065V0.393501C0 0.176082 0.177722 0 0.397164 0C0.616607 0 0.794329 0.176082 0.794329 0.393501V16.607C0.794329 16.8245 0.616607 17.0005 0.397164 17.0005V17Z" fill="currentColor"/>
+        <g transform="translate(0, 0.5933)">
+          <path d="M2.76227 9.31542C1.91972 9.31542 1.06958 9.15545 0.213483 8.71363C0.0823588 8.64599 0 8.51124 0 8.36469V0.950975C0 0.814619 0.0715221 0.687925 0.188558 0.615989C0.305594 0.54459 0.45189 0.537611 0.574886 0.598811C0.577053 0.599884 0.578679 0.600958 0.580846 0.602032C2.31309 1.49586 4.05563 1.046 5.90003 0.569821C7.80946 0.0770055 9.78336 -0.431915 11.7865 0.601495C11.9176 0.669136 12 0.803882 12 0.950438V8.36415C12 8.4946 11.9344 8.617 11.8255 8.69001C11.7166 8.76302 11.5774 8.77805 11.4555 8.72974C11.443 8.7249 11.4311 8.71954 11.4197 8.71363C9.68745 7.8198 7.94491 8.26967 6.10051 8.7453C5.00709 9.02714 3.89199 9.31489 2.76281 9.31489L2.76227 9.31542ZM0.793787 8.11935C2.45559 8.87307 4.13094 8.44038 5.90003 7.98407C7.62469 7.53903 9.40191 7.08057 11.2062 7.75806V1.19631C9.54441 0.442591 7.86906 0.875281 6.09997 1.33159C4.37531 1.77663 2.59755 2.23509 0.793787 1.5576V8.11935Z" fill="currentColor"/>
+        </g>
+      </svg>
+    </span>
+    <span class="flag-btn__label">هل وجدتم مشكلة؟</span>
+  </button>
+
+  <!-- ═══ "מצאתם בעיה?" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-body-matter-01-02 (2026-11-02). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما ينبغي؟<br>أخبرونا بما حدث حتى نتعامل معه.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ما حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال تبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقينا التبليغ وسنهتم بالأمر بأقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق لن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261102c"></script>
+<script src="../unit-js/20-xapi.js?v=20261102c"></script>
+<script src="../unit-js/25-report.js?v=20261102c"></script>
+<script src="../unit-js/40-resume.js?v=20261102c"></script>
+<script src="../unit-js/50-loader.js?v=20261102c"></script>
+<script src="../unit-js/05-media.js?v=20261102c"></script>
+<script src="../unit-js/05-motion.js?v=20261102c"></script>
+<script src="../unit-js/07-btn-width.js?v=20261103"></script>
+<script src="script.js?v=20261102c"></script>
+<script src="applet/applet.js?v=20261102c"></script>
+<script src="applet/applet2.js?v=20261102c"></script>
+<script src="../unit-js/90-boot.js?v=20261102c"></script>
+</body>
+</html>

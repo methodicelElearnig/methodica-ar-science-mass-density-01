@@ -1,0 +1,103 @@
+/* יישומון גרירה — מסך 17. מסגרת 625×628; כל המיקומים בפיקסלים בתוכה (ראו applet.js). */
+.ap-root {
+  direction: ltr;               /* סדר פיזי יציב; הטקסטים עצמם rtl */
+  background: transparent;
+  overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ריבוע "גררו לכאן ושחררו" — ברירת מחדל / רחיפה לפי מצבי Drop Zone (Drag&Drop State) */
+.ap-zone {
+  position: absolute;
+  left: 34px; top: 200px; width: 220px; height: 84px;
+  box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px dashed rgba(0, 0, 0, 0.6);
+  border-radius: 16px;
+  background: #f3f4f5;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px; font-weight: 400; color: #303030;
+  direction: rtl;
+  transition: border-color .15s, background-color .15s;
+}
+.ap-zone.is-over {
+  border-color: var(--subject-500, #019de5);
+  background: #fff;
+}
+
+.ap-glass {
+  position: absolute;
+  left: 14px; top: 389px; width: 260px; height: auto;
+  pointer-events: none;
+}
+
+.ap-label {
+  position: absolute;
+  width: 234px; box-sizing: border-box;
+  padding: 6px 10px;
+  display: flex; flex-direction: column; align-items: center;
+  background: #fff;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 12px;
+  font-family: Calibri, Arial, sans-serif;
+  direction: rtl; text-align: center; color: #303030;
+  line-height: 1.2;
+}
+.ap-label b { font-size: 22px; font-weight: 700; }
+.ap-label span { font-size: 18px; font-weight: 400; }
+
+/* קוביה */
+.ap-cube {
+  position: absolute;
+  width: 160px; height: 160px;
+  cursor: grab;
+  touch-action: none;
+  z-index: 3;
+  outline: none;
+  will-change: left, top, transform;
+}
+.ap-cube.is-dragging { cursor: grabbing; z-index: 10; filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .28)); }
+.ap-cube:focus-visible { outline: 3px solid var(--subject-500, #019de5); outline-offset: 4px; border-radius: 10px; }
+.ap-cube__img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+
+/* גוון מים על החלק השקוע של הקוביה: עותק של התמונה עצמה בגוון כחול (בצורת
+   הקוביה, לא מלבן; ללא mask-image — נחסם ב-file://) חתוך בקו המים */
+.ap-cube__tint {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain;
+  filter: sepia(1) hue-rotate(175deg) saturate(3) brightness(.9);
+  clip-path: inset(var(--sub, 0%) 0 0 0);
+  opacity: 0; transition: opacity .25s;
+  pointer-events: none;
+}
+.ap-cube.is-in-water .ap-cube__tint { opacity: .5; }
+
+/* כיתוב הצפיפות על הקוביה — נשאר תמיד, גם בתוך הכוס */
+.ap-cube__tag {
+  position: absolute; left: 50%; top: 56%;
+  transform: translate(-50%, -50%);
+  min-width: 104px; padding: 4px 8px;
+  display: flex; flex-direction: column; align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 10px;
+  font-family: Calibri, Arial, sans-serif;
+  direction: rtl; color: #303030; line-height: 1.1; white-space: nowrap;
+  pointer-events: none;
+}
+.ap-cube__tag b { font-size: 30px; font-weight: 700; }
+.ap-cube__tag i { font-size: 18px; font-style: normal; font-weight: 400; }
+
+/* צל הקוביה במקומה כשהיא נגררת / בתוך הכוס — אותה צורה, שקיפות גבוהה מאוד */
+.ap-ghost {
+  position: absolute;
+  width: 160px; height: 160px; object-fit: contain;
+  opacity: 0; transition: opacity .2s;
+  pointer-events: none;
+  z-index: 1;
+}
+.ap-ghost.is-on { opacity: .15; }
+
+/* מסך 21 (applet2.js) — תווית שורה אחת מתחת לגוף */
+.ap-label--one { padding: 8px 10px; }
+.ap-label--one b { font-size: 24px; }

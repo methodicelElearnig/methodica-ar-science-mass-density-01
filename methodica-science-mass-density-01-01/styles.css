@@ -1,0 +1,3520 @@
+/* =========================================================
+   לומדה 720 — מדעים יעד 10 | מסה וצפיפות | סיין 1
+   שלב תשתית (Prompt 1) — אין תוכן אמיתי עדיין. מבנה זה הועתק
+   מהמנוע המאומת של methodica-science-mass-measure-03-01 (יעד 3,
+   הפרויקט האחרון שהושלם), ריק מתוכן פרטני של אותו פרויקט.
+   ========================================================= */
+
+/* ---------- Subject theme tokens (720-templates skill:
+   _global-components.md → "Subject theme colors")
+   נושא "מדעים" — ערכי הכחול הרשמיים לפי הנספח המאוחד ב-
+   תבנית-פתיחה-לפרויקט-לומדה-חדש.md (זהים ליעד 2/3, לא הומצאו). ---------- */
+:root {
+  --subject-500: #019de5; /* Science theme — פוקוס/נבחר/גרירה */
+  --subject-700: #007ac6; /* Science theme — hint/back/כפתורים */
+  --subject-100: #d4f3ff; /* Science theme — רקע נבחר/הונח (מסך 3: כותרת טבלה, גב כרטיסייה הפוכה) */
+}
+
+/* ---------- Fonts (עותק אחד לכל היחידה, ב-../unit-assets/fonts —
+   כל סיין הוא חבילה עצמאית, בלי תלות בתיקיה משותפת) ---------- */
+@font-face {
+  font-family: 'Assistant';
+  src: url('../unit-assets/fonts/assistant-hebrew.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Assistant';
+  src: url('../unit-assets/fonts/assistant-latin.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                 U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+/* ---------- Reset ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  direction: rtl;
+  font-family: Calibri, Arial, sans-serif;
+  background: #ffffff;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+}
+button:disabled { cursor: default; }
+img { display: block; max-width: none; }
+
+/* ---------- Canvas & viewport scaling ---------- */
+#app {
+  width: 1280px;
+  height: 710px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  background: #fff;
+  overflow: hidden;
+  /* רווח צדדי נוסף מכל צד מעבר למסגרת העיצוב 1280 (מוגדר ב-scaleApp) —
+     תוכן ו-chrome מיושרים למסגרת הזו, כמו כפתורי הסרגל התחתון. */
+  --ex: 0px;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.screen.active { display: block; }
+
+/* transitions removed on purpose — Figma states change instantly */
+* { transition: none !important; }
+
+/* =========================================================
+   מסך 1 — FullImageWithTextOverlay
+   Figma: node 1038:19205 ("FullImageWithTextOverlay - A").
+   תבנית: 720-templates → FullImageWithTextOverlay.md — ראו שם
+   לבעלות המדויקת (מבנה/גיאומטריה מהתבנית, ערכים חזותיים מ-Figma).
+   ========================================================= */
+
+/* רצועת תמונה/וידאו מלאה — inset יחסי לגובה סרגל-הניווט של הפרויקט
+   הזה (74px), לא גובה מוחלט מועתק (FullImageWithTextOverlay.md §A
+   "Band geometry"). top:0 — ה-flag-btn צף מעליה עם רקע אטום משלו
+   (תואם את Figma הנוכחי, ראו ARCHITECTURE.md). */
+.fito-img {
+  position: absolute;
+  inset: 0 0 74px 0;
+  overflow: hidden;
+  background: #000; /* letterbox fallback — video aspect may not equal the band's */
+}
+
+/* וידאו הוראתי (learner-facing, לא דקורטיבי) — controls טבעיים,
+   pointer-events רגיל (לא none — ה-none בתבנית מיועד ל-<img> דקורטיבי
+   בלבד, ראו FullImageWithTextOverlay.md §A). */
+.fito-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── כרטיס טקסט צף ───
+   width: fit-content + max-width guard — לא רוחב קבוע (FullImageWith
+   TextOverlay.md §B: ריפוד שווה משני הצדדים אפשרי רק כשהרוחב נצמד
+   לשורה הארוכה ביותר). bottom/right נגזרים מהמיקום ב-Figma של הכרטיס
+   בתוך רצועת ה-"character" (635px גובה, שקולה ל-inset 0/0/74/0 כאן):
+   40px מתחתית הרצועה + 74px גובה הסרגל = 114px; 40px מהקצה הימני. */
+.fito-text {
+  position: absolute;
+  right: calc(10px + var(--ex, 0px));
+  bottom: 114px;
+  /* כרטיס כמעט-מרובע (הערת לקוחה: לא להסתיר את שקיעת החפצים) */
+  width: 400px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  direction: rtl;
+  box-sizing: border-box;
+}
+.fito-sound {
+  position: absolute;
+  left: calc(40px + var(--ex, 0px));
+  bottom: 114px;
+  /* Figma 716:16773 — Action Status Icons: 40×40, black circle, white glyph; no extra chrome */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #303030;
+  color: #ffffff;
+  cursor: pointer;
+}
+.fito-sound:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+/* center aligned with .flag-btn icon (flag left 32 + 88/2 = center 76) */
+.fito-play { left: calc(56px + var(--ex, 0px)); background: transparent; }
+#s0-sound { left: calc(112px + var(--ex, 0px)); }
+/* pause (40:435): 40px circle + bars at 11.86/10.85 */
+.fito-play__pause { position: relative; width: 40px; height: 40px; display: block; }
+.fito-play__pause img { position: absolute; display: block; max-width: none; }
+.fito-play__pause .fi-pause-circle { left: 0; top: 0; width: 40px; height: 40px; }
+.fito-play__pause .fi-pause-bars { left: 11.86px; top: 10.85px; width: 16.281px; height: 18.293px; }
+/* play (40:436, black/large 80px) scaled to 40px so it matches pause size */
+.fito-play__play { position: relative; width: 40px; height: 40px; display: none; }
+.fito-play__play img { position: absolute; display: block; max-width: none; }
+.fito-play__play .fi-play-circle { left: 0; top: 0; width: 40px; height: 40px; }
+.fito-play__play .fi-play-tri { left: 31.54%; top: 22.46%; width: 48.9%; height: 55.08%; }
+.fito-play.is-paused .fito-play__play { display: block; }
+.fito-play.is-paused .fito-play__pause { display: none; }
+.fito-sound__off, .fito-sound__on { width: 22px; height: 22px; }
+.fito-sound__on { display: none; }
+.fito-sound.is-on .fito-sound__on { display: block; }
+.fito-sound.is-on .fito-sound__off { display: none; }
+
+.fito-text p {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #303030;
+  text-align: right;
+  line-height: normal;
+  margin: 0;
+  width: 100%;
+}
+/* הדגשת run שני (bold, ללא color override) — תסריט שקף 3 */
+.fito-text p strong {
+  font-weight: 700;
+}
+
+/* =========================================================
+   מסך 2 — כרטיסיות תמונה (Image Cards → Popups)
+   Figma node 4504:21693 — ראו ARCHITECTURE.md לפירוט המלא.
+   ========================================================= */
+.s1-content {
+  position: absolute;
+  inset: 0 var(--ex, 0px) 74px var(--ex, 0px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+}
+.s1-text {
+  width: 810px;
+  max-width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+}
+.s1-text p {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #303030;
+  line-height: normal;
+  margin: 0;
+}
+
+.s1-cards-row {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* כרטיסייה — 283×283, מסגרת 3px זהה ל-.option-card-frame שנבנה במסך 1
+   המקורי (הוסר, אך אותה מסגרת חזותית חוזרת ב-Figma באותו קובץ — לא
+   צבע/רדיוס מומצא). התמונה ממלאת את כל שטח הכרטיסייה עד למסגרת (ללא
+   16px padding פנימי כמו ב-Figma הגנרי — סטייה מכוונת לפי הנחיית
+   המפיקה: "התמונות צריכות למלא את כול המסגרת שלהן"). */
+.img-card {
+  width: 283px;
+  height: 283px;
+  padding: 0;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 3px solid rgba(201, 206, 216, 0.4);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+.img-card:hover,
+.img-card:focus-visible {
+  border-color: var(--subject-500);
+}
+.img-card:focus-visible {
+  outline: 2px solid var(--subject-500);
+  outline-offset: 2px;
+}
+.img-card-inner {
+  width: 100%;
+  height: 100%;
+  background: #d9d9d9;
+  display: block;
+}
+.img-card-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+}
+
+/* =========================================================
+   מסך 3 — קוביות ברזל מתהפכות + טבלת מסה/נפח
+   Figma node 4504:21687 (layout) / 1126:21308 (table) / 1013:15054
+   (scrollbar). ראו ARCHITECTURE.md לפירוט המלא.
+   ========================================================= */
+.s2-content {
+  position: absolute;
+  inset: 0 var(--ex, 0px) 74px var(--ex, 0px);
+  display: flex;
+  flex-direction: column;
+}
+.s2-header {
+  /* ⚠️ תוקן (סבב-תיקונים נפרד): הגרסה הקודמת (רוחב-מלא, ללא קופסה
+     ממורכזת) הייתה מבוססת על אבחון-יתר של "חפיפה עם החצי הימני" —
+     אבחון שהתברר כשגוי מול הפיגמה עצמה. נבדק ישירות מול Figma node
+     `2131:18649` ("Text Content Layout", אותו component-library
+     component המשמש גם במסכים 1/2), הפעם עם `get_metadata` על ה-
+     instance המדויק בתוך מסגרת מסך 3 (`4504:21687`): מיקומו בפועל הוא
+     `x=235, y=76.25` בתוך קנבס 1280×710, `width=810` — כלומר קופסה
+     **ממורכזת אופקית** (235 = (1280-810)/2 בשני הצדדים), **לא** צמודה
+     לקצה הימני ולא רוחב-מלא. אומת גם מול צילום-מסך אמיתי של המסגרת
+     המלאה (`get_screenshot` על `4504:21687`): הכותרת/ההנחיה יושבות
+     ממורכזות עם שוליים ניכרים בשני הצדדים, לא נצמדות לקצה הימני של
+     הקנבס. אין חפיפה אנכית עם שורת-הכרטיסיות בפועל (הכרטיסים מתחילים
+     ב-y≈250 לפי אותו metadata, הרבה מתחת לתחתית תיבת-הטקסט ב-y≈194) —
+     ה"חפיפה" שדווחה בסבב הקודם הייתה כנראה תוצאה של ניחוש-גיאומטריה
+     לפני שנבדקו הקואורדינטות המדויקות, לא עובדה שחזרה על עצמה כאן. */
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 810px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-top: 64px; /* ≈76px ב-Figma (טרם ה-tier הראשון, 20px/מרוכז,
+    שהושמט כאן — "content may flex the template" per figma-lomda-
+    builder; ה-64px נבחר כך שהכותרת (tier "2") תתחיל קרוב-ל-y-בפועל
+    שהייתה מקבלת גם עם ה-tier הראשון, בלי לייצר רווח ריק מיותר) */
+  display: flex;
+  flex-direction: column;
+  /* אין align-items כאן בכוונה: הילדים (title/instructions) הם
+     block-level ברוחב-מלא של הקופסה הקבועה (810px), כך שאין להם קצה
+     "צר" שדורש יישור-cross-axis — היישור הימני שלהם מגיע מ-text-align:
+     right הפנימי שלהם, לא מ-align-items. ראו .s3q-question/.s3q-half
+     לדוגמה-נגדית שכן צריכה align-items (ילד ברוחב fit-content) —
+     ⚠️ שם `flex-start` הוא הערך הנכון לימין-פיזי תחת RTL column, לא
+     `flex-end` (מאומת אמפירית + מול הרפרנס, ראו ARCHITECTURE.md). */
+  gap: 8px;
+}
+.s2-title {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: #303030;
+  text-align: center; /* הנחיית מפיקה מפורשת — סטייה מכוונת מ-text-right
+    הגנרי של tier "2" ב-Figma component (2131:18649); ראו ARCHITECTURE.md */
+  line-height: normal;
+}
+.s2-instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.s2-instructions p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #303030;
+  text-align: center; /* הנחיית מפיקה מפורשת — סטייה מכוונת מ-text-right
+    הגנרי של tier "Text" ב-Figma component (2131:18649); ראו ARCHITECTURE.md */
+  line-height: normal;
+}
+.s2-instructions p strong { font-weight: 700; }
+/* מסך 3 בלבד (לפי בקשת הלקוחה): כותרת + הנחיה מיושרות לימין, בקו הימני של
+   תוכן המסך (אותו padding כמו חצי-הכרטיסיות), לא ממורכזות בקופסה של 810px. */
+.s2-header { width: 100%; margin: 0; padding-right: 40px; padding-left: 40px; }
+.s2-header .s2-title,
+.s2-header .s2-instructions p { text-align: right; }
+
+/* חלוקה חצי-חצי — הנחיית מפיקה מפורשת (לא ה-Figma הגנרי, ששם שורת-4-
+   כרטיסיות תופסת רוחב מלא). כל חצי 50%, ללא gap ביניהם (הפרדה חזותית
+   מגיעה מה-padding הפנימי של כל צד). */
+.s2-split {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+}
+.s2-cards-half,
+.s2-table-half {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 16px 40px 24px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.s2-cards-half {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── רשת כרטיסיות 2×2 ─── */
+.s2-cards-grid {
+  /* ⚠️ ממלא את מלוא .s2-cards-half (לא width:100% + max-width + aspect-
+     ratio על הכרטיס) — גרסה קודמת גזרה את גובה הרשת מהרוחב (aspect-
+     ratio:1 לכל כרטיס), וזה גרם לרשת "לגלוש" מתחת לאזור-התוכן הזמין
+     (חפיפה עם ה-bottom-bar) בגבהים נמוכים. `height:100%` +
+     `grid-template-rows` מבטיחים שהרשת לעולם לא תחרוג מהגובה שהוקצה
+     בפועל — הכרטיסים עשויים לצאת מלבניים במקום ריבועיים אם הגובה
+     הזמין צר יותר מהרוחב, וזו פשרה מכוונת למניעת חפיפה. */
+  position: relative; /* עוגן למחוות-היד (.s2-gh), ראו script.js */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  width: calc(100% - 40px); /* כל כרטיסייה צרה ב-20px (2 עמודות) — הגובה ללא שינוי */
+  height: 100%;
+  max-width: 480px;
+  max-height: 520px;
+}
+
+/* ─── כרטיסייה מתהפכת (FlipCardsReveal) ───
+   perspective על הכרטיס, preserve-3d על ה-inner, rotateY על .is-flipped.
+   מסגרת/רדיוס זהים ל-.img-card (283×283 ב-Figma למסך-שורה-אחת). ממלא
+   את תא-הרשת שלו במלואו (ראו הערה מעל .s2-cards-grid). */
+.frc-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+.frc-card-inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 500ms !important; /* חריגה מודעת מ"transition:none" הגלובלי — זו אנימציית-ההיפוך הפונקציונלית של הכרטיס עצמו, לא reveal קישוטי (animation-system → Rule precedence #2: functional animation שהרכיב כבר מחזיק בה) */
+}
+.frc-card.is-flipped .frc-card-inner {
+  transform: rotateY(180deg);
+}
+.frc-card:focus-visible .frc-card-front,
+.frc-card:focus-visible .frc-card-back {
+  outline: 2px solid var(--subject-500);
+  outline-offset: 2px;
+}
+.frc-card-front,
+.frc-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.frc-card-front {
+  background: #ffffff;
+  border: 3px solid rgba(201, 206, 216, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.frc-card-back {
+  background: var(--subject-100, #d4f3ff);
+  border: 3px solid var(--subject-500);
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* תצלומי-הקוביות בפועל (סופקו ע"י המפיקה: assets/images/cube-a/b/c/d.png,
+   שמות-קבצים אנגליים לפי מוסכמת-הפרויקט — שונו מהשמות המקוריים בעברית-
+   עם-רווחים שסופקו, כדי לא להסתמך על escaping של רווח/עברית ב-URL).
+
+   ⚠️ גודל-תצוגה: תיקון דו-שלבי, לא רק "אותו height% לכולן" ולא רק
+   "יחס-נפחים גולמי" — שניהם נבדקו ונמצאו לא-מספיקים לבד:
+   1. **מדידה בפועל (Python/PIL+scipy, connected-component של הפיקסלים
+      הלא-רקע, לא threshold גולמי — יציב הרבה יותר מול "צל רך" שדולף
+      עד קצה-הקנבס)**: לכל תמונה יש יחס אחר בין שטח-הקנבס לגודל-האובייקט
+      (הקובייה) בתוכה בפועל — לדוגמה קובייה ד ממלאת ~80% מגובה-הקנבס
+      שלה, קובייה ג רק ~57% מגובה-הקנבס שלה (הרבה "רקע ריק" סביבה). לכן
+      "אותו height% לקנבס של כולן" **לא** היה מציג את הקוביות עצמן
+      בגודל הנכון (קובייה ג הייתה נראית גדולה מקובייה ד, למרות שנפח ד
+      [4 סמ"ק] > נפח ג [3 סמ"ק]) — נבדק ואומת שזה קורה בפועל.
+   2. **תיקון**: `height%` (על ה-`<img>` השלם, כולל הרקע הלבן שסביב
+      הקובייה) מחושב כך שה**קובייה עצמה** (לא הקנבס) תצא יחסית לצד-
+      הקובייה האמיתי (∝ שורש-שלישי-של-הנפח: 1:∛2:∛3:∛4 ≈
+      1:1.26:1.44:1.59), על בסיס יחס-אובייקט-לקנבס שנמדד בפועל לכל
+      תמונה בנפרד. תוצאה: קובייה ג (שיחס-האובייקט-שלה נמוך יחסית)
+      מקבלת את ה-height% הגבוה ביותר (88%, כדי שהאובייקט הקטן-יחסית-
+      לקנבס-שלה עדיין ייצא בגודל הנכון), לא קובייה ד — זה **מכוון**,
+      לא הפוך-בטעות: ה-height% הוא של הקנבס-כולל-רקע, לא של הקובייה.
+      אומת ב-Playwright אחרי החישוב: גובה-התמונה המרונדר של כל קובייה
+      (`getBoundingClientRect`) עולה בקנה אחד עם החישוב, וחזותית
+      (screenshot) הקוביות נראות בסדר-גודל עולה נכון א<ב<ג<ד. `width:
+      auto` שומר על יחס-הגובה/רוחב המקורי של כל תצלום בנפרד (בלי
+      עיוות) — הסקאלה חלה רק על ה-height. */
+.frc-cube-img {
+  display: block;
+  width: auto;
+  max-width: 92%; /* רשת-ביטחון — לא אמור להגיע לזה בפועל לפי החישוב, אבל מונע גלישה תיאורטית אם הכרטיס יוצא צר במיוחד */
+}
+.frc-cube-img--a { height: 31%; }   /* תמונות קובייה חתוכות הדוק (בלי רקע/צל) — הוקטנו ~12% לפי בקשת הלקוחה */
+.frc-cube-img--b { height: 39%; }
+.frc-cube-img--c { height: 44%; }
+.frc-cube-img--d { height: 48%; }
+
+.frc-card-back-content {
+  width: 100%;
+  text-align: center;
+  direction: rtl;
+}
+.frc-card-back-content p.frc-letter {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #303030;
+  margin: 0 0 8px;
+}
+.frc-card-back-content p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #303030;
+  line-height: 1.5;
+}
+
+/* ─── מחוות-יד (Cursor Click) ───
+   Figma node 2915:35189 ("Cursor Click", Science/כחול — מאומת מול
+   fill/stroke בפועל, לא לפי שם-פונקציה, ראו index.html). ממוקם ע"י JS
+   (left/top) מעל הכרטיס הראשון-הלא-הפוך; יד סטטית, שתי טבעות מונפשות.
+   pointer-events:none חובה — לעולם לא לחסום את הכרטיס שמתחתיה. */
+.s2-gh {
+  position: absolute;
+  width: 28px;
+  height: 33px;
+  pointer-events: none;
+  z-index: 5;
+}
+.s2-gh.hidden { display: none; }
+.s2-gh-hand {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 33px;
+}
+.s2-gh-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+.s2-gh-ring--big {
+  width: 64px;
+  height: 64px;
+  left: 50%;
+  top: 50%;
+  margin-left: -32px;
+  margin-top: -32px;
+  animation: s2-gh-ring-big 2000ms 2 forwards;
+}
+.s2-gh-ring--small {
+  width: 12px;
+  height: 12px;
+  left: 50%;
+  top: 50%;
+  margin-left: -6px;
+  margin-top: -6px;
+  animation: s2-gh-ring-small 2000ms 2 forwards;
+}
+@keyframes s2-gh-ring-big {
+  0%    { opacity: 0;    scale: 0.05 0.05; }
+  5%    { opacity: 0.85; }
+  7.5%  {                scale: 0.22 0.22; }
+  22.5% {                scale: 0.6  0.6; }
+  35%   { opacity: 0.65; }
+  37.5% {                scale: 0.85 0.85; }
+  45%   { opacity: 0.35; }
+  50%   { opacity: 0;    scale: 1 1; }
+  100%  { opacity: 0;    scale: 1 1; }
+}
+@keyframes s2-gh-ring-small {
+  0%   { opacity: 0;    scale: 0.2 0.2; }
+  3%   { opacity: 0.75; scale: 1   1; }
+  10%  { opacity: 0;    scale: 1.1 1.1; }
+  100% { opacity: 0;    scale: 1.1 1.1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .s2-gh { display: none !important; }
+}
+
+/* ─── מחוות-יד לשאלות גרירה (מסכים 20, 27) ───
+   אותו נכס יד/טבעות כמו .s2-gh. שרשרת-שלבים בבעלות JS (dndGhStart): הופעה + לחיצה בכרטיס →
+   גרירה קדימה בלבד (transition על left/top) → עמידה ביעד → דהייה במקום → איפוס מיקום רק כשהיד
+   שקופה לגמרי. הטבעות מוצגות רק בשלב הלחיצה. */
+.dnd-gh {
+  opacity: 0;
+  transition: opacity 250ms ease !important;
+}
+.dnd-gh.is-on { opacity: 1; }
+.dnd-gh.is-moving { transition: opacity 250ms ease, left 1100ms ease-in-out, top 1100ms ease-in-out !important; }
+.dnd-gh .s2-gh-ring { display: none; }
+.dnd-gh.is-click .s2-gh-ring { display: block; }
+
+/* ─── טבלה (Table) ───
+   Figma node 1126:21308, מותאם לפי הנחיית מפיקה: רק שורה עליונה תכלת
+   (--subject-100), שאר השורות לבנות; שורה עליונה bold רגיל (700, לא
+   סמי-בולד 600 כמו ב-Figma הגנרי); עמודה ימנית (קובייה) סמי-בולד (600)
+   בשורות-הנתונים (בכותרת — כלל-השורה [bold 700] גובר, ראו index.html).
+   עמודת-קובייה צרה משמעותית מעמודת-התשובה — לפי הנחיית מפיקה מפורשת
+   ("כי סך הכול מופיעה אות אחת שמה"). table-layout:fixed + רוחב מוגדר
+   רק על עמודת-הקובייה גורם לעמודת-התשובה לקבל אוטומטית את כל היתר. */
+.s2-table-caption {
+  margin: 0 0 8px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #303030;
+  text-align: right;
+}
+.s2-table-caption strong { font-weight: 700; }
+
+.s2-table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 8px;
+  /* ⚠️ direction:ltr על הקונטיינר-הגולל עצמו (לא על התוכן!) — הנחיית-
+     עבודה גלובלית של הפרויקט: "סקרולבר תמיד בצד ימין, לא בשמאל".
+     דפדפנים ממקמים פס-גלילה אנכי בצד התואם ל-direction (rtl→שמאל,
+     ltr→ימין) — ללא זה, הירושה מ-html[dir=rtl] הייתה שמה את הפס
+     בצד שמאל של התיבה הזו. `.s2-table` בפנים מקבל `direction:rtl`
+     בחזרה כדי שסדר-העמודות/תוכן-הטבלה יישארו RTL כרגיל (ראו
+     תבנית-פתיחה-לפרויקט-לומדה-חדש.md). */
+  direction: ltr;
+}
+/* פס-גלילה מותאם — רפרנס Figma node 1013:15054 ("scrolling"): track
+   אפור-שקוף מעוגל, thumb כהה-שקוף מעוגל. עיצוב WebKit/Chromium בלבד
+   (יעד הדפדפן של הפרויקט) — לא native מלא. */
+.s2-table-scroll::-webkit-scrollbar { width: 12px; }
+.s2-table-scroll::-webkit-scrollbar-track { background: rgba(201, 206, 216, 0.4); border: 0.5px solid #f3f4f5; border-radius: 16px; }
+.s2-table-scroll::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.56); border-radius: 24px; }
+.s2-table-scroll::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+
+/* ⚠️ עיצוב תאי-הטבלה לפי Figma 720 — UI Templates, node 716:20555 →
+   "Table Layout" (2044:20051) + "Table Cell States" (507:7818): גובה-שורה
+   52, padding 4/12, Assistant 22px #303030, טקסט מיושר לימין. כותרת:
+   רקע --subject-100, SemiBold 600, גבול #d4d4d4 (למעלה/למטה/ימין, בלי
+   שמאל), רדיוס 8 בפינות העליונות. שורות-נתונים: רקע לבן, Regular 400,
+   גבול #ececec (למטה + שמאל, ובעמודה הימנית גם ימין). סוטה בכוונה
+   מהנחיות-מפיקה קודמות (bold 700 / טקסט ממורכז / אות-קובייה 600) — לפי
+   בקשה מפורשת "בדיוק כמו ה-Figma". רוחב עמודת-הקובייה נשאר צר (76px). */
+.s2-table {
+  direction: rtl; /* משחזר RTL לתוכן/סדר-העמודות — ראו הערה מעל .s2-table-scroll */
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+.s2-table th,
+.s2-table td {
+  box-sizing: border-box;
+  height: 52px;
+  padding: 4px 12px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px;
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+  vertical-align: middle;
+}
+/* כותרת — תכלת + SemiBold 600 */
+.s2-table thead th {
+  background: var(--subject-100, #d4f3ff);
+  font-weight: 600;
+  border-top: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
+  border-right: 1px solid #d4d4d4;
+}
+.s2-table thead th:first-child { border-top-right-radius: 8px; }
+.s2-table thead th:last-child { border-top-left-radius: 8px; }
+/* שורות-נתונים — רקע לבן, Regular 400, גבול #ececec */
+.s2-table tbody td {
+  background: #ffffff;
+  font-weight: 400;
+  border-bottom: 1px solid #ececec;
+  border-left: 1px solid #ececec;
+}
+.s2-table tbody td:first-child { border-right: 1px solid #ececec; }
+/* עמודת-קובייה — צרה (אות בודדת בלבד); ראשונה ב-DOM = פיזית ימין תחת
+   RTL אמיתי (ראו הערת-הסדר ב-index.html). */
+.s2-th-cube,
+.s2-td-cube { width: 76px; }
+/* כותרת העמודה השמאלית — שבר מתמטי: מסה מעל נפח */
+.s2-table .s2-th-answer { line-height: 1.15; text-align: center; }
+.s2-th-frac { display: inline-flex; flex-direction: column; align-items: stretch; vertical-align: middle; }
+.s2-th-frac-num, .s2-th-frac-den { text-align: center; }
+.s2-th-frac-num { border-bottom: 1.5px solid currentColor; }
+.s2-table th { white-space: nowrap; }
+.s2-td-answer { padding: 4px 10px; }
+/* מסך 2 בלבד: רוחב הטבלה לפי התוכן (לא נמתחת לכל החצי), צמודה לימין
+   (תחת הכיתוב), ורווח של 10px בין הטבלה לסקרולבר. כל עמודה ימנית
+   (חוץ מהכותרת) סמי-בולד 600 לפי בקשה. */
+.s2-table-scroll {
+  align-self: flex-start; /* ימין פיזי תחת RTL column */
+  width: fit-content;
+  max-width: 100%;
+  padding-right: 10px;
+}
+.s2-table-scroll .s2-table { width: auto; table-layout: auto; }
+.s2-table tbody td:first-child { font-weight: 600; } /* עמודה ימנית — סמי-בולד */
+
+/* ─── תא-תשובה (מסה/נפח = תוצאה), אינפוטים ───
+   הלומד מזין בעצמו לפי מה שראה על גב הקלף ההפוך (אין יותר מילוי
+   אוטומטי-ב-JS, ראו script.js). מבודד כיחידת LTR אחת (figma-lomda-
+   builder → patterns.md → "RTL flex alignment and embedded LTR
+   content" gotcha #2: ביטוי מספרי בתוך טקסט RTL). סדר פיזי משמאל-
+   לימין: שבר-אינפוט (מסה/נפח) → "=" → אינפוט-תוצאה — נגזר ממיקומי-EMU
+   בפועל בשקף 8 (לא ניחוש), ראו ARCHITECTURE.md; אותו סדר-תוכן שהיה
+   קודם בתא המוזרק, רק שכל איבר הוא עכשיו שדה-קלט. */
+.s2-answer-group {
+  display: inline-flex;
+  direction: ltr;
+  unicode-bidi: isolate;
+  align-items: center;
+  gap: 8px;
+}
+.s2-input-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch; /* לא center — כמו gotcha #5 בשבר הישן, אחרת הקו קצר מדי */
+  gap: 2px;
+}
+.s2-frac-line { height: 1.5px; background: currentColor; margin: 0 2px; }
+.s2-eq { font-family: Calibri, Arial, sans-serif; font-size: 22px; font-weight: 400; color: #303030; }
+
+/* ── input מספרי בתוך תא — עיצוב לפי Figma "Table Cell Content" (516:8437,
+   Content Type=Completion): מסגרת 1px רדיוס 8, Assistant 22px #303030.
+   מצבים: ריק/רגיל #d4d4d4, פוקוס/הקלדה --subject-500 (Figma #019de5),
+   נכון #609e12, שגוי #b20010 + אייקון 16×16 (תואם בדיוק את
+   icon correct / icon discorrect ב-Figma). סימון נכון/שגוי per-field
+   (כל שדה מסומן בנפרד) — לפי רפרנס המפיקה methodica-science-mass-
+   measure-02-04, לא החוזה הגנרי של ValueInputQuestion. ──── */
+.s2-num-input {
+  width: 104px;
+  height: 40px;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #303030;
+  text-align: right; /* מיושר לימין התיבה — Figma 196:3389 */
+  direction: ltr;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+.s2-num-input:focus { outline: none; border: 1px solid var(--subject-500); }
+.s2-num-input:disabled { background-color: #fff; cursor: default; }
+.s2-num-input.s2-input-correct,
+.s2-num-input.s2-input-revealed {
+  border: 1px solid #609e12;
+  background-color: #fff;
+  background-image: url('../unit-assets/icons/icon-answerbox-check-green.svg');
+  background-size: 16px 16px;
+  padding-right: 42px;
+}
+.s2-num-input.s2-input-wrong {
+  border: 1px solid #b20010;
+  background-color: #fff;
+  background-image: url('../unit-assets/icons/icon-answerbox-x-red.svg');
+  background-size: 16px 16px;
+  padding-right: 42px;
+}
+
+/* =========================================================
+   מסך 4 — שאלת בחירה יחידה (SingleChoiceQuestion) + טבלה פתורה
+   אין node חדש בפיגמה (הנחיית מפיקה: מבנה split זהה למסך 3 + תבנית
+   SingleChoiceQuestion הקנונית). ראו ARCHITECTURE.md → "מסך 4".
+   מחלקות: s3q- לחצי-השאלה (עצמאי מ-scq-/s2- כדי לא להתנגש עם מסך 3),
+   s3- לחצי-הטבלה-הפתורה (עצמאי מ-s2-table/th/td, לפי הנחיה מפורשת).
+   ========================================================= */
+
+/* ⚠️ תוקן פעמיים (שני סבבים נפרדים):
+   סבב א' — הנחיית מפיקה "תמקם את הטבלה באותו מיקום שלה במסך 3":
+   נוסף `margin-top:206px` (מדוד מגובה `.s2-header` של מסך 3) כדי
+   שכיתוב-הטבלה יישב באותו y המוחלט כמו במסך 3.
+   סבב ב' — המפיקה דיווחה ששטח-ריק גדול נוצר מעל התוכן (screenshot),
+   וביקשה במפורש: "פשוט לעלות את השאלה למעלה ואז לעלות את הטבלה
+   והשורה מעלה לאותו קו כדי שיהיו מיושרות". **זו הנחיה מפורשת שגוברת
+   על סבב א'** — "אותו מיקום כמו מסך 3" לא אמור לבוא במחיר שטח-ריק
+   מכוער; העדיפות היא ליישור-הדדי בין שני החצאים (שהיה נכון גם קודם,
+   כי שניהם ילדי `.s2-split` אחד) **בלי** margin-top מלאכותי שדוחף
+   הכל למטה. הוסר לגמרי — כל חצי חוזר לפדינג הבסיסי שלו
+   (`.s2-cards-half`/`.s2-table-half`: `padding:16px 40px 24px`), אין
+   יותר קשר-מיקום מאולץ למסך 3 (שממילא יש בו כותרת שלמה שמסך 4 אינו
+   צריך). ראו "מבנה" למטה למידות שנמדדו בפועל אחרי התיקון.
+   סבב ג' — **תיקון-תקלה** שנוצר ע"י סבב ב': הסרת ה-margin-top לגמרי
+   הזיזה את הטבלה גבוה מספיק כדי לחפוף בפועל עם `.flag-btn` הגלובלי
+   (`x:32-120, y:32-88`, מיקום קבוע 32/32 בכל הפרויקט) — אומת ב-
+   Playwright: `.s3-table-caption` היה ב-`y=16` (חופף), `.s3-table`
+   התחיל ב-`y=50` (עדיין בטווח ה-y של הכפתור, 32-88). לא נתפס
+   ב-screenshot כי `.flag-btn` יושב *מעל* הטבלה (z-index גבוה יותר —
+   ראו GLOBAL section למטה), אז ויזואלית זה נראה כחפיפה/"יישור מוזר"
+   בפינה הימנית-עליונה של חצי-הטבלה. **תוקן**: margin-top **קטן**
+   נוסף בחזרה (100px — מספיק כדי לפנות את `.flag-btn.bottom=88` + מרווח
+   נשימה של 12px, לא 206px של סבב א' שיצר שטח-ריק גדול). אומת אחרי
+   התיקון: `.s3-table-caption.top=116` (מתחת ל-88 בבטחה), אין יותר
+   חפיפה, ועדיין בלי שטח-ריק ניכר (100px, לא 206px). */
+#s3 .s2-split { margin-top: 100px; }
+
+/* ─── חצי ימני — שאלת בחירה יחידה ───
+   ⚠️ תוקן (סבב-תיקונים נפרד): שני באגי-יישור נפרדים שהצטברו לכדי "בלוק-
+   השאלה יושב מרוכז-משהו, לא צמוד לימין" —
+   1. `.s3q-half` ירש רק את `.s2-cards-half` (align-items:center;
+      justify-content:center) — מתאים לרשת-הכרטיסיות של מסך 3 (שם באמת
+      רוצים ריכוז), אבל ל-SingleChoiceQuestion רוצים שהבלוק (כותרת+
+      מסיחים) יהיה צמוד לימין החצי, לא ממורכז בו. תוקן: override ל-
+      `align-items:flex-start` (= ימין פיזי תחת RTL column, ראו הערה
+      הבאה) על `.s3q-half` הספציפי, justify-content נשאר center (מיקום
+      אנכי לא היה חלק מהתלונה).
+   2. `align-items:flex-end` על `.s3q-question` עצמו — ההערה המקורית
+      ("flex-end = פיזית ימין") הייתה **שגויה**. אומת אמפירית ב-
+      Playwright (`.s3q-answers` יצא צמוד לקצה **השמאלי** של
+      `.s3q-question`, לא הימני) וגם מול הרפרנס המאושר (`יעד 2` →
+      `methodica-science-mass-measure-02-01`, `.scq-answers`/
+      `.scq-question`, שם ה-CSS קובע align-items:flex-start עם ההערה
+      "RTL column: flex-start = physical right") — ה-ערך הנכון תחת RTL
+      בציר-cross של flex-column הוא **flex-start**, לא flex-end (ההפוך
+      ממה שאינטואיציה עלולה להציע). תוקן כאן גם. */
+.s3q-half {
+  align-items: flex-start;
+  /* justify-content:center הבסיסי (מ-.s2-cards-half) ריכז את השאלה
+     אנכית באמצע החצי — אבל הטבלה בחצי השני מתחילה מלמעלה (padding-top
+     בלבד, בלי ריכוז), אז שני החצאים לא התיישרו לאותו קו (הנחיית מפיקה
+     מפורשת: "לעלות את השאלה למעלה... שיהיו מיושרות לאותו קו"). נדרס
+     ל-flex-start כדי שהשאלה תתחיל מאותו גובה בדיוק כמו כיתוב-הטבלה. */
+  justify-content: flex-start;
+}
+.s3q-question {
+  width: 100%;
+  max-width: 540px; /* חצי=640px, פחות padding 40px מכל צד = 560px זמין;
+                        540px משאיר שוליים קלים לנשימה (task: "~560-600px
+                        זמין"), לא רוחב-מלא מודבק לקצוות. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL column: flex-start = פיזית ימין (מאומת, ראו הערה למעלה) */
+  gap: 24px;
+}
+.s3q-qtext {
+  width: 100%;
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--subject-500);
+  text-align: right;
+  line-height: normal;
+}
+
+.s3q-answers {
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+/* ⚠️ תוקן (בדיקה מול Figma node 196:3307, "SingleChoiceQuestion - State
+   01", ומול הרפרנס המאושר יעד 2 → methodica-science-mass-measure-02-01
+   → `.scq-opt`/`.scq-radio`): הגרסה הקודמת השתמשה במסגרת אפורה-דקה
+   (`1px solid #aeaeae`) כברירת-מחדל, עם מעבר לכחול רק ב-`.selected` —
+   זה **לא** מה שה-Figma/הרפרנס מראים. שניהם: כל אפשרות (גם לפני בחירה)
+   כבר בעלת מסגרת **כחולה 2px** (`var(--subject-500)`) — לא אפורה — וגם
+   טבעת-הרדיו עצמה כחולה-2px מההתחלה. "נבחר" רק **ממלא** את הרדיו
+   בכחול (`background`), לא משנה צבע-מסגרת (כי היא כבר כחולה). תוקן
+   כאן במדויק לפי שני המקורות. */
+.s3q-opt {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: 2px solid var(--subject-500);
+  border-radius: 999px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.s3q-opt-text {
+  flex: 1;
+  font-family: Calibri, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  color: #222;
+  text-align: right;
+}
+.s3q-radio {
+  order: -1; /* SingleChoiceQuestion.md → "Radio sits on the RIGHT of each pill (RTL reading-start)" */
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--subject-500);
+  border-radius: 999px;
+  background: #ffffff;
+}
+.s3q-radio::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.s3q-opt.selected .s3q-radio {
+  background: var(--subject-500);
+}
+.s3q-opt.correct {
+  border: 2px solid #609e12;
+  background: #edf8ed;
+}
+.s3q-opt.correct .s3q-radio {
+  border-color: #609e12;
+  background: #609e12;
+}
+.s3q-opt.correct .s3q-radio::after {
+  background-image: url('../unit-assets/icons/icon-badge-check-white.svg');
+  background-size: 12px 9px;
+}
+.s3q-opt.wrong {
+  border: 2px solid #b20010;
+  background: #fff0f4;
+}
+.s3q-opt.wrong .s3q-radio {
+  border-color: #b20010;
+  background: #b20010;
+}
+.s3q-opt.wrong .s3q-radio::after {
+  background-image: url('../unit-assets/icons/icon-badge-x-white.svg');
+  background-size: 10px 10px;
+}
+.s3q-opt.disabled { cursor: default; }
+
+/* ─── חצי שמאלי — טבלה פתורה (סטטית, ללא inputs/flip) ───
+   אותה גיאומטריה/עיצוב כמו .s2-table (Figma node 1126:21308) — מוגדר
+   כאן מחדש תחת קידומת s3- עצמאית, לא נגזר מ-.s2-table עצמה, כדי לא
+   להתנגש עם עבודה מקבילה על טבלת מסך 3 (ראו ARCHITECTURE.md). */
+.s3-table-caption {
+  margin: 0 0 8px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #303030;
+  text-align: right;
+}
+.s3-table-caption strong { font-weight: 700; }
+
+.s3-table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 8px;
+  /* direction:ltr על הקונטיינר-הגולל עצמו — הנחיית-עבודה גלובלית של
+     הפרויקט: "סקרולבר תמיד בצד ימין, לא בשמאל" (ראו אותה הערה ב-
+     .s2-table-scroll/מסך 3, ותבנית-פתיחה-לפרויקט-לומדה-חדש.md). */
+  direction: ltr;
+}
+.s3-table-scroll::-webkit-scrollbar { width: 12px; }
+.s3-table-scroll::-webkit-scrollbar-track { background: rgba(201, 206, 216, 0.4); border: 0.5px solid #f3f4f5; border-radius: 16px; }
+.s3-table-scroll::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.56); border-radius: 24px; }
+.s3-table-scroll::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+
+.s3-table {
+  direction: rtl; /* משחזר RTL לתוכן/סדר-העמודות — ראו הערה מעל .s3-table-scroll */
+  border-collapse: separate;
+  border-spacing: 0;
+  width: auto;
+  table-layout: auto;
+}
+/* עיצוב זהה ל-.s2-table (Figma 716:24165): תא 52px, padding 4/12, 22px,
+   טקסט לימין; כותרת תכלת SemiBold 600; גוף לבן Regular 400 עם עמודה
+   ימנית SemiBold 600; גבולות כותרת #d4d4d4, גוף #ececec. */
+.s3-table th,
+.s3-table td {
+  box-sizing: border-box;
+  height: 52px;
+  padding: 4px 12px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px;
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.s3-table thead th {
+  background: var(--subject-100, #d4f3ff);
+  font-weight: 600;
+  border-top: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
+  border-right: 1px solid #d4d4d4;
+}
+.s3-table thead th:first-child { border-top-right-radius: 8px; }
+.s3-table thead th:last-child { border-top-left-radius: 8px; }
+.s3-table tbody td {
+  background: #ffffff;
+  font-weight: 400;
+  border-bottom: 1px solid #ececec;
+  border-left: 1px solid #ececec;
+}
+.s3-table tbody td:first-child { border-right: 1px solid #ececec; font-weight: 600; }
+.s3-th-cube,
+.s3-td-cube { width: 76px; }
+.s3-table thead .s3-th-ratio { text-align: center; }
+.s3-table .s3-th-ratio span { display: inline; }
+.s3-table .s3-th-ratio span + span { margin-inline-start: 0.3em; }
+.s3-table .s3-th-ratio .s3-th-frac { display: inline-flex; flex-direction: column; align-items: stretch; vertical-align: middle; }
+.s3-table .s3-th-ratio .s3-th-frac span { display: block; margin: 0; text-align: center; }
+.s3-table .s3-th-ratio .s3-th-frac-num { border-bottom: 1.5px solid currentColor; }
+.s3-table-scroll {
+  align-self: flex-start; /* ימין פיזי תחת RTL column */
+  width: fit-content;
+  max-width: 100%;
+  padding-right: 10px;
+}
+
+/* תא-שבר (מסה/נפח = תוצאה) — סטטי, כתוב ישירות ב-HTML (אין flip/JS-fill
+   כאן, בשונה ממסך 3: "הטבלה הזו מציגה את התשובה הפתורה, לא שואלת את
+   הלומד למלא"). מבודד כיחידת LTR (patterns.md gotcha #2), אותו סדר
+   פיזי משמאל-לימין (שבר → "=" → תוצאה) כמו במסך 3. */
+.s3-ratio-value {
+  display: inline-flex;
+  direction: ltr;
+  unicode-bidi: isolate;
+  align-items: center;
+  gap: 6px;
+}
+.s3-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch; /* לא center — ראו gotcha #5, אחרת הקו קצר מדי */
+  font-size: 22px;
+  line-height: 1.3;
+}
+.s3-frac-num,
+.s3-frac-den { text-align: center; }
+.s3-frac-num { border-bottom: 1.5px solid currentColor; }
+
+/* ─── שורת ניווט מסך 4 — "צדקתי?" + "אפשר רמז?" (פיזית שמאל, ילד שני
+   ב-.bottom-bar-inner), "חזרה" (פיזית ימין, ילד ראשון) — SingleChoice
+   Question.md → "Markup contract".
+   ⚠️ תוקן (סבב-תיקונים נפרד): הגרסה הקודמת השתמשה ב-`direction:ltr`
+   כאן כדי לשמר סדר-הצגה זהה לרפרנס (`יעד 2` → `.bar-actions`, ששם
+   `direction:ltr` מופעל גם על `.bottom-bar-inner` כולו וגם על
+   `.bar-actions` — קונבנציה מכוונת של הפרויקט ההוא). הנחיית-עבודה
+   גלובלית חדשה לפרויקט **הזה** (ראו תבנית-פתיחה-לפרויקט-לומדה-חדש.md
+   → עיקרון #4): "כפתורי הסרגל התחתון תמיד RTL" — בלי טריק direction:
+   ltr, גם אם זה משנה את הסדר הפיזי לעומת הרפרנס. הוסר; סדר-ה-DOM
+   (בדיקה ואז רמז) נשאר כפי שהוא — תחת RTL אמיתי, "בדיקה" (הראשון
+   ב-DOM) יוצא פיזית ימני בתוך הקבוצה הזו (קרוב יותר למרכז/לכפתור
+   "חזרה"), "אפשר רמז" (שני) יוצא פיזית שמאלי (בקצה השמאלי של המסך) —
+   סדר סביר: הפעולה העיקרית קרובה יותר, המשנית בקצה. אומת ב-Playwright
+   שאין ליקוי-פונקציונליות (שני הכפתורים עדיין פועלים, ה-hitbox לא
+   התהפך). ─── */
+.s3q-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.btn-hint {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: #ffffff;
+  color: var(--subject-700);
+  border: 1px solid var(--subject-700);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 0 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  gap: 6px;
+  white-space: nowrap;
+}
+.s3q-hint-icon { flex-shrink: 0; width: 26px; height: 24px; }
+.btn-hint:not(.hint-on) { visibility: hidden; } /* הרמז מופיע רק אחרי ניסיון ראשון (hint-on מתווסף ב-script.js) */
+.btn-hint:disabled { color: #aeaeae; border-color: #aeaeae; cursor: not-allowed; }
+/* Figma nav button (196:6020) — hover: רקע לא משתנה, הטקסט הופך ל-SemiBold (Body/B-8) */
+/* sizer בלתי-נראה ב-SemiBold (Figma "nav label") — הרוחב קבוע בין Default ל-Hover */
+.btn-hint .nav-label { display: inline-grid; justify-items: center; }
+.btn-hint .nav-label::after {
+  content: attr(data-label); font-weight: 600; height: 0;
+  visibility: hidden; overflow: hidden; pointer-events: none; user-select: none;
+}
+.btn-hint:not(:disabled):hover .nav-label { font-weight: 600; }
+.btn-hint:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+/* מוסתר (לא display:none מיידי — visibility כדי לשמר את מקום-הכפתור
+   בפס-הניווט, לפי אותה מוסכמה שכבר משמשת בפרויקט לרכיבים דומים) אחרי
+   שהשאלה נפתרת (correct/final-wrong) — אין עוד צורך ברמז. */
+.btn-hint.s3q-hint-done { visibility: hidden; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL (מומש כאן לראשונה, בפרויקט הזה) — Feedback popup (SCQ) +
+   Hint popup. 720-templates → _global-components.md → "Feedback popup
+   system" + SingleChoiceQuestion.md. שני הרכיבים חולקים instance אחד
+   גלובלי (מחוץ לכל .screen, בתוך #app), בדיוק כמו הפופאפ המשותף של
+   מסך 2 — אך זהו רכיב שונה (SCQ feedback/hint, לא ContentPopup). ==== */
+
+/* פופאפ-משוב — צף, גריר (popupMouseDown), ללא כפתור-סגירה (החלטת-מוצר
+   מאושרת 2026-07-26, כל פרויקטי 720 — ראו index.html). מיקום-ברירת-
+   מחדל: פינה שמאלית-תחתונה, צמוד לפס-הניווט (bottom:76px) — בתוך
+   גבולות "Drag bounds" (_global-components.md: לעולם לא מעל פס-
+   הניווט/מחוץ לקנבס). */
+.scq-popup {
+  position: absolute;
+  left: 2px;
+  bottom: 76px;
+  width: 426px;
+  max-width: calc(100% - 4px);
+  height: auto;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  direction: rtl;
+  z-index: 55;
+  cursor: move;
+}
+.scq-popup.hidden { display: none; }
+.scq-popup-title {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+  text-align: right;
+  line-height: normal;
+}
+.scq-popup-body {
+  direction: rtl;
+}
+.scq-popup-body p {
+  margin: 0 0 4px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #222;
+  text-align: right;
+  line-height: normal;
+}
+.scq-popup-body p:last-child { margin-bottom: 0; }
+.scq-popup-body strong { font-weight: 700; }
+
+/* פופאפ-רמז (modal) — Design tokens per SingleChoiceQuestion.md:
+   "hint title 32 / body 24 white on Subject/500 r48 popup". */
+.scq-hint-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8); /* Blur bg 1304:23657 — כמו .s8q-hint-overlay */
+}
+.scq-hint-overlay.hidden { display: none; }
+.scq-hint-popup {
+  position: relative;
+  width: 542px;
+  max-width: calc(100% - 64px);
+  background: var(--subject-500);
+  border-radius: 48px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: flex-start; /* RTL column: flex-start = פיזית ימין */
+  gap: 24px;
+  direction: rtl;
+}
+.scq-hint-bulb { width: 40px; height: 34px; flex-shrink: 0; }
+.scq-hint-body {
+  margin: 0;
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: normal;
+  color: #fff;
+  text-align: right;
+}
+.scq-hint-close {
+  align-self: center;
+  width: 196px;
+  padding: 16px 40px;
+  border-radius: 999px;
+  background: #fff;
+  color: #303030;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+}
+/* Figma Hint Card State=Hover: רקע לבן נשאר, הטקסט הופך ל-Bold (Body/B-6) */
+.scq-hint-close { white-space: nowrap; padding-inline: 0; }
+.scq-hint-close:hover { font-weight: 700; }
+.scq-hint-close:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Report/issue button (.flag-btn). מחוץ לכל .screen,
+   בתוך #app בלבד (720-templates → _global-components.md →
+   "Report / Issue button"). מיקום 32/32 — תואם ל-Figma הנוכחי
+   של הפרויקט הזה (לא ה-16/16 המתועד כברירת-מחדל ממקורות אחרים;
+   ראו ARCHITECTURE.md). ויזואלי בלבד — אין עדיין התנהגות קליק.
+   z-index גבוה מ-.popup-backdrop (40) בכוונה — הכפתור נשאר מעל כל
+   פופאפ פתוח (Figma: ReportProblem מופיע גם בתוך "PopupPage - Text",
+   ולא נעלם מאחורי ה-backdrop). ==== */
+.flag-btn {
+  position: absolute;
+  top: 32px;
+  left: calc(32px + var(--ex, 0px));
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 88px;
+  padding: 10px 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.flag-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 1000px;
+  background: #ececec;
+  border: 0.5px solid rgba(0, 0, 0, 0.06);
+  color: #484848;
+  box-sizing: border-box;
+}
+.flag-btn__icon svg {
+  width: 12px;
+  height: 17px;
+}
+.flag-btn__label {
+  display: none;
+  font-family: Calibri, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--subject-500);
+  text-align: center;
+  width: 80px;
+}
+.flag-btn:hover .flag-btn__icon,
+.flag-btn:focus-visible .flag-btn__icon {
+  background: #ffffff;
+  border: 0.7px solid var(--subject-500);
+  color: var(--subject-500);
+}
+.flag-btn:hover .flag-btn__label,
+.flag-btn:focus-visible .flag-btn__label {
+  display: block;
+}
+.flag-btn:focus-visible {
+  outline: 2px solid var(--subject-500);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+/* מצג "Pop-up" (Figma: ReportProblem state="Pop-up" — node 275:6982) —
+   כשפופאפ-הכרטיסיות פתוח: bg לבן + מסגרת מלאה #484848 (לא הכמעט-שקופה
+   של ברירת-המחדל), כדי שהכפתור יקרא בבירור מול ה-backdrop האפור. */
+.flag-btn--popup .flag-btn__icon {
+  background: #ffffff;
+  border: 0.7px solid #484848;
+}
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Bottom bar (74px, per 720-templates → _global-components.md).
+   ========================================================= */
+.bottom-bar {
+  position: absolute;
+  bottom: -3px;           /* -3px hides the bottom border line */
+  left: 0;
+  right: 0;
+  height: 74px;
+  background: #ffffff;
+  border-top: 0.4px solid #AEAEAE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom-bar-inner {
+  width: 1232px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* === Continue button (gradient blue pill) — מועתק 1:1 מהמקור === */
+.btn-continue {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: linear-gradient(180deg, #005FBE 9%, #0059B2 23.361%, #003971 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 12px 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-continue:disabled {
+  background: #AEAEAE;
+  color: #303030;
+  cursor: not-allowed;
+}
+/* Figma nav button hover: אותו גרדיאנט, טקסט SemiBold (בלי שינוי אטימות) */
+.btn-continue:not(:disabled):hover { font-weight: 600; }
+.btn-continue:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+
+/* === Back button (white outline pill) === */
+.btn-back {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: #ffffff;
+  color: var(--subject-700);
+  border: 1px solid var(--subject-700);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 12px 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+/* Figma nav button back/hover: רקע לבן, מסגרת 1.5px, טקסט SemiBold */
+.btn-back:hover { font-weight: 600; border-width: 1.5px; }
+.btn-back:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — פופאפ משותף (כרטיסיות מסך 2). ContentPopup + General Popup
+   Close Btn. ראו ARCHITECTURE.md לפירוט המקורות/החלטות.
+
+   הרקע (`.popup-backdrop`): לבן 80% — זהה לפופאפ רמז (Shared popup backdrop). ========================= */
+.popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(243, 244, 245, 0.6); /* Figma 5917:25493 → "bg": #f3f4f5 ב-60% */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+.popup-backdrop.hidden { display: none; }
+
+.content-popup {
+  position: relative;
+  background: #ffffff;
+  border-radius: 48px;
+  /* Figma ContentPopup instance: 1121px, padding 36, radius 48; ממוקם
+     ב-(+28, -41) ממרכז הקנבס (left calc(58.33% - 78.67px), top calc(50% - 41px)) */
+  width: 1121px;
+  max-width: calc(100% - 120px);
+  max-height: calc(100% - 120px);
+  padding: 36px;
+  box-sizing: border-box;
+  overflow: hidden; /* אין גלילה בפופאפ הזה — לפי הנחיית המפיקה */
+  left: 28px;
+  top: -41px;
+}
+.content-popup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 32px; /* Figma "text": px 32 (עמודה 1033px) */
+  direction: rtl;
+}
+.content-popup-head {
+  display: flex;
+  flex-direction: row; /* RTL: התמונה בצד ימין, הטקסט משמאלה */
+  align-items: center;
+  gap: 10px;
+}
+.content-popup-head > p { flex: 1 1 0; min-width: 0; }
+.content-popup-fig {
+  flex: none;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 164px;
+  height: 158px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.content-popup-thumb {
+  flex: none;
+  width: 148px;
+  height: 142px;
+  object-fit: cover;
+  border-radius: 16px;
+  background: rgba(201, 206, 216, 0.4);
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  box-sizing: border-box;
+}
+.content-popup-body p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #303030;
+  text-align: right;
+  line-height: normal;
+}
+/* כותרות/הדגשות בכחול — מוסכמת ContentPopup ב-Figma (title/subheading
+   role: Blue/600 #0690D0), לפי הנחיית מפיקה מפורשת ("תעשה כותרות
+   בכחול כמו בפיגמה"). אין עדות-צבע ל-run ב-PPTX הגולמי (color=None
+   בכל ה-runs המודגשים) — זו החלטת עיצוב שהתבקשה במפורש, לא "המצאה". */
+.content-popup-body p strong { font-weight: 700; color: #0690d0; }
+/* רוח מתחת ל"כותרת" (bold שממלא שורה שלמה בתחילת פסקה, לפני שבירת-
+   שורה) — למשל "זוכרים את ארכימדס וכתר המלך?" בפופאפ density-crown.
+   ה-selector תופס אך ורק את הדפוס הזה (strong ראשון ב-p, ואחריו <br>
+   מיידית) — לא נוגע בשבירת-שורה "רגילה" (למשל density-jordan, שם ה-
+   <br> בא אחרי טקסט רגיל, לא אחרי strong ראשון). לא נוסף paragraph
+   חדש (נשאר אותו <p>/<br> מהתסריט, לפי עקרון "לשמר שבירות מקור בדיוק")
+   — רק ריווח חזותי, כדי שה"כותרת" תיקרא כמו כותרת ולא כמו שורה רגילה
+   שנדחסה לשורה הבאה. */
+/* ⚠️ styling <br> directly (display:block + height/margin) is unreliable
+   cross-engine — Chromium still lays out the element's rendered box by its
+   own forced-line-break/line-height mechanism and ignores the explicit
+   height, even though computed style reports it (verified in Playwright:
+   getComputedStyle reported height:8px, but the rendered box was 34px —
+   the line-height, not 8px). Style the STRONG (a normal inline element,
+   not subject to that quirk) instead, and hide the now-redundant <br> to
+   avoid a double break. */
+.content-popup-body p strong:first-child:has(+ br) {
+  display: block;
+  margin-bottom: 8px;
+}
+.content-popup-body p strong:first-child + br {
+  display: none;
+}
+
+/* Close — Figma 5917:25493 (Default) / 5917:35966 (Hover): 40×40, פינה
+   שמאלית-עליונה 30/30 (פיזי שמאל). Default: עיגול לבן, טבעת 2px תכלת
+   (--subject-500 #019DE5), X תכלת 15px. Hover: עיגול מלא תכלת, X לבן. */
+.general-popup-close {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 100px;
+  background: #ffffff;
+  border: 2px solid var(--subject-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.general-popup-close__x { width: 15px; height: 15px; display: block; }
+.general-popup-close__x--hover { display: none; }
+.general-popup-close:hover { background: var(--subject-500); }
+.general-popup-close:hover .general-popup-close__x { display: none; }
+.general-popup-close:hover .general-popup-close__x--hover { display: block; }
+.general-popup-close:focus-visible {
+  outline: 2px solid var(--subject-500);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   מסך 5 — סגירת ה"הוק" + נוסחת הצפיפות (HookClosing)
+   Figma: section "HookClosingText" (node 3684:30820) → frame
+   "HookClosing-02-TextCharacter-Science" (node 3684:30877). אין תבנית
+   "HookClosing" ב-720-templates — מבנה ייעודי תואם-לפיגמה. ראו index.html
+   ו-ARCHITECTURE.md לפירוט המלא של המקורות/ההחלטות.
+   ========================================================= */
+
+/* בלוק-טקסט עליון — עוגן top/right קבוע לפי Figma ("Text Content
+   Layout": right:40, top:64, width:920). ילדים ברוחב-מלא (בלוק, לא
+   fit-content) — אין align-items כאן בכוונה, כמו .s2-header (היישור-
+   הימני מגיע מ-text-align:right הפנימי של כל ילד, לא מקצה-cross-axis). */
+.s4-text-wrap {
+  position: absolute;
+  top: 64px;
+  right: calc(40px + var(--ex, 0px));
+  width: 920px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 48px; /* Figma: gap בין "Title" ל-"Content" groups */
+}
+.s4-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* פסקת-רווח ריקה במקור (PPTX) → מרווח בין שתי הפסקאות, לא פסקה ריקה ממש מרונדרת */
+  /* ⚠️ תוקן (סבב-תיקונים נפרד, הנחיית מפיקה מפורשת: "למקם את גוף הטקסט
+     לפי הפיגמה בנוד של runText"): get_metadata על 3663:29512 חשף
+     שה-node "Run text" בפועל (התוכן הזה) יושב ב-y=184 מוחלט (לא 64!) —
+     כי מעליו יש tier "Title" ריק-מתוכן-במקור (72px גובה) + gap 48px,
+     גם כשאין בו טקסט אמיתי (שקף 10 לא מכיל תיבת-כותרת נפרדת, ראו
+     "תוכן" למעלה). הגרסה הקודמת "צימצמה" את ה-tier הריק הזה לגמרי
+     (per "content may flex the template") — אבל המפיקה תיקנה: המיקום
+     האנכי צריך להישמר בדיוק כמו ב-Figma, גם כשה-tier המתאים ריק.
+     margin-top:120px (=72 גובה-Title-ריק + 48 gap) משחזר את ה-y=184
+     המדויק: 64(top-wrap) + 120 = 184. תואם ל-get_metadata ישירות, לא
+     ניחוש. */
+  /* ⚠️ הועלה לבקשת המפיקה ("נראה ריק מאוד למעלה"): 120→48px, כלומר
+     y=112 במקום 184 שב-Figma. סטייה מכוונת מהפיגמה. */
+  margin-top: 48px;
+}
+.s4-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #303030;
+  text-align: right;
+  line-height: normal;
+}
+.s4-text p strong { font-weight: 700; }
+
+/* נוסחה מוצבת + כיתוב-יחידות — Figma "Content" group, gap:32 בין
+   הפריטים. .s4-formula-wrap עצמו align-items:flex-start (RTL column:
+   flex-start = פיזית ימין, מאומת אמפירית בפרויקט הזה — ראו index.html/
+   ARCHITECTURE.md) כך שתיבת-הנוסחה (fit-content) נצמדת לימין העמודה;
+   הכיתוב מתחתיה מקבל width מפורש כדי לא להצטמצם לפי align-items. */
+.s4-formula-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+.s4-formula-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 48px;
+  border-radius: 12px;
+  background: var(--subject-100, #d4f3ff);
+  /* מיושרת לימין העמודה (flex-start = פיזית ימין ב-RTL, כמו הטקסט שמעליה) */
+  align-self: flex-start;
+  direction: ltr; /* ביטוי-נוסחה מבודד — patterns.md gotcha #2, כמו .s2-answer-group/.s3-ratio-value; סדר-DOM (שבר → תווית) = סדר-פיזי משמאל-לימין, נגזר מ-x בפועל בשקף 10 (ראו index.html) */
+  unicode-bidi: isolate;
+}
+.s4-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch; /* לא center — אחרת קו-השבר קצר מדי (אותה gotcha כמו .s2-input-frac/.s3-frac) */
+  gap: 6px;
+}
+.s4-frac span {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #303030;
+  text-align: center;
+}
+.s4-frac-line { height: 1.5px; background: currentColor; }
+.s4-formula-label {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #303030;
+  white-space: nowrap;
+}
+.s4-formula-label strong { font-weight: 700; }
+.s4-eq { font-weight: 600; }
+
+.s4-caption {
+  width: 100%;
+  align-self: stretch; /* עוקף את align-items:flex-start של ההורה — הכיתוב פרוס-רוחב-מלא, לא מצטמצם לתוכן */
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400; /* לא בולד — בשונה מה-"trailing paragraph" הגנרי-בולד של Figma; אין עדות-בולד לפסקה הזו ב-PPTX הגולמי (TextBox 11, run יחיד ללא b="1") */
+  color: #303030;
+  text-align: right;
+  line-height: normal;
+}
+
+/* דמות מלווה + בועת-דיבור — עמודה ברוחב 158px, עוגן left/bottom קבוע
+   לפי Figma ("Frame 2147223501": מרכז-אופקי ב-x≈120 → left≈41 עבור
+   רוחב 158; bottom:74 = ישירות מעל פס-הניווט). */
+.s4-char-wrap {
+  position: absolute;
+  left: calc(41px + var(--ex, 0px));
+  bottom: 74px;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* בועת-דיבור — SVG מיוצא נקי-מטקסט (Figma node עצמו: "bubble text",
+   fill:white/stroke:#019DE5 [=--subject-500, נכון-ל-Science כבר במקור,
+   בלי המרה]), 158×188 קבוע (preserveAspectRatio="none" במקור מעיד
+   שהרכיב מיועד למתיחה/גודל-קבוע, לא שמירת-יחס עצמאית) — טקסט חי
+   ממוקם-מעליו (live text, לא raster), ממורכז אנכית מעט-מעל-אמצע
+   (top:calc(50% - 8px)) כדי לפנות מקום לזנב-הבועה למטה, כמו ב-Figma
+   ("topen text" placement). */
+.s4-bubble {
+  /* ⚠️ הוחלף מ-SVG מתוח (158×188, שעיוות את הבועה והזנב) לבועת CSS
+     שגודלה נגזר מהטקסט: מסגרת #019DE5 + זנב מעוין. הועלה לבקשת המפיקה
+     (הבועה נראתה מתוחה, הדמות קטנה). */
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 3px solid var(--subject-500);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.s4-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border-right: 3px solid var(--subject-500);
+  border-bottom: 3px solid var(--subject-500);
+  transform: translateX(-50%) rotate(45deg);
+}
+.s4-bubble-bg { display: none; }
+.s4-bubble-text {
+  width: 100%;
+  text-align: right;
+}
+.s4-bubble-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #000; /* עדות-Figma ליטרלית ("text-black") לרכיב הזה בלבד — סטייה
+    מכוונת מ-#303030 הרגיל של גוף-הטקסט בפרויקט; לא הוכלל/הורחב לשאר
+    הפרויקט. */
+  line-height: normal;
+  text-align: right;
+}
+
+/* כרטיס-הדמות — לבן, רדיוס 16, padding 16 (Figma "placrholder"),
+   מכיל את הווידאו הדקורטיבי ביחס-גובה/רוחב 296:278 (Figma
+   "Rectangle 521"), object-fit:cover (הווידאו בפועל 720×720 מרובע —
+   קרוב-מאוד ל-1.065:1 של המסגרת, גזירה זניחה). */
+.s4-char-card {
+  width: 240px;
+  height: 260px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.s4-char-clip {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 296 / 278;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.s4-char-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none; /* דקורטיבי בלבד — לא אינטראקטיבי, per _global-components.md → "Decorative character video" */
+}
+
+/* =========================================================
+   מסך 6 (data-screen="5", id="s5") — טבלת צפיפויות + דמות קוסם
+   Figma node 3663:29503 (HookClosing-01-Character-Math). גיאומטריה
+   מ-get_design_context: עמודת-טקסט right:40 / top:64 / רוחב 920;
+   כותרת H-6 (40/700); גוף B-4 (24/400); צבע #303030 (Natural/800).
+   ========================================================= */
+.s5-content {
+  position: absolute;
+  top: 64px;
+  right: calc(40px + var(--ex, 0px));
+  width: 920px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL: flex-start = פיזית ימין */
+  gap: 32px;
+}
+.s5-title {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+}
+.s5-text {
+  width: 1010px; /* רחב מהכותרת (920) כדי ש"החומר." יישאר בשורה הראשונה של הפסקה השנייה */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.s5-text p {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+}
+.s5-text strong { font-weight: 700; }
+
+/* ─── טבלה — עיצוב מסיין 1 (.s2-table): כותרת תכלת (--subject-100) bold 700,
+   שורות לבנות, גבול #d4d4d4, פינות עליונות מעוגלות 8, טקסט 22 ממורכז.
+   שינויים מכוונים: בלי scroll-container (5 שורות, לא גולל); רוחב 560
+   (רוחב הטבלה בשקף ≈557); גובה שורה 46 כדי להיכנס מעל הסרגל התחתון;
+   עמודת "חומר" סמי-בולד (600) כמו עמודת "קובייה" בסיין 1. ─── */
+.s5-table {
+  width: 560px;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+/* עיצוב זהה ל-.s2-table (Figma 716:24165): כותרת תכלת SemiBold 600 עם
+   גבול #d4d4d4; גוף לבן Regular 400 עם גבול #ececec; עמודה ימנית
+   ("חומר") SemiBold 600; טקסט לימין, עמודת המספרים (צפיפות) ממורכזת.
+   גובה שורה 46 כדי להיכנס מעל הסרגל התחתון (סטייה מכוונת). */
+.s5-table th,
+.s5-table td {
+  box-sizing: border-box;
+  height: 46px;
+  padding: 4px 12px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px;
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+  vertical-align: middle;
+  background: #ffffff;
+}
+.s5-table thead th {
+  height: 64px; /* שתי שורות: "צפיפות / (גרם / סמ"ק)" */
+  line-height: 1.15;
+  background: var(--subject-100, #d4f3ff);
+  font-weight: 600;
+  border-top: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
+  border-right: 1px solid #d4d4d4;
+}
+.s5-table thead th:first-child { border-top-right-radius: 8px; }
+.s5-table thead th:last-child { border-top-left-radius: 8px; }
+.s5-table tbody td {
+  font-weight: 400;
+  border-bottom: 1px solid #ececec;
+  border-left: 1px solid #ececec;
+}
+.s5-table tbody td:first-child { border-right: 1px solid #ececec; font-weight: 600; }
+
+/* חשיפת שורות ע"י הקוסם: .s5-seq מסומן ע"י script.js רק כשהרצף ממתין/רץ;
+   בכניסה חוזרת/בלי JS הכול גלוי. visibility (לא display) — הטבלה שומרת
+   את גובהה המלא מההתחלה, בלי קפיצת-פריסה. אנימציה: אוצר-המילים של
+   animation-system בלבד (float-in קצר). */
+/* עמודות "חומר" ו"מצב צבירה" גלויות מההתחלה; רק ערך הצפיפות (.s5-val) נחשף. */
+.s5-val { display: inline-block; font-weight: 700; }
+#s5.s5-seq .s5-row:not(.is-revealed) .s5-val { visibility: hidden; }
+.s5-row.is-revealed.is-animating .s5-val {
+  animation: m-float-in 400ms var(--m-ease) both;
+}
+#s5.s5-seq:not(.s5-bubble-on) .s5-bubble { visibility: hidden; }
+.s5-bubble.is-animating {
+  animation: m-float-in var(--m-reveal-duration) var(--m-ease) both;
+}
+
+/* דמות מלווה + בועת-דיבור — גיאומטריה שאושרה בסיין 1 (.s4-char-wrap):
+   עמודה 240px, left:41 (מרכז x≈120 לפי Figma), bottom:74 מעל הסרגל. */
+.s5-char-wrap {
+  position: absolute;
+  left: calc(41px + var(--ex, 0px));
+  bottom: 74px;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.s5-bubble {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 6px;
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 3px solid var(--subject-500);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.s5-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border-right: 3px solid var(--subject-500);
+  border-bottom: 3px solid var(--subject-500);
+  transform: translateX(-50%) rotate(45deg);
+}
+.s5-bubble p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; /* Figma Body/B-7 */
+  font-weight: 400;
+  color: #000; /* עדות-Figma ליטרלית לרכיב הבועה (כמו בסיין 1) */
+  line-height: normal;
+  text-align: right;
+}
+.s5-char-card {
+  width: 240px;
+  height: 228px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.s5-char-clip {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 296 / 278;
+  border-radius: 16px;
+  overflow: hidden;
+}
+/* הסרטון 1280×720 על רקע לבן; חיתוך cover ממורכז-מעט-ימינה כדי שהשרביט
+   (בצד ימין של הדמות) לא ייחתך. דקורטיבי בלבד — לא אינטראקטיבי. */
+.s5-char-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 50%;
+  pointer-events: none;
+}
+/* בזמן חשיפת השורות הדמות עומדת משמאל לטבלה (טבלה: x≈680..1240);
+   בסיום s5MoveCharToSide() מזיזה אותה ל-left:41 (מיקום Figma). */
+.s5-char-wrap.s5-at-table { transform: translateX(360px); }
+
+/* ─── מסכים 7–8 (s6, s7): אותו מבנה כמו מסך 6 + הדגשת שורה בצהוב ───
+   --highlight-yellow: אין צבע צהוב במערכת העיצוב (720-design-guidelines) —
+   ערך מקומי, לפי הערת מפיקה ("לצבוע את השורה בצהוב – אפקט"). לאישור.
+   ההנפשה: fade עדין (רקע לבן → צהוב) פעם אחת; בכניסה חוזרת — צהוב מיידי. */
+/* נגישות: שורה מסומנת בצהוב גם בולד (לא להסתמך על צבע בלבד). */
+.s5-hl.hl-on td { background: var(--highlight-yellow, #fff1a8); }
+.s5-table tbody .s5-hl.hl-on td { font-weight: 700; }
+.s5-hl.hl-anim td { animation: s5-hl-in 1000ms ease both; }
+@keyframes s5-hl-in {
+  from { background-color: #ffffff; }
+  to   { background-color: var(--highlight-yellow, #fff1a8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .s5-hl.hl-anim td { animation: none; }
+}
+
+/* =========================================================
+   מסך 9 (s8) — SingleChoiceQuestionImage. Figma 196:3445 / 525:8908
+   (question: top 139, padding 0 40, gap 16). עמודת-טקסט flex:1 + תמונה
+   380×380. מחלקות .s3q-opt/.s3q-radio/.s3q-answers משותפות למסך 4.
+   ========================================================= */
+.s8-question {
+  position: absolute;
+  top: 139px;
+  right: calc(40px + var(--ex, 0px));
+  width: 1200px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+/* מסך 9 בלבד: טקסט + תמונה גבוהים יותר (יש רווח ריק למעלה). */
+#s8 .s8-question { top: 94px; }
+.s8-col {
+  flex: 1;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL column: flex-start = פיזית ימין */
+  gap: 24px;
+}
+.s8-text {
+  width: 792px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.s8-title {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--subject-500);
+  text-align: right;
+}
+.s8-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: #303030;
+}
+.s8-body p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: right;
+}
+.s8-body strong { font-weight: 700; }
+/* שתי השורות הרגילות צמודות (בלוק טקסט אחד ב-Figma); 24 רק לפני השאלה */
+.s8-plain { display: flex; flex-direction: column; }
+.s8-answers {
+  width: 604px;
+  max-width: 100%;
+}
+.s8-img {
+  flex: none;
+  width: 380px;
+  height: 380px;
+  box-sizing: border-box;
+  padding: 8px;
+}
+.s8-img-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(174, 174, 174, 0.5); /* design-guidelines §18 */
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.s8-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* התמונה ממלאת את המסגרת (כמו .scq-img-inner img ביעד 3) */
+  object-position: center;
+  display: block;
+}
+
+/* פופאפ משוב — Figma 525:9012 (426×258, 16/365 → bottom 710-623=87) */
+.s8q-popup {
+  position: absolute;
+  left: calc(16px + var(--ex, 0px));
+  bottom: 87px;
+  width: 426px;
+  max-width: calc(100% - 32px);
+  box-sizing: border-box;
+  padding: 24px;
+  border: 0.3px solid #aeaeae;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  direction: rtl;
+  z-index: 55;
+  cursor: move;
+}
+.s8q-popup.hidden { display: none; }
+.s8q-popup-title {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+  color: #222;
+  text-align: right;
+}
+.s8q-popup-body p {
+  margin: 0 0 8px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  color: #222;
+  text-align: right;
+}
+.s8q-popup-body p:last-child { margin-bottom: 0; }
+.s8q-popup-body strong { font-weight: 700; }
+
+/* פופאפ רמז — Figma Hint Card 4954:43323 + Blur bg 1304:23657 */
+.s8q-hint-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+}
+.s8q-hint-overlay.hidden { display: none; }
+.s8q-hint-card {
+  width: 542px;
+  box-sizing: border-box;
+  padding: 40px;
+  background: var(--subject-500);
+  border-radius: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL column: flex-start = פיזית ימין */
+  gap: 24px;
+  direction: rtl;
+}
+.s8q-hint-bulb { width: 40px; height: 34px; flex-shrink: 0; }
+.s8q-hint-body { width: 100%; }
+.s8q-hint-body p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  color: #fff;
+  text-align: right;
+}
+.s8q-hint-close {
+  align-self: center;
+  width: 196px;
+  padding: 16px 40px;
+  border: none;
+  border-radius: 1000px;
+  background: #fff;
+  color: #303030;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+}
+/* Figma Hint Card State=Hover: רקע לבן נשאר, הטקסט הופך ל-Bold (Body/B-6) */
+.s8q-hint-close { white-space: nowrap; padding-inline: 0; }
+.s8q-hint-close:hover { font-weight: 700; }
+.s8q-hint-close:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.btn-hint.s8q-hint-done { visibility: hidden; }
+
+/* ─── Image Zoom Popup — Figma 2194:11509 (מצב רגיל) / 2197:11866 (מוגדל) ───
+   כפתור ההגדלה: נכס Figma (PNG, 40×39) בפינה הימנית-תחתונה של מסגרת
+   התמונה (right 3 / bottom 14 לפי המיקום ב-Figma). הפופאפ: ישירות ב-body,
+   position:fixed, z-index מקסימלי; padding 8 + מסגרת פנימית r16 כמו רכיב
+   ה-img; כפתור סגירה 30×30 לבן עם מסגרת #303030 ב-19/19 (פינה שמאלית-עליונה). */
+.methodica-image-zoom-frame { position: relative; }
+.zoomable-image, .methodica-image-zoom-frame:has(.zoomable-image),
+[data-zoom-source], .methodica-image-zoom-frame:has([data-zoom-source]) { cursor: zoom-in; }
+.methodica-image-zoom-popup-clone { position: relative; width: 100%; height: 100%; overflow: hidden; background: #fff; }
+.methodica-image-zoom-popup-clone[hidden] { display: none; }
+/* עדשת הגדלה — רפרנס נראות ומיקום: יעד 3 סיין 1 מסך 3 (.img-zoom-btn):
+   עיגול לבן 44×44, מסגרת 2px Subject/500, ימין-למעלה (10/10) בתוך מסגרת
+   התמונה; hover = מילוי כחול + אייקון לבן. */
+.methodica-image-zoom-trigger {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid var(--subject-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.methodica-image-zoom-trigger:hover { background-color: var(--subject-500); }
+.methodica-image-zoom-trigger { background: #fff url('../unit-assets/icons/icon-zoom-lens-default.svg') center / 20.715px 20.923px no-repeat; }
+.methodica-image-zoom-trigger:hover { background-image: url('../unit-assets/icons/icon-zoom-lens-hover.svg'); }
+/* פופאפ הגדלה — 720-templates → "Image zoom" + 720-design-guidelines → "Image
+   Zoom Surface": ממורכז בקנבס (בתוך #app), רקע = "Shared popup backdrop" (לבן
+   80%, בלי טשטוש) כאח של המשטח; משטח לבן, רדיוס 24, בלי מסגרת/צל, ריפוד
+   64/24/24/24; אזור-המדיה (רדיוס 16) ממלא את האזור המרופד. הגודל/המיקום
+   נקבעים ב-script.js (layoutSurface). */
+.methodica-image-zoom-popup {
+  position: absolute;
+  inset: 0;
+  z-index: 2147483647;
+  display: none;
+  direction: rtl;
+}
+.methodica-image-zoom-popup.is-open { display: block; }
+.methodica-image-zoom-backdrop {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0.8;
+}
+.methodica-image-zoom-surface {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 0;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.methodica-image-zoom-media {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+/* מסגרת הרכיב img (Figma 2197:11979): התמונה ממלאת את כל המשטח; מסגרת 1px
+   rgba(174,174,174,.5) ברדיוס 16 מצוירת מעליה, 8px מהקצה */
+.methodica-image-zoom-media::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 16px;
+  pointer-events: none;
+}
+.methodica-image-zoom-popup-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+/* כפתור סגירה — רכיב Close (Figma 1589:17081 / design-guidelines §25.3):
+   40×40, עיגול לבן + מסגרת 2px Subject/500 + X 15×15; hover = מילוי Subject/500
+   + X לבן (נכסי SVG; החלפת מצב ב-CSS בלבד). 16px מלמעלה ומשמאל. */
+.methodica-image-zoom-close {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: url('../unit-assets/icons/icon-zoom-close-default.svg') center / 40px 40px no-repeat;
+  cursor: pointer;
+}
+.methodica-image-zoom-close:hover,
+.methodica-image-zoom-close:focus-visible {
+  background-image: url('../unit-assets/icons/icon-zoom-close-hover.svg');
+}
+.methodica-image-zoom-close:focus-visible,
+.methodica-image-zoom-trigger:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   מסך 13 (#s12) — TransitionScreen. Figma 3710:34387: עמודה 810 רחבה,
+   ממורכזת, top:80, גובה 535; כותרת H-6 (40/700, #303030) למעלה, ופליסהולדר
+   540×360 (#d9d9d9, רדיוס 16) בתחתית העמודה (space-between).
+   ═══════════════════════════════════════════════════════════ */
+.s12-content {
+  position: absolute;
+  top: 80px;
+  left: calc(235px + var(--ex, 0px));
+  width: 810px;
+  height: 535px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.s12-title {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: normal;
+  color: #303030;
+  text-align: center;
+}
+.s12-video-wrap {
+  position: relative;
+  flex: 0 0 auto;
+  width: 540px;
+  height: 360px;
+}
+.s12-video-clip {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.s12-char-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none; /* דקורטיבי בלבד */
+}
+
+/* =========================================================
+   מסכים 10–12 (s9/s10/s11) — בניית צירי הגרף. ראו הערה ב-index.html.
+   ========================================================= */
+.s9-stage {
+  position: absolute;
+  left: var(--ex, 0px);
+  top: 0;
+  width: 1280px;
+  height: 710px;
+}
+.s9-text {
+  position: absolute;
+  top: 42px;           /* שקף 15: TextBox 8 ב-y≈42 */
+  right: 40px;
+  width: 1029px;       /* שקף 15: רוחב תיבת הטקסט */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.s9-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;     /* Figma Body/B-4 */
+  font-weight: 400;
+  line-height: normal;
+  color: #303030;      /* Figma Natural/800 */
+  text-align: right;
+}
+.s9-text strong { font-weight: 700; }
+/* שורת "לחצו…" — Subject/500 (#019DE5), לפי הנחיית מפיקה */
+.s9-text p.s9-cta,
+.s9-text p.s9-cta strong { color: var(--subject-500); }
+
+/* ─── מספר לחיץ — Figma 422:8539: עיגול Subject/500 + ספרה 22/600 לבן.
+   אזור-לחיצה 44×44 (העיגול 26px); טבעות-פעימה לפי "Pulsing 2" (1731:45011):
+   עיגול #00BAFF בשקיפות 30% עם מסגרת 2px, מתרחב ונמוג. ─── */
+.s9-nums { position: absolute; inset: 0; pointer-events: none; }
+.s9-num {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+.s9-num--idle { cursor: default; }
+.s9-num--active { cursor: pointer; }
+.s9-dot {
+  position: relative;
+  z-index: 1;
+  width: 26px;
+  height: 26px;
+  border-radius: 100px;
+  background: var(--subject-500);
+  color: #ffffff;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 24px;   /* 24 ולא 26 — מקזז את הספרה שישבה פיקסל אחד נמוך מהמרכז */
+  text-align: center;
+}
+.s9-ring {
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 26px;
+  height: 26px;
+  box-sizing: border-box;
+  border-radius: 100px;
+  border: 2px solid #00baff;
+  background: rgba(0, 186, 255, 0.3);
+  opacity: 0;
+  animation: s9-pulse 1.6s ease-out 2;   /* עדכון מעצבת: הבהוב פעמיים בלבד */
+}
+.s9-ring--2 { animation-delay: 0.8s; }
+@keyframes s9-pulse {
+  0%   { transform: scale(1);   opacity: 0.85; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+/* יד לחיצה על המספר הלחיץ — מעט ימינה למספר כדי שהספרה תישאר גלויה */
+.s9-hand {
+  position: absolute;
+  left: 27px;
+  top: 21px;
+  width: 28px;
+  height: 33px;
+  z-index: 2;
+  pointer-events: none;
+  animation: s9-hand-tap 1.6s ease-in-out 2, s9-hand-fade 0.4s ease 3.2s forwards;   /* פעמיים ואז נעלמת */
+}
+@keyframes s9-hand-fade { to { opacity: 0; } }
+@keyframes s9-hand-tap {
+  0%, 100% { transform: translate(0, 0); }
+  30%      { transform: translate(-4px, -4px); }
+  50%      { transform: translate(-4px, -4px) scale(0.92); }
+  70%      { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .s9-hand { animation: none; } }
+.s9-num--active:hover .s9-dot { background: var(--subject-700); }
+.s9-num--active:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; border-radius: 100px; }
+
+/* ─── גרף: שכבות הצירים (axes-x / axes-y — שחור, חץ בקצה כל ציר, תווית "ציר X/Y") ─── */
+.s9-graph { position: absolute; }
+.s9-draw { position: absolute; inset: 0; }
+.s9-draw img { width: 100%; height: 100%; display: block; }
+/* שמות הצירים (מסכים 11–12) כטקסט חי, באותו מיקום כמו בגרפים (.ax3-axis): Y ממורכז מעל החץ, X מימין לחץ */
+.ax-name { position: absolute; font-family: Calibri, Arial, sans-serif; font-size: 18.5px; font-weight: 600; line-height: 1; color: #1a1a1a; white-space: nowrap; pointer-events: none; }
+.ax-name--y { left: 11.86%; top: 6.96%; transform: translate(-50%, calc(-100% - 4px)); }
+.ax-name--x { left: calc(96.8% + 8px); top: 81.7%; transform: translateY(-50%); }
+@keyframes s9-wipe-x {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(-40px -100px -40px -40px); } /* סוף החשיפה רחב מהתמונה — כדי שתווית "ציר X" מימין לחץ לא תיחתך */
+}
+@keyframes s9-wipe-y {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(-40px -40px 0 -40px); }
+}
+/* רצף (script.js): ax-arm = ממתין/רץ; ax-draw = "מסרטט"; ax-bubble; ax-next */
+.ax-arm:not(.ax-draw) .s9-draw--x,
+.ax-arm:not(.ax-draw) .s9-draw--y { visibility: hidden; }
+.ax-draw .s9-draw--x { animation: s9-wipe-x 1200ms linear both; }
+.ax-draw .s9-draw--y { animation: s9-wipe-y 1200ms linear both; }
+.ax-arm:not(.ax-bubble) .s9-bubble--new { visibility: hidden; }
+.ax-bubble .s9-bubble--new.is-animating { animation: m-float-in var(--m-reveal-duration, 600ms) var(--m-ease, ease) both; }
+/* ה-2 כבר גלוי (לא פעיל) מהמסך הקודם — לא נכנס מחדש; רק מתחיל להבהב כשנהיה לחיץ */
+.ax-arm:not(.ax-next) .s9-num--late .s9-ring,
+.ax-arm:not(.ax-next) .s9-num--late .s9-hand { display: none; }
+.ax-arm:not(.ax-next) .s9-num--late { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .s9-ring { animation: none; opacity: 0.6; transform: scale(1.6); }
+  .ax-draw .s9-draw--x, .ax-draw .s9-draw--y { animation: none; }
+}
+
+/* ─── בועת-דיבור — Figma "Speech Bubbles" 1731:45005 (נכס bubble text 216×188):
+   מילוי לבן, מסגרת 3px #019DE5 רציפה, רדיוס ≈10, מקור (beak) משולב בקו המתאר —
+   בסיס ≈31px, בליטה ≈14.4px. הכיוון שמאלה/ימינה לפי שקפים 16/17; הצורה מצוירת
+   ב-SVG בגודל האמיתי של הבועה (script.js → s9RenderBubbles), לא נמתחת. ─── */
+.s9-bubble { position: absolute; }
+.s9-bubble__svg { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.s9-bubble__svg path { fill: #ffffff; stroke: var(--subject-500); stroke-width: 3; stroke-linejoin: round; }
+.s9-bubble__body { position: relative; box-sizing: border-box; padding: 15px 14px 14px; min-height: 146px; }
+.s9-bubble--left .s9-bubble__body { margin-left: 14.4px; }
+.s9-bubble--right .s9-bubble__body { margin-right: 14.4px; }
+.s9-bubble--down .s9-bubble__body { margin-bottom: 14.4px; }
+.s9-bubble__body p {
+  margin: 0 0 6px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+  text-align: right;
+}
+.s9-bubble__body p:last-child { margin-bottom: 0; }
+.s9-bubble__body strong { font-weight: 700; }
+
+/* =========================================================
+   מסך 14 (s13) — שקפים 19–22 כמסך אחד: העברת נקודות מהטבלה לגרף.
+   ראו הערה ב-index.html. מערכת קואורדינטות: .s9-stage (1280 ממורכז).
+   ========================================================= */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.s13-text { top: 80px; gap: 4px; } /* היה 21 — עלה גבוה מאייקון דיווח הבעיות */
+.s13-text p, .s13-text strong { font-weight: 700; }
+.s13-text .s13-line2, .s13-text .s13-line2 strong { color: var(--subject-500); }
+
+/* גרף: תמונת-הצירים 2501×1628 → 713×464; שכבת הנקודות באותה מסגרת */
+.s13-graph { position: absolute; left: 14px; top: 168px; width: 713px; height: 464.1px; }
+.s13-graph > img { width: 100%; height: 100%; display: block; }
+.s13-layer { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+
+.s13-pt {
+  position: absolute; left: var(--x); top: var(--y);
+  width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  border-radius: 50%; background: #e97132; /* כתום נקודת-הראשית שבתמונה */
+  box-shadow: 0 0 0 2px #ffffff;
+  z-index: 2; visibility: hidden;
+}
+.s13-pt.is-on { visibility: visible; }
+.s13-pt.is-new { animation: s13-pop 600ms cubic-bezier(.2, 1.4, .4, 1) both; }
+.s13-pt__label {
+  position: absolute; left: 14px; top: 6px; display: none;
+  font-family: Calibri, Arial, sans-serif; font-size: 20px; line-height: 1;
+  color: #303030; direction: ltr; white-space: nowrap;
+}
+.s13-pt.is-current .s13-pt__label { display: block; }
+.s13-pt.is-on { pointer-events: auto; cursor: pointer; }
+.s13-pt:hover .s13-pt__label { display: block; } /* ריחוף: מציג (X , Y) */
+.s13-pt:hover { z-index: 5; }
+.s13-pt--origin { background: transparent; box-shadow: none; width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+.s13-pt--origin .s13-pt__label { left: 24px; }
+/* מסגרת רק בריחוף (כמו מסך 15); בלי ריחוף — התווית הרגילה בלי מסגרת */
+.s13-pt:hover .s13-pt__label { top: 50%; transform: translateY(-50%); font-size: 18px; line-height: 1.2; background: #fff; padding: 3px 8px; border: 1.5px solid var(--subject-500); border-radius: 6px; }
+@keyframes s13-pop {
+  0%   { transform: scale(0); box-shadow: 0 0 0 2px #fff, 0 0 0 0 rgba(233, 113, 50, .6); }
+  60%  { transform: scale(1.35); }
+  100% { transform: scale(1); box-shadow: 0 0 0 2px #fff, 0 0 0 14px rgba(233, 113, 50, 0); }
+}
+
+/* קווי-עזר מהצירים אל הנקודה הנוכחית */
+.s13-guide { position: absolute; display: none; z-index: 1; border: 0 dashed #e97132; }
+.s13-guide.is-on { display: block; }
+.s13-guide--h {
+  left: 11.56%; width: calc(var(--x) - 11.56%); top: var(--y);
+  border-top-width: 2px; transform-origin: left center;
+}
+.s13-guide--v {
+  top: var(--y); height: calc(80.5% - var(--y)); left: var(--x);
+  border-left-width: 2px; transform-origin: center top;
+}
+.s13-guide.is-new.s13-guide--h { animation: s13-grow-x 500ms ease-out both; }
+.s13-guide.is-new.s13-guide--v { animation: s13-grow-y 500ms ease-out both; }
+@keyframes s13-grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes s13-grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+/* בועת-הסבר — אותה שפה כמו .s9-bubble (Figma 3139:28961), מקור כלפי מטה */
+.s13-bubble { position: absolute; z-index: 3; visibility: hidden; white-space: nowrap; }
+.s13-bubble.is-on { visibility: visible; }
+/* .s13-layer הוא pointer-events:none — בלי זה אי אפשר לסמן ולהעתיק את הטקסט בבועה ובתווית הנקודה */
+.s13-bubble, .s13-pt__label { pointer-events: auto; user-select: text; -webkit-user-select: text; cursor: text; }
+.s13-bubble.is-new { animation: m-float-in var(--m-reveal-duration, 600ms) var(--m-ease, ease) both; }
+.s13-bubble .s9-bubble__body {
+  min-height: 0; margin: 0 0 16px; padding: 7px 18px 8px;
+}
+.s13-bubble .s9-bubble__body p { font-size: 20px; margin: 0; }
+
+/* טבלה — עיצוב .s2-table; כאן: שורה נוכחית צהובה, שורות נוספות בהדרגה */
+.s13-table-wrap { position: absolute; right: 46px; top: 186px; } /* רוחב לפי התוכן, צמוד לימין (קצה ימני כמו קודם, x=1234) */
+.s13-table { width: auto; table-layout: auto; }
+.s13-table th { height: auto; font-size: 22px; }
+.s13-table th, .s13-table td { text-align: right; } /* Figma 716:24165: תמיד מיושר לימין */
+.s13-table td { height: auto; transition: background-color 250ms ease; }
+.s13-row:not(.is-shown) { display: none; }
+.s13-row.is-current td { background: #fff1a6; }
+.s13-row.is-done td { color: #9b9b9b; } /* שורה שכבר הועברה לגרף — אפור לא פעיל */
+.s13-row.is-new td { animation: s13-row-in 450ms ease-out both; }
+@keyframes s13-row-in { from { opacity: 0; } to { opacity: 1; } }
+.s13-th-ratio { line-height: 1.15; }
+.s13-unit { display: inline; font-weight: 400; margin-inline-start: 6px; vertical-align: middle; }
+.s13-frac { vertical-align: middle; display: inline-flex; flex-direction: column; align-items: stretch; text-align: center; min-width: 38px; }
+.s13-frac__line { height: 1.5px; background: currentColor; margin: 2px 0; }
+.s13-eq {
+  display: inline-flex; direction: ltr; unicode-bidi: isolate;
+  align-items: center; gap: 10px; font-weight: 600;
+}
+.s13-eq__sign { font-weight: 600; }
+
+/* החץ — עיגול Subject/500 עם טבעות-פעימה (כמו .s9-num) */
+.s13-arrow {
+  position: absolute; left: 664px; top: 259px; width: 56px; height: 56px;
+  padding: 0; display: flex; align-items: center; justify-content: center;
+}
+.s13-arrow.is-off { visibility: hidden; pointer-events: none; }
+.s13-arrow__dot {
+  position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--subject-500); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.s13-arrow__dot svg { width: 26px; height: 26px; }
+.s13-hand { left: 34px; top: 30px; }
+.s13-arrow:hover .s13-arrow__dot { background: var(--subject-700); }
+.s13-arrow:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; border-radius: 100px; }
+.s13-ring {
+  position: absolute; left: 6px; top: 6px; width: 44px; height: 44px; box-sizing: border-box;
+  border-radius: 50%; border: 2px solid #00baff; background: rgba(0, 186, 255, .3);
+  opacity: 0; animation: s9-pulse 1.6s ease-out 2;
+}
+.s13-ring--2 { animation-delay: .8s; }
+@media (prefers-reduced-motion: reduce) {
+  .s13-ring { animation: none; opacity: .6; transform: scale(1.4); }
+  .s13-pt.is-new, .s13-guide.is-new, .s13-bubble.is-new, .s13-row.is-new td { animation: none; }
+}
+
+/* =========================================================
+   מסך 15 (s14) — שקפים 23+24: קווי ברזל ועץ אורן. ראו index.html.
+   ========================================================= */
+.s14-text { top: 80px; } /* כמו מסך 14 (s13) */
+.s14-graph { position: absolute; left: 283.5px; top: 168px; width: 713px; height: 464.1px; } /* כמו מסך 14, ממורכז */
+.s14-graph > img { width: 100%; height: 100%; display: block; }
+.s14-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.s14-line polyline { fill: none; stroke: currentColor; stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.s14-line circle { fill: currentColor; stroke: #ffffff; stroke-width: 6; opacity: 0; }
+.s14-line--iron { color: #e97132; } /* כתום — המשך אותו גרף ממסך 14 (נקודות וקווי-עזר כתומים) */
+/* נקודות ריחוף: מציגות (X , Y). מופיעות רק אחרי שהקו צויר (class has-iron / has-pine על הגרף) */
+.s14-hot {
+  position: absolute; left: var(--x); top: var(--y); width: 26px; height: 26px; margin: -13px 0 0 -13px;
+  padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer;
+  z-index: 4; display: none;
+}
+.s14-graph.has-iron .s14-hot[data-line="iron"],
+.s14-graph.has-pine .s14-hot[data-line="pine"] { display: block; }
+.s14-hot:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 1px; }
+.s14-tip {
+  position: absolute; left: 24px; top: 50%; transform: translateY(-50%); display: none;
+  padding: 3px 8px; background: #fff; border: 1.5px solid var(--subject-500); border-radius: 6px;
+  font-family: Calibri, Arial, sans-serif; font-size: 18px; line-height: 1.2; color: #1a1a1a;
+  white-space: nowrap; pointer-events: none;
+}
+.s14-hot:hover .s14-tip, .s14-hot:focus-visible .s14-tip { display: block; }
+.s14-line--pine { color: #609e12; }
+.s14-line.is-on polyline { stroke-dashoffset: 0; }
+.s14-line.is-on circle { opacity: 1; }
+.s14-line.is-drawing polyline { animation: s14-draw 1000ms linear both; }
+.s14-line.is-drawing circle { animation: s14-dot 300ms ease-out both; }
+.s14-line.is-drawing circle:nth-of-type(1) { animation-delay: 250ms; }
+.s14-line.is-drawing circle:nth-of-type(2) { animation-delay: 500ms; }
+.s14-line.is-drawing circle:nth-of-type(3) { animation-delay: 750ms; }
+.s14-line.is-drawing circle:nth-of-type(4) { animation-delay: 950ms; }
+@keyframes s14-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes s14-dot { from { opacity: 0; } to { opacity: 1; } }
+/* מסך 15 (s14): קו עץ האורן מקווקו (הבחנה לא-צבעונית, כמו מסכים 16/19) — נחשף בגזירה (clip-path) ולא ב-stroke-dashoffset, כדי לשמור על הקווקוו */
+#s14 .s14-line--pine polyline { stroke-dasharray: 80 50; stroke-dashoffset: 0; stroke-linecap: butt; }
+#s14 .s14-line--pine:not(.is-on) polyline { visibility: hidden; }
+#s14 .s14-line--pine.is-drawing polyline { animation: none; }
+#s14 .s14-line--pine.is-drawing { animation: s18-wipe 1000ms linear both; }
+@media (prefers-reduced-motion: reduce) { #s14 .s14-line--pine.is-drawing { animation: none; } }
+.s14-bubble .s9-bubble__body p { font-size: 18px; }
+#s14-title.is-swap { animation: m-float-in 450ms var(--m-ease, ease) both; }
+@media (prefers-reduced-motion: reduce) {
+  .s14-line.is-drawing polyline, .s14-line.is-drawing circle, #s14-title.is-swap { animation: none; }
+}
+
+/* =========================================================
+   מסך 16 (s15) — SingleChoiceQuestionImage עם גרף במקום תמונה (שקף 25).
+   עמודת טקסט/אפשרויות מימין, מסגרת גרף משמאל (באותו סגנון .s8-img-frame).
+   אפשרויות: .s3q-opt/.s3q-radio המשותפים; פופאפים: .s8q-* של מסך 9.
+   ========================================================= */
+.s15-question {
+  position: absolute;
+  top: 139px;
+  right: calc(40px + var(--ex, 0px));
+  width: 1200px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+.s15-col {
+  flex: 1;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL column: flex-start = פיזית ימין */
+  gap: 24px;
+}
+.s15-q {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--subject-500);
+  text-align: right;
+}
+.s15-answers { width: 604px; max-width: 100%; }
+
+/* מונח "תלול" + אייקון סימן שאלה (Figma 2045:20208, 15×15) */
+.s15-term { position: relative; white-space: nowrap; }
+.s15-term__word { font-style: italic; }
+/* האייקון צף מעל-שמאל למילה (כמו אינדקס עליון), צמוד אליה, ולא תופס מקום במשפט */
+.s15-info {
+  position: absolute;
+  left: -6px;  /* מרכז האייקון ~6px פנימה מהשפה השמאלית של המילה */
+  top: -14px;  /* תחתית האייקון כמעט נוגעת בראש המילה */
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.s15-info img { width: 15px; height: 15px; display: block; }
+.s15-info:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 1px; }
+/* פופאפ מידע על מונח — Figma 649:10925 (Container, מסך "tooltip open"):
+   לבן, border 1px #aeaeae, r12, צל 0 2 4 rgba(0,0,0,.08), רוחב 260, טקסט 18/#222 מיושר לימין.
+   ממוקם מעל האייקון, ממורכז אופקית אליו; הרווח בין תחתית הפופאפ לאייקון 4.5px.
+   כפתור האייקון הוא 24×24 עם אייקון 15×15 במרכז (שוליים 4.5px) — לכן תחתית הפופאפ
+   מיושרת לשפה העליונה של הכפתור, ומרכז הפופאפ למרכז הכפתור (left:-9 + 12 = 3px). */
+.s15-tip {
+  position: absolute;
+  z-index: 40;
+  left: 6px;  /* מרכז האייקון (left:-6 + 12) */
+  bottom: calc(100% + 14px);
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  width: 260px;
+  padding: 16px 15px;
+  background: #fff;
+  border: 1px solid #aeaeae;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  white-space: normal;
+  pointer-events: none; /* לא חוסם את הטקסט שמתחתיו; נסגר ביציאת העכבר מהאייקון */
+}
+.s15-tip.hidden { display: none; }
+.s15-tip__body {
+  display: block;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
+  color: #222;
+  text-align: right;
+}
+.s15-tip__body strong { font-weight: 700; }
+
+/* מסגרת הגרף */
+.s15-graph-wrap {
+  flex: none;
+  width: 656px;
+  box-sizing: border-box;
+  padding: 8px; /* כמו .s8-img */
+}
+.s15-graph-frame {
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid rgba(174, 174, 174, 0.5); /* design-guidelines §18 */
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+  padding: 26px 52px 0 0; /* מקום לתוויות "ציר Y" (מעל) ו"ציר X" (מימין לחץ) */
+}
+.s15-graph { position: relative; width: 100%; aspect-ratio: 2501 / 1628; }
+.s15-graph > img { width: 100%; height: 100%; display: block; }
+.s15-legend {
+  position: absolute;
+  top: 24px;
+  left: 112px;
+  margin: 0;
+  padding: 6px 12px;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 18px;
+  color: #222;
+}
+.s15-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.s15-legend__item::before {
+  content: '';
+  width: 28px;
+  height: 6px;
+  border-radius: 3px;
+  background: currentColor;
+  flex: none;
+}
+.s15-legend__item--iron::before { color: #e97132; } /* קו רציף */
+.s15-legend__item--pine::before { /* קו מקווקו */
+  color: #609e12; border-radius: 0;
+  background: repeating-linear-gradient(90deg, currentColor 0 8px, transparent 8px 12px);
+}
+
+/* הבחנה לא-צבעונית בין הקווים (נגישות): ברזל — אדום רציף, עץ אורן — ירוק מקווקו */
+.s15-graph .s14-line--iron { color: #e97132; }
+.s15-graph .s14-line--pine polyline { stroke-dasharray: 80 50; stroke-linecap: butt; }
+.s15-graph .s14-hot { display: block; } /* הקווים כבר מצוירים — נקודות הריחוף פעילות מההתחלה */
+
+/* =========================================================
+   מסך 17 (s16) — טקסט + יישומון גרירה (שקף 26).
+   Figma 730:10392 (HookOpenQuestion State 01) ללא שדה הטקסט וה"צדקתי?":
+   מסגרת היישומון 625×628 בצד שמאל של מסגרת ה-1280 (ממורכזת ב---ex),
+   עמודת טקסט 449 מימין (left calc(50%+151) → right 40), top 71.83.
+   ========================================================= */
+.s16-stage {
+  position: absolute;
+  top: 0;
+  left: var(--ex, 0px);
+  width: 1280px;
+  height: 636px; /* מעל ה-bottom-bar (74) */
+}
+.s16-text {
+  position: absolute;
+  top: 139px; /* כמו מסכי השאלה האחרים בלומדה (.s8-question / .s15-question) */
+  right: 40px;
+  width: 449px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.s16-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: right;
+  color: #303030;
+}
+.s16-text strong { font-weight: 700; }
+/* כותרת — כחול מודגש (Figma: Body/B-6, Subject/500) */
+.s16-text p.s16-title,
+.s16-text p.s16-title strong { color: var(--subject-500); }
+/* מסגרת היישומון — Figma 625×628; התוכן ב-applet/applet.css */
+.s16-applet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 625px;
+  height: 628px;
+}
+
+/* =========================================================
+   מסך 18 (s17) — מסקנה מהיישומון (שקף 27). Figma 3684:30825 (HookClosingText)
+   + סידור ויזואלי מרינדור שקף 27. מערכת קואורדינטות: .s17-stage (1280 ממורכז
+   ב---ex); רצועת המים וקו פני-המים בשוליים 40px כמו הטקסט (ברמת ה-screen).
+   ========================================================= */
+.s17-stage {
+  position: absolute;
+  top: 0;
+  left: var(--ex, 0px);
+  width: 1280px;
+  height: 636px; /* מעל ה-bottom-bar (74) */
+}
+.s17-text {
+  position: absolute;
+  top: 56px;
+  right: 40px;
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.s17-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: right;
+  color: #303030;
+}
+/* כמו מסך 17: כותרת כחולה Bold (700), המשפט השחור Regular (400) */
+.s17-text p strong { font-weight: 400; }
+.s17-text p.s17-title strong { font-weight: 700; }
+.s17-text p.s17-title,
+.s17-text p.s17-title strong { color: var(--subject-500); }
+
+/* רצועת המים: צורת "מסמך" מסובבת (גל בקצה העליון משמאל), בתוך שולי 40px */
+.s17-water {
+  position: absolute;
+  left: calc(40px + var(--ex, 0px));
+  right: calc(40px + var(--ex, 0px));
+  top: 355px;
+  height: 281px; /* עד קו הסרגל התחתון (636) */
+  background: #5fd1d8 url('assets/images/water-surface.jpg') center top / cover no-repeat;
+  clip-path: polygon(0 45px, 10% 43px, 20% 38px, 30% 30px, 40% 21px, 50% 12px, 60% 5px, 70% 1px, 100% 0, 100% 100%, 0 100%);
+}
+/* קו פני המים: מקווקו כחול (Subject/500), 6px, קו 24 / רווח 18 */
+.s17-waterline {
+  position: absolute;
+  left: calc(40px + var(--ex, 0px));
+  right: calc(40px + var(--ex, 0px));
+  top: 352px;
+  height: 6px;
+  background: repeating-linear-gradient(to left, var(--subject-500) 0 24px, transparent 24px 42px);
+}
+.s17-ripples {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 1280px;
+  height: 710px;
+  pointer-events: none;
+}
+.s17-ripples line {
+  stroke: #156082;
+  stroke-width: 2;
+  stroke-dasharray: 8 6;
+  opacity: .8;
+}
+
+/* כרטיסי "צף" / "שוקע" — מסגרת מקווקת שחורה, מילוי מרינדור השקף */
+.s17-card {
+  position: absolute;
+  width: 274px;
+  height: 106px;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 2px dashed #000;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1.3;
+  color: #000;
+}
+.s17-card strong { font-weight: 700; }
+.s17-card--float { left: 269px; top: 200px; background: #dce9f7; }
+.s17-card--sink { left: 310px; top: 447px; background: #f6c8ae; }
+
+/* קוביות — מעל הכרטיסים; תג הצפיפות באותו עיצוב כמו ביישומון (מסך 17) */
+.s17-cube { position: absolute; }
+.s17-cube img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.s17-cube--pine { left: 545px; top: 155px; width: 190px; height: 196px; }
+.s17-cube--iron { left: 586px; top: 445px; width: 108px; height: 110px; }
+.s17-cube__tag {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  padding: 3px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 10px;
+  font-family: Calibri, Arial, sans-serif;
+  color: #303030;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.s17-cube__tag b { font-size: 26px; font-weight: 700; }
+.s17-cube__tag i { font-size: 16px; font-style: normal; font-weight: 400; }
+.s17-cube--iron .s17-cube__tag { padding: 2px 6px; }
+.s17-cube--iron .s17-cube__tag b { font-size: 20px; }
+.s17-cube--iron .s17-cube__tag i { font-size: 12px; }
+
+/* =========================================================
+   מסך 19 (s18) — הגרף עם קו המים (שקף 28). הגרף: .s14-graph/.s14-lines של
+   מסך 15 (אותו מיקום וגודל); הטקסט כמו מסך 18 (.s17-text); מקרא מימין לגרף.
+   ========================================================= */
+.s18-text {
+  position: absolute;
+  top: 56px;
+  right: 40px;
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.s18-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: right;
+  color: #303030;
+}
+.s18-text p.s18-title,
+.s18-text p.s18-title strong { color: var(--subject-500); font-weight: 700; }
+.s18-line--water { color: #0058b6; } /* "הכחול" — קו צפיפות המים (שקף 28) */
+.s18-legend {
+  position: absolute;
+  left: 1010px;
+  top: 330px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px;
+  color: #303030;
+}
+.s18-legend__item { display: flex; align-items: center; gap: 10px; }
+.s18-legend__item::before {
+  content: '';
+  width: 32px;
+  height: 6px;
+  border-radius: 3px;
+  background: currentColor;
+  flex: none;
+}
+.s18-legend__item--iron::before { color: #e97132; } /* רציף */
+.s18-legend__item--pine::before { /* מקווקו */
+  color: #609e12; border-radius: 0;
+  background: repeating-linear-gradient(90deg, currentColor 0 8px, transparent 8px 12px);
+}
+.s18-legend__item--water::before { /* מנוקד */
+  color: #0058b6; border-radius: 0;
+  background: radial-gradient(circle, currentColor 2.6px, transparent 3px) 0 0 / 10px 6px repeat-x;
+}
+
+/* הבחנה לא-צבעונית בין הקווים (נגישות): ברזל — אדום רציף, עץ אורן — ירוק מקווקו, מים — כחול מנוקד.
+   הקווים המקווקו/מנוקד נחשפים בגזירה (clip-path) במקום stroke-dashoffset, כדי לשמור על הדוגמה. */
+#s18 .s14-line--iron { color: #e97132; }
+#s18 .s14-line--pine polyline { stroke-dasharray: 80 50; stroke-dashoffset: 0; stroke-linecap: butt; }
+#s18 .s18-line--water polyline { stroke-width: 12; stroke-dasharray: 1 36; stroke-dashoffset: 0; stroke-linecap: round; }
+#s18 .s14-line--pine:not(.is-on) polyline,
+#s18 .s18-line--water:not(.is-on) polyline { visibility: hidden; }
+#s18 .s14-line--pine.is-drawing polyline,
+#s18 .s18-line--water.is-drawing polyline { animation: none; }
+#s18 .s14-line--pine.is-drawing,
+#s18 .s18-line--water.is-drawing { animation: s18-wipe 1000ms linear both; }
+@keyframes s18-wipe { from { clip-path: inset(-20px 100% -20px 0); } to { clip-path: inset(-20px -20px -20px 0); } }
+@media (prefers-reduced-motion: reduce) {
+  #s18 .s14-line--pine.is-drawing, #s18 .s18-line--water.is-drawing { animation: none; }
+}
+/* קודקודי קו המים — גדולים ובולטים יותר מהנקודות המנוקדות */
+#s18 .s18-line--water circle { r: 23px; stroke-width: 8; }
+/* נקודות ריחוף (x , y) — פעילות רק אחרי שהקו הופיע; קטנות כי נקודות עץ האורן והמים קרובות */
+#s18 .s14-hot { width: 10px; height: 10px; margin: -5px 0 0 -5px; }
+#s18 .s14-hot[data-line="water"] { width: 14px; height: 14px; margin: -7px 0 0 -7px; }
+#s18-graph.has-iron .s14-hot[data-line="iron"],
+#s18-graph.has-pine .s14-hot[data-line="pine"],
+#s18-graph.has-water .s14-hot[data-line="water"] { display: block; }
+
+/* חשיפה איטית בצעדים (JS) — מסכים 18–19. מצב סופי = .is-in; האנימציה (.is-anim)
+   מוסרת בסיום כדי שלא תחזור בכל חזרה למסך (display none→block מפעיל אנימציות מחדש). */
+.s17-seq { opacity: 0; }
+.s17-seq.is-in { opacity: 1; }
+.s17-seq.is-anim { animation: m-float-in 700ms ease both; }
+.s18-legend__item { opacity: 0; }
+.s18-legend__item.is-in { opacity: 1; }
+.s18-legend__item.is-anim { animation: m-float-in 500ms ease both; }
+@media (prefers-reduced-motion: reduce) {
+  .s17-seq.is-anim, .s18-legend__item.is-anim { animation: none; }
+}
+
+/* =========================================================
+   מסך 20 (s19) — שאלת גרירה: יצוף / ישקע (שקף 29). DragAndDropQuestion (וריאנט
+   מקומי: אזורים מרובי-פריטים). מצבי הרכיבים — Figma 1249:32691 / 5340:25539.
+   ⚠️ כרטיס הגרירה והטקסט שבתוכו מעוצבים בקלאסים שעל האלמנט עצמו (.s19-card*),
+   לא תחת #s19 — מופע-הרפאים של הגרירה נמצא ב-body, מחוץ ל-#app (_common-pitfalls).
+   ========================================================= */
+.s19-stage {
+  position: absolute;
+  top: 0;
+  left: var(--ex, 0px);
+  width: 1280px;
+  height: 636px; /* מעל ה-bottom-bar (74) */
+}
+.s19-text {
+  position: absolute;
+  top: 56px;
+  right: 40px;
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.s19-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: right;
+  color: #303030;
+}
+.s19-text strong { font-weight: 700; }
+.s19-text p.s19-title,
+.s19-text p.s19-title strong { color: var(--subject-500); }
+
+/* שורת הכרטיסים: 6 משבצות 176×64, מרווחות על רוחב 1200 */
+.s19-tray {
+  position: absolute;
+  top: 192px;
+  right: 40px;
+  width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  direction: rtl;
+}
+.s19-slot { flex: none; width: 176px; height: 64px; }
+
+/* כרטיס חומר (Figma "answer box": לבן, מסגרת Natural/300 1.5px, רדיוס 10) */
+.s19-card {
+  position: relative;
+  box-sizing: border-box;
+  width: 176px;
+  height: 64px;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL: טקסט מיושר לימין — Figma 5340:25539 */
+  justify-content: center;
+  background: #ffffff;
+  border: 1.5px solid #ececec;
+  border-radius: 10px;
+  font-family: Calibri, Arial, sans-serif;
+  direction: rtl;
+  text-align: right;
+  color: #303030;
+  line-height: 1.15;
+  white-space: nowrap;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.s19-card__name { font-family: Calibri, Arial, sans-serif; font-size: 22px; font-weight: 600; color: #303030; }
+.s19-card__dens { font-family: Calibri, Arial, sans-serif; font-size: 18px; font-weight: 400; color: #303030; }
+.s19-card:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+.s19-card.is-ghost { visibility: hidden; }          /* המשבצת נשמרת — סדר המגש יציב */
+.s19-card.dragging { opacity: 0.35; }
+/* Draggable Item — Selected (Figma): קו תכלת + מילוי לבן; גם מופע-הרפאים הצף */
+.s19-card.is-selected,
+.s19-card.pointer-drag-ghost { border-color: var(--subject-500); background: #ffffff; }
+.s19-card.pointer-drag-ghost { cursor: grabbing; }
+.s19-card.is-locked { cursor: default; }
+/* כרטיס מונח באזור — Figma "Drag&Drop State": Dropped (5340:25530 → 1451:37276): Subject/100 + 1.5px
+   Subject/500, r12, טקסט #222; Correct (1460:38257) / Incorrect (1460:38253): לבן + 1.5px ירוק/אדום,
+   טקסט #303030, אייקון 26px בקצה הימני (סדר ה-DOM: האייקון ראשון → מימין ב-RTL). מקום האייקון שמור תמיד
+   (visibility) — הוא לא משנה את גיאומטריית הכרטיס ברגע הבדיקה. */
+.s19-card.is-placed {
+  width: 200px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 6px 20px;
+  background: var(--subject-100, #d4f3ff);
+  border: 1.5px solid var(--subject-500);
+  border-radius: 12px;
+  color: #222222;
+  cursor: grab;
+}
+.s19-card.is-placed .s19-card__name, .s19-card.is-placed .s19-card__dens { color: #222222; }
+.s19-card__text { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; text-align: right; font-family: Calibri, Arial, sans-serif; }
+.s19-card__icon { flex: none; width: 26px; height: 26px; display: none; background: center / 26px 26px no-repeat; }
+.s19-card.is-correct, .s19-card.is-wrong { background: #ffffff; border-color: #609e12; }
+.s19-card.is-wrong { border-color: #b20010; }
+.s19-card.is-correct .s19-card__name, .s19-card.is-correct .s19-card__dens,
+.s19-card.is-wrong .s19-card__name, .s19-card.is-wrong .s19-card__dens { color: #303030; }
+.s19-card.is-correct .s19-card__icon { display: block; visibility: visible; background-image: url('../unit-assets/icons/icon-dnd-correct.svg'); }
+.s19-card.is-wrong .s19-card__icon { display: block; visibility: visible; background-image: url('../unit-assets/icons/icon-dnd-incorrect.svg'); }
+/* מופע הגרירה של כרטיס מונח: חוזר ללוק "פריט נגרר" (לבן + Subject/500, r10) בלי אייקון */
+.s19-card.is-placed.is-selected { background: #ffffff; } /* נבחר בהקשה/מקלדת: לוק "פריט נבחר" */
+.s19-card.is-placed.pointer-drag-ghost { background: #ffffff; border-radius: 10px; border-color: var(--subject-500); }
+.s19-card.pointer-drag-ghost .s19-card__icon { display: none; }
+
+/* אזורי שחרור — Drop Zone: ברירת מחדל מקווקו 1px rgba(0,0,0,.6) r12; Hover: מקווקו תכלת + לבן;
+   Dropped: קו תכלת מלא 1.5px. מילוי בסיס לפי הקטגוריה (כמו כרטיסי "צף"/"שוקע" במסך 18) */
+.s19-zone {
+  position: absolute;
+  left: 240px;
+  width: 800px;
+  min-height: 80px;
+  box-sizing: border-box;
+  padding: 8px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center; /* התווית ממורכזת אנכית גם באזור ריק */
+  gap: 8px 10px;
+  direction: rtl;
+  border: 1px dashed rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.s19-zone--float { top: 276px; background: #eafaff; } /* גוון בהיר של Subject/100 */
+.s19-zone--sink { top: 480px; background: #fef2eb; }
+.s19-zone.drag-over { border: 1px dashed var(--subject-500); background: #ffffff; }
+.s19-zone:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+.s19-zone.is-locked { cursor: default; }
+.s19-zone__label {
+  flex: none;
+  width: 120px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #303030;
+  text-align: right;
+  pointer-events: none;
+}
+.s19-zone .s19-card { flex: none; }
+
+/* אזור-פעולה בפופאפ (View My Answer Toggle) — כפתור ShowAnswer ניטרלי (Figma 196:6020):
+   לבן, #222, מסגרת 1px #484848 זהה ב-default/hover, 39px, רדיוס 1000, 20px;
+   hover משנה רק משקל (400 → 600) */
+.s19-popup-actions { display: flex; }
+.s19-popup-actions:empty { display: none; }
+.popup-action {
+  height: 39px;
+  box-sizing: border-box;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #222222;
+  border: 1px solid #484848;
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.popup-action:hover { font-weight: 600; }
+.popup-action:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+#s19q-popup { touch-action: none; }
+
+/* Figma Popup Feedback 5340:35856: 426px, צמוד לשמאל הקנבס (x 0) ויושב על סרגל הניווט (תחתית y 636 = bottom 74) */
+#s19q-popup { left: var(--ex, 0px); bottom: 74px; }
+/* פופאפ טבלת מסה/נפח (מסך 3): ימין-תחתון, כדי לא להסתיר את הטבלה (שבצד שמאל) */
+#s2tq-popup { touch-action: none; left: auto; right: var(--ex, 0px); bottom: 74px; }
+
+/* =========================================================
+   מסך 27 (s26) — שאלת גרירה: משוואת הצפיפות (שקף 38). DragAndDropQuestion (וריאנט
+   מקומי: אזור שחרור אחד לכל פריט, שבר מונה/מכנה). מצבי הרכיבים — Figma 1249:32691 / 5340:25539.
+   ⚠️ כרטיס הגרירה והטקסט שבתוכו מעוצבים בקלאסים שעל האלמנט עצמו (.s26-card*), לא תחת #s26 —
+   מופע-הרפאים של הגרירה נמצא ב-body, מחוץ ל-#app (_common-pitfalls). הגיאומטריה (שקף 38,
+   px = EMU/9525): אזורי שחרור 257×66, קו שבר 367, כרטיסי מאגר 176×64; הקבוצה ממורכזת בקנבס.
+   ========================================================= */
+.s26-stage { position: absolute; top: 0; left: var(--ex, 0px); width: 1280px; height: 636px; }
+.s26-text { position: absolute; top: 56px; right: 40px; width: 1200px; }  /* זהה בדיוק ל-.s19-text (מסך 20) */
+.s26-text p { margin: 0; font-family: Calibri, Arial, sans-serif; font-size: 24px; line-height: normal; text-align: right; color: var(--subject-500); }
+.s26-text strong { font-weight: 700; }
+
+/* המשוואה: צפיפות = שבר. direction:rtl → "צפיפות" מימין, אחריו "=", ואז השבר משמאל */
+.s26-eq { position: absolute; top: 215px; left: 0; width: 1280px; height: 197px; display: flex; justify-content: center; align-items: center; gap: 20px; direction: rtl; }
+.s26-eq__label { flex: none; font-family: Calibri, Arial, sans-serif; font-size: 40px; font-weight: 700; line-height: 1; color: #303030; }  /* Heading/H-6 Bold */
+.s26-eq__equals { flex: none; width: 44px; height: 44px; fill: #303030; }
+.s26-frac { flex: none; position: relative; width: 367px; height: 197px; }
+.s26-frac__line { position: absolute; top: 98px; left: 0; width: 367px; height: 3px; background: #303030; border-radius: 2px; }
+.s26-zone { position: absolute; left: 55px; width: 257px; height: 66px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; direction: rtl; background: #f3f4f5; border: 1px dashed rgba(0, 0, 0, 0.6); border-radius: 12px; cursor: pointer; }
+.s26-zone#s26-zone-num { top: 0; }
+.s26-zone#s26-zone-den { top: 131px; }
+.s26-zone.drag-over { border: 1px dashed var(--subject-500); background: #ffffff; }
+.s26-zone.occupied { border-color: transparent; background: transparent; }  /* הכרטיס המונח הוא ה-Dropped / Correct / Incorrect */
+.s26-zone:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+.s26-zone.is-locked { cursor: default; }
+
+/* מאגר: 4 משבצות 176×64 */
+.s26-tray { position: absolute; top: 515px; left: 0; width: 1280px; display: flex; justify-content: center; gap: 32px; direction: rtl; }
+.s26-slot { flex: none; width: 176px; height: 64px; }
+
+/* כרטיס (Figma "answer box"): לבן, מסגרת 1.5px, רדיוס 10; Selected = קו תכלת */
+.s26-card { position: relative; box-sizing: border-box; width: 176px; height: 64px; padding: 0 20px; display: flex; align-items: center; justify-content: flex-start; background: #ffffff; border: 1.5px solid #ececec; border-radius: 10px; font-family: Calibri, Arial, sans-serif; direction: rtl; text-align: right; color: #303030; white-space: nowrap; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.s26-card__text { font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: 1.15; color: #303030; }
+.s26-card__icon { display: none; position: absolute; top: 50%; right: 20px; width: 26px; height: 26px; margin-top: -13px; background: center / 26px 26px no-repeat; }
+.s26-card:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+.s26-card.is-ghost { visibility: hidden; }          /* המשבצת נשמרת — סדר המאגר יציב */
+.s26-card.dragging { opacity: 0.35; }
+.s26-card.is-selected, .s26-card.pointer-drag-ghost { border-color: var(--subject-500); background: #ffffff; }
+.s26-card.pointer-drag-ghost { cursor: grabbing; }
+.s26-card.is-locked { cursor: default; }
+/* כרטיס מונח באזור: Dropped (Subject/100 + 1.5px Subject/500, r12); Correct / Incorrect: לבן + ירוק / אדום + אייקון 26px
+   בקצה הימני (שמור תמיד — לא משנה את גיאומטריית הכרטיס ברגע הבדיקה) */
+.s26-card.is-placed { width: 100%; height: 100%; padding: 0 20px; background: var(--subject-100, #d4f3ff); border: 1.5px solid var(--subject-500); border-radius: 12px; cursor: grab; }
+.s26-card.is-placed .s26-card__text { color: #222222; }
+.s26-card.is-correct, .s26-card.is-wrong { background: #ffffff; border-color: #609e12; }
+/* Figma 1249:32691: טקסט מיושר לימין, 20px מהקצה; במצב נכון/שגוי האייקון (26px) בקצה הימני והטקסט 10px משמאלו (56px) */
+.s26-card.is-placed.is-correct, .s26-card.is-placed.is-wrong { padding: 0 56px 0 20px; }
+.s26-card.is-placed.pointer-drag-ghost.is-correct, .s26-card.is-placed.pointer-drag-ghost.is-wrong { padding: 0 20px; }
+.s26-card.is-wrong { border-color: #b20010; }
+.s26-card.is-correct .s26-card__text, .s26-card.is-wrong .s26-card__text { color: #303030; }
+.s26-card.is-correct .s26-card__icon { display: block; background-image: url('../unit-assets/icons/icon-dnd-correct.svg'); }
+.s26-card.is-wrong .s26-card__icon { display: block; background-image: url('../unit-assets/icons/icon-dnd-incorrect.svg'); }
+.s26-card.is-placed.is-selected { background: #ffffff; }
+.s26-card.is-placed.pointer-drag-ghost { background: #ffffff; border-radius: 10px; border-color: var(--subject-500); padding: 0 20px; }
+.s26-card.pointer-drag-ghost .s26-card__icon { display: none; }
+
+/* שבר מיני בתוך פופאפ המשוב (שקף 38: "מסה / נפח") */
+.s26-minifrac { display: block; width: 88px; margin: 6px 0 6px auto; text-align: center; font-family: Calibri, Arial, sans-serif; font-size: 20px; line-height: 1.2; }
+.s26-minifrac span { display: block; }
+.s26-minifrac__line { height: 1.5px; background: currentColor; margin: 2px 0; }
+#s26q-popup { touch-action: none; left: var(--ex, 0px); bottom: 74px; }
+
+/* ─── מסך 22 (s21) — כרטיסיות מתהפכות: מטבע / סירה ───
+   Figma 4943:37313 (מצב 01) / 4943:37294 (מצב 03). עמודה ממורכזת (אותו מיקום
+   כמו ב-Figma: מרכז ב-top:calc(50% - 50.25px)), פער 56px בין הטקסט לכרטיסיות.
+   מחלקות הכותרת/הנחיה (.s2-title/.s2-instructions) ומכניקת ההיפוך (.frc-*)
+   משותפות עם מסך 3. */
+.s21-stage {
+  position: absolute;
+  left: var(--ex, 0px);
+  right: var(--ex, 0px);
+  /* Figma 4943:37314: עמודה (481px) ב-y=64.25. נעוץ ב-top קבוע (לא במרכז) כדי
+     שהגדלת הכרטיסיות ל-322 לא תזיז את הטקסט. */
+  top: 64.25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+}
+.s21-header {
+  box-sizing: border-box;
+  width: 810px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+}
+.s21-title {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+/* Figma 4943:37315: tier 1 = Regular, ממורכז, padding 10 (שורה עליונה 24px — הנחיית מפיקה,
+   Figma: 20); tier 2 = H-6 40px Bold; tier 3 = 28px Bold. הכול ממורכז (הנחיית מפיקה).
+   text-box trim כמו ב-Figma (cap→alphabetic) כשנתמך; בלעדיו הטקסט נכנס גם בלי חיתוך. */
+.s21-t1,
+.s21-t2,
+.s21-t3 {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  color: #303030;
+  line-height: normal;
+  text-align: center;
+}
+.s21-t1 { box-sizing: border-box; padding: 10px; }
+.s21-t1 p {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+}
+.s21-t2 { font-size: 40px; font-weight: 700; }
+.s21-t3 { font-size: 28px; font-weight: 400; }
+@supports (text-box: trim-both cap alphabetic) {
+  .s21-t1 p,
+  .s21-t2 { text-box: trim-both cap alphabetic; }
+}
+.s21-cards {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  justify-content: center;
+}
+.s21-cards .frc-card {
+  flex: none;
+  width: 283px;
+  height: 283px; /* Figma — אחיד עם מסך 24 */
+}
+/* חזית: מסגרת 3px + padding 16 (פנימי = 251px ברוחב), רדיוס 16 — Figma */
+.s21-front {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 13px;
+}
+.s21-img-slot {
+  flex: 1;
+  min-height: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--natural-400, #d9d9d9);
+}
+.s21-img-slot--contain { background: #ffffff; }
+.s21-img-slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.s21-img-slot--contain img { object-fit: contain; }
+.s21-caption {
+  flex: none;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+  color: #303030;
+  text-align: center;
+}
+/* גב: Figma — רקע subject/100, מסגרת subject/500 3px, רדיוס 24, padding 24/16 */
+.s21-back {
+  border-radius: 24px;
+  padding: 6px 16px; /* הוקטן מ-24 כדי שטקסט הסירה ייכנס ב-283px */
+}
+.s21-back-content {
+  text-align: right;
+}
+.s21-back-content p {
+  font-size: 24px; /* Figma Body/B-4 */
+  line-height: normal;
+}
+.s21-back-content p + p { margin-top: 8px; }
+.s21-back-content p { text-wrap: pretty; } /* בלי מילה בודדת ("צפה.") בשורה האחרונה */
+/* הבועה צמודה יותר לדמות (המרווח בין קצה הזנב לכרטיס הדמות הוקטן) */
+#s21 .s5-bubble { position: relative; z-index: 1; margin-bottom: -6px; }
+.s21-back-content strong { font-weight: 700; }
+
+/* דמות: מוסתרת עד שהופכו כל הכרטיסיות; כניסה = float-in (animation-system) */
+#s21:not(.s21-char-on) .s21-char-wrap { visibility: hidden; }
+.s21-char-wrap.is-animating {
+  animation: m-float-in var(--m-reveal-duration) var(--m-ease) both;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   מסך 23 (#s22) — TransitionScreen, ShortText. Figma 4905:25066:
+   בלוק טקסט 790 רחב, ממורכז, top:115; כותרת H-4 (64/700), שורת גוף B-1
+   (28/400), מרווח 24. הדמות בתחתית, צמודה לקו הסרגל (640×360, כמו
+   .s12-video-wrap/התבנית). הטקסט מעל הווידאו (הרקע שלו לבן).
+   ═══════════════════════════════════════════════════════════ */
+.s22-content {
+  position: absolute;
+  inset: 0 0 74px 0;
+}
+.s22-text {
+  position: absolute;
+  top: 115px;
+  left: calc(245px + var(--ex, 0px));
+  width: 790px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  color: #303030;
+  text-align: center;
+}
+.s22-title {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.s22-body {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+.s22-body strong { font-weight: 700; }
+.s22-video-wrap {
+  position: absolute;
+  bottom: 0;
+  left: calc(346.5px + var(--ex, 0px));
+  width: 587px;        /* 16:9 קטן מעט מ-640×360 כדי שלשורת הגוף בת 2 השורות יישאר
+                          מרווח מעל ראש הדמות (TransitionScreen.md → הקטנה פרופורציונלית) */
+  height: 330px;
+}
+/* מסך 26: שורת טקסט אחת — תיבת הדמות במלוא 640×360 של התבנית */
+.s22-video-wrap--full {
+  left: calc(320px + var(--ex, 0px));
+  width: 640px;
+  height: 360px;
+}
+.s22-video-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.s22-char-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none; /* דקורטיבי בלבד */
+  transform: translateY(5%); /* פיט-צמוד לקו הסרגל כמו ה-character frame ב-Figma */
+}
+@supports (text-box: trim-both cap alphabetic) {
+  .s22-title, .s22-body { text-box: trim-both cap alphabetic; }
+  .s22-title { line-height: 1.1; }
+  .s22-body { line-height: 1.3; }
+}
+
+/* ─── מסך 24 (s23) — כרטיסיות מתהפכות: גזים (שקפים 34+35) ───
+   משתף את .s21-* (כותרת, כרטיסייה, פלטת חזית/גב). כאן אין tier 1, לכן העמודה
+   ממורכזת אנכית כמו ב-Figma (calc(50% - 50.25px)) ולא נעוצה ב-top קבוע. */
+.s23-stage {
+  top: calc(50% - 50.25px);
+  transform: translateY(-50%);
+}
+.s23-cards { gap: 22px; align-items: flex-start; }
+.s23-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 283px;
+}
+.s23-cards .frc-card { height: 283px; }
+.s23-front { padding: 13px; }
+/* הכיתוב מתחת לכרטיסייה (מחוץ לכפתור), כמו במסך 22 */
+.s23-caption { width: 100%; }
+.s23-back {
+  flex-direction: column;
+  justify-content: center; /* תוכן גב הכרטיסייה (תמונה + טקסט) ממורכז אנכית */
+  gap: 8px;
+}
+.s23-back-media { position: relative; flex: none; display: block; width: 100%; height: 80px; }
+.s23-back-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* גב הכרטיסייה: תמונה סטטית, בלי אנימציה. האנימציות (בלון/כדור פורח מרחפים, אוויר מהמזגן) — בחזית בלבד */
+@keyframes s23-rise {
+  0%   { transform: translateY(14px); }
+  100% { transform: translateY(-12px); }
+}
+.s23-puff {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: rgba(0, 157, 224, 0.35);
+  opacity: 0;
+}
+.s23-puff:nth-of-type(1) { margin-left: -34px; }
+.s23-puff:nth-of-type(3) { margin-left: 24px; }
+@keyframes s23-air {
+  0%   { transform: translateY(0) scale(.6); opacity: 0; }
+  20%  { opacity: .85; }
+  100% { transform: translateY(var(--d, 34px)) scale(1.6); opacity: 0; }
+}
+/* חזית הכרטיסייה — אותן אנימציות (התמונה גדולה יותר, לכן תנועה ופחיות-אוויר גדולות יותר) */
+.s23-front-media { position: relative; }
+.s23-front-media--rise img { animation: s23-rise 2.6s ease-in-out infinite alternate; }
+.s23-front .s23-puff { top: 62%; width: 16px; height: 16px; --d: 70px; animation: s23-air 2s ease-out infinite; }
+.s23-front .s23-puff:nth-of-type(1) { margin-left: -90px; animation-delay: 0s; }
+.s23-front .s23-puff:nth-of-type(2) { margin-left: -45px; animation-delay: .5s; }
+.s23-front .s23-puff:nth-of-type(3) { margin-left: -8px;  animation-delay: 1s; }
+.s23-front .s23-puff:nth-of-type(4) { margin-left: 30px;  animation-delay: 1.5s; }
+.s23-front .s23-puff:nth-of-type(5) { margin-left: 70px;  animation-delay: .25s; }
+@media (prefers-reduced-motion: reduce) {
+  .s23-front-media--rise img, .s23-front .s23-puff { animation: none; }
+}
+.s23-back-text {
+  margin: 0;
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px; /* Figma Body/B-4 */
+  font-weight: 400;
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+}
+
+/* עוגן למחוות-היד (.s2-gh, position:absolute) במסכים 22 ו-24 */
+.s21-cards { position: relative; }
+
+/* מסך 22: הכיתוב מתחת לכרטיסייה (אחיד עם מסך 24) ונשאר גם אחרי ההיפוך */
+.s21-cards { align-items: flex-start; }
+
+/* מסך 28 (s27) — רוחב עמודת התשובות לפי המסיח הארוך ביותר (SingleChoiceQuestion → "Answer-capsule width"):
+   fit-content עד רוחב העמודה; כל הקפסולות שוות-רוחב, בלי שבירת שורה כשהטקסט נכנס. */
+.s27-answers { width: fit-content; max-width: 100%; }
+.s27-answers .s3q-opt-text { white-space: nowrap; }
+
+/* מסך 3 (ערבית): הטקסט הארוך במסיח האחרון נשבר לשתי שורות ב-540px. מרחיבים את אזור
+   השאלה לרוחב הזמין בחצי (פחות padding צר יותר) וממקמים כל מסיח בשורה אחת. */
+#s3 .s3q-half { padding-inline: 24px; }
+#s3 .s3q-question { max-width: none; }
+#s3 .s3q-answers { width: fit-content; max-width: none; }
+#s3 .s3q-opt-text { white-space: nowrap; }
+
+/* מסך 1 ללא כפתור "חזרה": ההמשך נשאר בקצה השמאלי */
+.bottom-bar-inner > .btn-continue:only-child { margin-inline-start: auto; }
+
+/* עדכון מעצבת: מחוות-יד סטטית (לחיצה) — הטבעות מופיעות פעמיים בלבד (2 × 2000ms) ואז היד נעלמת.
+   מופעל מחדש בכל פעם ש-.hidden יורד (display מתאפס). מחוות הגרירה (.dnd-gh) מנוהלות ב-JS. */
+.s2-gh:not(.dnd-gh) { animation: s2-gh-life 4600ms linear forwards; }
+@keyframes s2-gh-life {
+  0%, 87% { opacity: 1; }
+  100%    { opacity: 0; }
+}
+
+/* כותרות הצירים של הגרף כטקסט חי (הוסרו מתמונת axes-graph.png). מיקום באחוזים ממסגרת הגרף,
+   גודל ביחידות-קונטיינר כדי שיגדל עם הגרף (20px ב-713px). */
+.s13-graph, .s14-graph, .s15-graph { container-type: inline-size; }
+.ax3-title {
+  position: absolute;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 2.8cqw;
+  font-weight: 400;
+  line-height: 1;
+  color: #1a1a1a;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.ax3-title--x { left: 50%; top: 96%; transform: translate(-50%, -50%); }
+.ax3-axis {
+  position: absolute;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 2.6cqw;
+  font-weight: 600;
+  line-height: 1;
+  color: #1a1a1a;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* "ציר Y" — ממורכז מעל ציר Y (x=11.57%) וצמוד לחץ (קצה החץ y=3.3%) */
+.ax3-axis--y { left: 11.57%; top: 3.3%; transform: translate(-50%, calc(-100% - 4px)); }
+/* "ציר X" — מימין לקצה החץ של ציר X (x=99.1%, y=80.5%), ממורכז לציר */
+.ax3-axis--x { left: calc(99.1% + 8px); top: 80.5%; transform: translateY(-50%); }
+.ax3-title--y { left: 3%; top: 55.2%; transform: translate(-50%, -50%) rotate(-90deg); }
+
+/* תמונות לא ניתנות לגרירה מקורית (מונע הדבקת כתובת התמונה לשדות קלט) */
+img { -webkit-user-drag: none; user-select: none; }
+
+/* תוצאת היחס במסך 3 מחושבת אוטומטית — קריאה בלבד */
+.s2-result-input { cursor: default; }

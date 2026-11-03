@@ -1,0 +1,1116 @@
+/* =========================================================
+   לומדה 720 — מדעים יעד 10 | מסה וצפיפות | סיין 3
+   שלב תשתית (Prompt 1) — אין תוכן אמיתי עדיין. מבנה זה הועתק
+   מהמנוע המאומת של methodica-science-mass-density-01-01 (סיין 1,
+   הראשון שנבנה ביעד הזה), ריק מכל תוכן פרטני של אותו סיין.
+   ========================================================= */
+
+/* ---------- Subject theme tokens (720-templates skill:
+   _global-components.md → "Subject theme colors")
+   נושא "מדעים" — ערכי הכחול הרשמיים לפי הנספח המאוחד ב-
+   תבנית-פתיחה-לפרויקט-לומדה-חדש.md (זהים לשאר סיני היעד, לא הומצאו). ---------- */
+:root {
+  --subject-500: #019de5; /* Science theme — פוקוס/נבחר/גרירה */
+  --subject-700: #007ac6; /* Science theme — hint/back/כפתורים */
+}
+
+/* ---------- Fonts (עותק אחד לכל היחידה, ב-../unit-assets/fonts —
+   כל סיין הוא חבילה עצמאית, בלי תלות בתיקיה משותפת) ---------- */
+@font-face {
+  font-family: 'Assistant';
+  src: url('../unit-assets/fonts/assistant-hebrew.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Assistant';
+  src: url('../unit-assets/fonts/assistant-latin.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                 U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+/* ---------- Reset ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  direction: rtl;
+  font-family: Calibri, Arial, sans-serif;
+  background: #ffffff;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+}
+button:disabled { cursor: default; }
+img { display: block; max-width: none; }
+
+/* ---------- Canvas & viewport scaling ---------- */
+#app {
+  width: 1280px;
+  height: 710px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  background: #fff;
+  overflow: hidden;
+  /* רווח צדדי נוסף מכל צד מעבר למסגרת העיצוב 1280 (מוגדר ב-scaleApp), כמו בסיין 1 */
+  --ex: 0px;
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--ex, 0px);
+  width: 1280px;
+  display: none;
+}
+.screen.active { display: block; }
+
+/* הקנבס מתרחב כמו בסיין 1: כל מסך הוא מסגרת 1280 ממורכזת (מוזזת ב---ex), כך שכל העיגונים
+   (left/right) בתוכה נשארים כמו בעיצוב. הסרגל התחתון יוצא מהמסגרת ונמתח לרוחב הקנבס המלא. */
+.s8q-popup { left: var(--ex, 0px); }
+
+/* transitions removed on purpose — Figma states change instantly */
+* { transition: none !important; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Bottom bar (74px) + כפתורי ניווט. מועתק 1:1 מסיין 1.
+   ═══════════════════════════════════════════════════════════ */
+.bottom-bar {
+  position: absolute;
+  bottom: -3px;           /* -3px hides the bottom border line */
+  left: calc(-1 * var(--ex, 0px));
+  right: calc(-1 * var(--ex, 0px));
+  height: 74px;
+  background: #ffffff;
+  border-top: 0.4px solid #AEAEAE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom-bar-inner {
+  width: 1232px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn-continue {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: linear-gradient(180deg, #005FBE 9%, #0059B2 23.361%, #003971 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 12px 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-continue:disabled {
+  background: #AEAEAE;
+  color: #303030;
+  cursor: not-allowed;
+}
+.btn-continue:not(:disabled):hover { font-weight: 600; }
+.btn-continue:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+.btn-back {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: #ffffff;
+  color: var(--subject-700);
+  border: 1px solid var(--subject-700);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 12px 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-back:hover { font-weight: 600; border-width: 1.5px; }
+.btn-back:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   מסך 1 (#s0) — TransitionScreen, ShortText (מחלקות s22-* זהות לסיין 1).
+   בלוק טקסט 790 רחב, ממורכז, top:115; כותרת H-4 (64/700), שורות B-1 (28/400).
+   מרווח: שורת פתיחה→כותרת 34px (gap 24 + 10), כותרת→שורת סגירה 24px.
+   הדמות/הפלייסהולדר בתחתית, צמודה לקו הסרגל (640×360).
+   ═══════════════════════════════════════════════════════════ */
+.s22-content {
+  position: absolute;
+  inset: 0 0 74px 0;
+}
+.s22-text {
+  position: absolute;
+  top: 115px;
+  left: 245px;
+  width: 790px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  color: #303030;
+  text-align: center;
+}
+.s22-lead {
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+.s22-title {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.s22-body {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+.s22-body strong { font-weight: 700; }
+.s22-video-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 320px;
+  width: 640px;
+  height: 360px;
+}
+.s22-video-wrap--compact {
+  /* שלוש שורות טקסט — המדיה מוקטנת ביחס 16:9 כדי לא להיחפף לטקסט
+     (TransitionScreen.md → "Vertical fit at the canvas floor", שלב 3) */
+  left: 373.5px;
+  width: 533px;
+  height: 300px;
+}
+.s22-video-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+@supports (text-box: trim-both cap alphabetic) {
+  .s22-lead, .s22-title, .s22-body { text-box: trim-both cap alphabetic; }
+  .s22-lead, .s22-body { line-height: 1.3; }
+  .s22-title { line-height: 1.1; }
+}
+
+.s22-char-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none; /* דקורטיבי בלבד */
+  transform: translateY(5%);
+}
+
+/* ─── מסך 6 (#s5) — TransitionScreen LongText + בועת דיבור (מועתק מסיין 2, מסך 2) ─── */
+.s22-text--long { left: 245px; width: 790px; top: 70px; }
+.s22-title--h5 { font-size: 56px; line-height: 1.12; }
+@supports (text-box: trim-both cap alphabetic) {
+  .s22-title--h5 { text-box: normal; line-height: 1.12; }
+}
+.s22-char-ph { position: absolute; bottom: 0; left: 320px; width: 640px; height: 360px; overflow: hidden; }
+.s22-bubble { position: absolute; left: 251px; top: 305px; width: 250px; height: 93px; z-index: 3; }
+.s22-bubble-svg { position: absolute; inset: 0; overflow: visible; }
+.s22-bubble p {
+  position: absolute; left: 16px; top: 0; width: 202px; height: 93px;
+  display: flex; align-items: center;
+  font-family: Calibri, Arial, sans-serif; font-size: 20px; font-weight: 400;
+  line-height: normal; color: #000; text-align: right; white-space: nowrap;
+}
+
+/* =========================================================
+   רכיבים גלובליים משותפים — מועתקים 1:1 מסיין 2: כפתור דיווח (.flag-btn), פופאפ משוב (.s8q-popup),
+   סרגל התקדמות (.progress-question), כפתור רמז + Hint Card.
+   ========================================================= */
+:root { --subject-300: #b9ecff; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* GLOBAL — Report/issue button (.flag-btn), מועתק מסיין 1 */
+.flag-btn {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 88px;
+  padding: 10px 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.flag-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 1000px;
+  background: #ececec;
+  border: 0.5px solid rgba(0, 0, 0, 0.06);
+  color: #484848;
+  box-sizing: border-box;
+}
+.flag-btn__icon svg {
+  width: 12px;
+  height: 17px;
+}
+.flag-btn__label {
+  display: none;
+  font-family: Calibri, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--subject-500);
+  text-align: center;
+  width: 80px;
+}
+.flag-btn:hover .flag-btn__icon,
+.flag-btn:focus-visible .flag-btn__icon {
+  background: #ffffff;
+  border: 0.7px solid var(--subject-500);
+  color: var(--subject-500);
+}
+.flag-btn:hover .flag-btn__label,
+.flag-btn:focus-visible .flag-btn__label {
+  display: block;
+}
+.flag-btn:focus-visible {
+  outline: 2px solid var(--subject-500);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ─── פופאפ משוב — זהה לסיין 1 (s8q-popup, Figma 525:9012) + כפתור ה-toggle ─── */
+.s8q-popup {
+  position: absolute;
+  left: 0;
+  bottom: 74px;
+  width: 426px;
+  max-width: calc(100% - 32px);
+  box-sizing: border-box;
+  padding: 24px;
+  border: 0.3px solid #aeaeae;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  direction: rtl;
+  z-index: 55;
+  cursor: move;
+  touch-action: none;
+}
+.s8q-popup.hidden { display: none; }
+.s8q-popup-title {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; font-weight: 700; line-height: normal;
+  color: #222; text-align: right;
+}
+.s8q-popup-body p {
+  margin: 0 0 8px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; font-weight: 400; line-height: normal;
+  color: #222; text-align: right;
+}
+.s8q-popup-body p:last-child { margin-bottom: 0; }
+.s8q-popup-body:empty { display: none; }
+.s8q-popup:has(.s8q-popup-body:empty) { gap: 16px; }
+.s19-popup-actions { display: flex; }
+.s19-popup-actions:empty { display: none; }
+.popup-action {
+  height: 39px;
+  box-sizing: border-box;
+  padding: 0 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: #ffffff;
+  color: #222222;
+  border: 1px solid #484848;
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.popup-action:hover { font-weight: 600; }
+.popup-action:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+
+/* ─── Progress Question (Figma 4827:28899) — 4 שאלות, מרכוז בראש הקנבס; שאלה 1 ראשונה (ימין ב-RTL) ─── */
+.progress-question {
+  position: absolute;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+  justify-content: center;
+  direction: rtl;
+  z-index: 5;
+}
+.progress-question__item { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 43px; }
+.progress-question__icon { width: 24px; height: 24px; background: url('../unit-assets/icons/progress-not-answered.svg') center / 24px 24px no-repeat; }
+.progress-question__icon--current { background-image: url('../unit-assets/icons/progress-current.svg'); }
+.progress-question__icon--correct { background-image: url('../unit-assets/icons/progress-correct.svg'); }
+.progress-question__icon--incorrect { background-image: url('../unit-assets/icons/progress-incorrect.svg'); }
+.progress-question__label {
+  font-family: Calibri, Arial, sans-serif; font-size: 15px; font-weight: 400; line-height: 11px;
+  color: #ececec; white-space: nowrap; text-align: center;
+}
+.progress-question__label--visited { color: #222; }
+.progress-question__connector { width: 64px; padding-top: 11.5px; box-sizing: border-box; }
+.progress-question__connector::before { content: ''; display: block; height: 1.5px; border-radius: 2px; background: #ececec; }
+.progress-question__connector--visited::before { background: rgba(0, 0, 0, 0.6); }
+
+/* כפתור רמז בסרגל הניווט (Figma 196:6020) */
+.s3q-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.btn-hint {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: #ffffff;
+  color: var(--subject-700);
+  border: 1px solid var(--subject-700);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 0 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  gap: 6px;
+  white-space: nowrap;
+}
+.s3q-hint-icon { flex-shrink: 0; width: 26px; height: 24px; }
+.btn-hint:disabled { color: #aeaeae; border-color: #aeaeae; cursor: not-allowed; }
+/* Figma nav button (196:6020) — hover: רקע לא משתנה, הטקסט הופך ל-SemiBold (Body/B-8) */
+/* sizer בלתי-נראה ב-SemiBold (Figma "nav label") — הרוחב קבוע בין Default ל-Hover */
+.btn-hint .nav-label { display: inline-grid; justify-items: center; }
+.btn-hint .nav-label::after {
+  content: attr(data-label); font-weight: 600; height: 0;
+  visibility: hidden; overflow: hidden; pointer-events: none; user-select: none;
+}
+.btn-hint:not(:disabled):hover .nav-label { font-weight: 600; }
+.btn-hint:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+.btn-hint.s3q-hint-done { visibility: hidden; }
+
+/* פופאפ רמז — Figma Hint Card 4954:43323 + Blur bg 1304:23657 */
+.s8q-hint-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+}
+.s8q-hint-overlay.hidden { display: none; }
+.s8q-hint-card {
+  width: 542px;
+  box-sizing: border-box;
+  padding: 40px;
+  background: var(--subject-500);
+  border-radius: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL column: flex-start = פיזית ימין */
+  gap: 24px;
+  direction: rtl;
+}
+.s8q-hint-bulb { width: 40px; height: 34px; flex-shrink: 0; }
+.s8q-hint-body { width: 100%; }
+.s8q-hint-body p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  color: #fff;
+  text-align: right;
+}
+.s8q-hint-close {
+  align-self: center;
+  width: 196px;
+  padding: 16px 40px;
+  border: none;
+  border-radius: 1000px;
+  background: #fff;
+  color: #303030;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+}
+/* Figma Hint Card State=Hover: רקע לבן נשאר, הטקסט הופך ל-Bold (Body/B-6) */
+.s8q-hint-close { white-space: nowrap; padding-inline: 0; }
+.s8q-hint-close:hover { font-weight: 700; }
+.s8q-hint-close:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.btn-hint.s8q-hint-done { visibility: hidden; }
+
+/* =========================================================
+   מסך 2 (#s1) — DropdownQuestion (Single dropdown, משפט להשלמה), שקף 51.
+   Figma 5596:25961 (מצבים: סגור / פתוח / נבחר / משוב נכון). בלוק השאלה: right:40, top:139, רוחב 792.
+   רכיב הדרופדאון (Dropdown Menu, node 110:1703): כפתור 180×42, רדיוס 10; רשימה נפתחת 15px מתחת לכפתור.
+   ========================================================= */
+.s1-question {
+  position: absolute;
+  top: 139px;
+  right: 40px;
+  width: 792px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.s1-title {
+  margin: 0 0 16px; /* Figma question/Variant5: כותרת → משפט ההשלמה במרווח 16, בלי שורת טקסט ריקה ביניהם */
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #303030;
+}
+.s1-sentence {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  color: #303030;
+}
+.s1-sentence--second { margin-top: 32px; }
+.s1-words {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dq-dropdown-wrap { --dq-w: 200px; position: relative; width: var(--dq-w); height: 42px; } /* 200 ולא 180: "תכונה משתנה" בגודל 24px לא נכנס ברוחב 180 (טיוב לפי המסך, DropdownQuestion.md → Geometry) */
+.dq-dropdown-wrap:has(.dq-list:not(.hidden)) { z-index: 10; } /* רשימה פתוחה מעל דרופדאון שכן (מסך עם שני דרופדאונים) */
+.dq-btn {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  direction: ltr;               /* שורה מאולצת LTR: חץ משמאל, טקסט מימין, אייקון פסק-דין בקצה הימני */
+  width: var(--dq-w);
+  height: 42px;
+  padding: 0 17px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 10px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #303030;
+  cursor: pointer;
+}
+.dq-btn:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+.dq-chevron { flex-shrink: 0; width: 16px; height: 8px; display: block; }
+.dq-selected {
+  flex: 1 1 auto;
+  min-width: 0;
+  direction: rtl;
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+.dq-btn[aria-expanded="true"] { border: 1.5px solid var(--subject-500); padding: 0 16.5px; }
+.dq-btn[aria-expanded="true"][data-empty="true"] .dq-selected { text-align: center; opacity: 0.5; }
+.dq-btn[aria-expanded="true"][data-empty="true"] .dq-selected::before { content: 'اختاروا إجابة'; }
+.dq-btn:disabled { cursor: default; }
+.dq-btn.dq-correct { border: 1px solid #609e12; padding: 0 17px; gap: 10px; }
+.dq-btn.dq-wrong { border: 1px solid #b20010; padding: 0 17px; gap: 10px; }
+.dq-correct .dq-chevron, .dq-wrong .dq-chevron { display: none; }
+.dq-check-ico, .dq-wrong-ico { flex-shrink: 0; width: 16px; height: 16px; display: block; }
+
+.dq-list {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% - 15px);
+  left: 0;
+  width: var(--dq-w);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 24px 8px 8px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+}
+.dq-list.hidden { display: none; }
+.dq-option {
+  position: relative;
+  padding: 8px 20px;
+  border-radius: 8px;
+  direction: rtl;
+  text-align: right;
+  font-size: 24px;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.dq-option + .dq-option::before {
+  content: '';
+  position: absolute;
+  top: -4.5px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #ececec;
+}
+.dq-option:hover, .dq-option:focus-visible, .dq-option.is-selected { background: var(--subject-300); outline: none; }
+
+/* =========================================================
+   מסך 3 (#s2) — SingleChoiceQuestion (בלי תמונה מלווה), שקף 52. אפשרויות .s3q-opt — מועתקות מסיין 1
+   (מסך 28 / s27 — אותה מחלקה), בלי עמודת התמונה. בלוק השאלה: top:139, right:40, רוחב 792.
+   ========================================================= */
+.s3q-answers {
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+/* ⚠️ תוקן (בדיקה מול Figma node 196:3307, "SingleChoiceQuestion - State
+   01", ומול הרפרנס המאושר יעד 2 → methodica-science-mass-measure-02-01
+   → `.scq-opt`/`.scq-radio`): הגרסה הקודמת השתמשה במסגרת אפורה-דקה
+   (`1px solid #aeaeae`) כברירת-מחדל, עם מעבר לכחול רק ב-`.selected` —
+   זה **לא** מה שה-Figma/הרפרנס מראים. שניהם: כל אפשרות (גם לפני בחירה)
+   כבר בעלת מסגרת **כחולה 2px** (`var(--subject-500)`) — לא אפורה — וגם
+   טבעת-הרדיו עצמה כחולה-2px מההתחלה. "נבחר" רק **ממלא** את הרדיו
+   בכחול (`background`), לא משנה צבע-מסגרת (כי היא כבר כחולה). תוקן
+   כאן במדויק לפי שני המקורות. */
+.s3q-opt {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: 2px solid var(--subject-500);
+  border-radius: 999px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.s3q-opt-text {
+  flex: 1;
+  font-family: Calibri, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  color: #222;
+  text-align: right;
+}
+.s3q-radio {
+  order: -1; /* SingleChoiceQuestion.md → "Radio sits on the RIGHT of each pill (RTL reading-start)" */
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--subject-500);
+  border-radius: 999px;
+  background: #ffffff;
+}
+.s3q-radio::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.s3q-opt.selected .s3q-radio {
+  background: var(--subject-500);
+}
+.s3q-opt.correct {
+  border: 2px solid #609e12;
+  background: #edf8ed;
+}
+.s3q-opt.correct .s3q-radio {
+  border-color: #609e12;
+  background: #609e12;
+}
+.s3q-opt.correct .s3q-radio::after {
+  background-image: url('../unit-assets/icons/icon-badge-check-white.svg');
+  background-size: 12px 9px;
+}
+.s3q-opt.wrong {
+  border: 2px solid #b20010;
+  background: #fff0f4;
+}
+.s3q-opt.wrong .s3q-radio {
+  border-color: #b20010;
+  background: #b20010;
+}
+.s3q-opt.wrong .s3q-radio::after {
+  background-image: url('../unit-assets/icons/icon-badge-x-white.svg');
+  background-size: 10px 10px;
+}
+.s3q-opt.disabled { cursor: default; }
+.s2-question {
+  position: absolute;
+  top: 139px;
+  right: 40px;
+  width: 792px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* RTL column: flex-start = פיזית ימין */
+  gap: 24px;
+}
+.s2-q {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+}
+.s2-answers { width: fit-content; max-width: 684px; }
+.s2-answers .s3q-opt-text { white-space: nowrap; }
+
+/* שבר מוערם (שקף 52: מסה / נפח ו-10 / 2) — מופיע בפופאפ המשוב ובכרטיס הרמז */
+.s2-frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; min-width: 40px; text-align: center; line-height: 1.2; }
+.s2-frac__line { align-self: stretch; height: 1.5px; background: currentColor; margin: 2px 0; }
+.s2-eq { display: flex; align-items: center; gap: 8px; width: fit-content; margin: 8px 0 0 auto; direction: ltr; font-family: Calibri, Arial, sans-serif; font-size: 20px; color: #222; }
+
+/* =========================================================
+   מסך 4 (#s3) — שאלת בחירה על גרף (שקף 53): בחירת קו אחד מארבעה. תבנית: SingleChoiceQuestion — הווריאנט בכרטיסי-תמונה
+   (Figma 2134:26156 / בחירה 2134:26163 / נכון 2134:26170 / שגוי 2134:26178), כשהכרטיסים הם קווי הגרף עצמם: נבחר = כחול + הילה
+   בהירה, נכון = ירוק + תג ✓, שגוי = אדום + תג ✗ (תגי Type 2 בקצה הקו). הובר/פוקוס: הקו מתעבה מעט. הגרף: SVG בקואורדינטות
+   הקנבס (viewBox 1280×636, מעל ה-bottom-bar): ראשית (360,548), 120px לסמ"ק, 22px לגרם.
+   ========================================================= */
+.s3-stage { position: absolute; top: 0; left: 0; width: 1280px; height: 636px; }
+.s3-text {
+  position: absolute;
+  top: 139px;
+  right: 40px;
+  width: 792px;
+  display: flex;
+  flex-direction: column;
+}
+.s3-text p {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px; font-weight: 400; line-height: normal;
+  text-align: right; color: #303030;
+}
+.s3-text strong { font-weight: 700; }
+.s3-graph { position: absolute; inset: 0; pointer-events: none; } /* שכבת-על שקופה — לא חוסמת בחירת הטקסט שמעליה */
+.s3-graph-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; touch-action: manipulation; }
+.s3-graph-svg { pointer-events: none; }
+.s3-hitarea { pointer-events: all; } /* רק אזור הגרף קולט עכבר/מגע; האירועים עולים ל-SVG */
+.s3-grid line { stroke: #ececec; stroke-width: 1; }
+.s3-axes line { stroke: #000; stroke-width: 2.5; stroke-linecap: square; }
+.s3-axes polygon { fill: #000; }
+.s3-axis-letter { font-family: Calibri, Arial, sans-serif; font-size: 20px; font-weight: 600; fill: #303030; }
+.s3-ticks { direction: ltr; unicode-bidi: bidi-override; } /* ספרות בלבד — בלי היפוך text-anchor תחת RTL */
+.s3-ticks text { font-family: Calibri, Arial, sans-serif; fill: #303030; }
+.s3-ticks--y text { font-size: 16px; }
+.s3-ticks--x text { font-size: 20px; }
+.s3-axis-title { font-family: Calibri, Arial, sans-serif; font-size: 20px; fill: #303030; }
+
+/* קו בחיר: halo (מצב בחירה/פסק-דין) + קו ראשי + נקודת קצה + תגי ✓/✗. האירועים נקלטים ברמת ה-SVG (בחירה לפי הקו הקרוב ביותר). */
+.s3-line { color: #7a7a7a; outline: none; pointer-events: none; }
+/* צבע ברירת-מחדל לכל קו (נמנע מכחול/ירוק/אדום השמורים למצבי בחירה/נכון/שגוי) — מוחלף במצבים למטה */
+.s3-line[data-id="a"] { color: #e8702a; } /* כתום */
+.s3-line[data-id="b"] { color: #8250c8; } /* סגול */
+.s3-line[data-id="c"] { color: #d6459c; } /* ורוד */
+.s3-line[data-id="d"] { color: #c99a00; } /* ענבר */
+.s3-line__halo { stroke: transparent; stroke-width: 18; stroke-linecap: round; }
+.s3-line__main { stroke: currentColor; stroke-width: 4; stroke-linecap: round; }
+.s3-line[data-id="a"] .s3-line__main { stroke-dasharray: 16 9; stroke-linecap: butt; }   /* קו מקווקו */
+.s3-line[data-id="c"] .s3-line__main { stroke-dasharray: 1 11; }                          /* קו מנוקד (כובעים עגולים) */
+.s3-line[data-id="d"] .s3-line__main { stroke-dasharray: 24 8 4 8; stroke-linecap: butt; } /* קו-נקודה */
+.s3-line__end { fill: currentColor; stroke: #fff; stroke-width: 2; }
+.s3-badge { display: none; }
+/* הובר / פוקוס מקלדת: הגדלה קלה — הקו מתעבה והקצה גדל */
+.s3-line.is-hover:not(.selected):not(.correct):not(.wrong) .s3-line__main,
+.s3-line:focus-visible .s3-line__main { stroke-width: 6; }
+.s3-line.is-hover:not(.selected):not(.correct):not(.wrong) .s3-line__end,
+.s3-line:focus-visible .s3-line__end { r: 8px; }
+.s3-line.is-hover:not(.selected):not(.correct):not(.wrong) .s3-line__halo { stroke: rgba(1, 157, 229, 0.12); }
+.s3-line:focus-visible .s3-line__halo { stroke: rgba(1, 157, 229, 0.3); }
+.s3-line.selected { color: var(--subject-500); }
+.s3-line.selected .s3-line__main { stroke-width: 6; }
+.s3-line.selected .s3-line__end { r: 8px; }
+.s3-line.selected .s3-line__halo { stroke: var(--subject-300); }
+.s3-line.correct { color: #609e12; }
+.s3-line.correct .s3-line__main { stroke-width: 6; }
+.s3-line.correct .s3-line__end { r: 8px; }
+.s3-line.correct .s3-line__halo { stroke: rgba(96, 158, 18, 0.2); }
+.s3-line.correct .s3-badge--ok { display: block; }
+.s3-line.wrong { color: #b20010; }
+.s3-line.wrong .s3-line__main { stroke-width: 6; }
+.s3-line.wrong .s3-line__end { r: 8px; }
+.s3-line.wrong .s3-line__halo { stroke: rgba(178, 0, 16, 0.16); }
+.s3-line.wrong .s3-badge--bad { display: block; }
+.s3-graph-svg.is-near { cursor: pointer; }
+.s3-graph-svg.is-locked { cursor: default; }
+
+/* =========================================================
+   מסך 7 (#s6) — SingleChoiceQuestionImage + טבלה (שקף 56). רפרנס: מסך 9 בסיין 1 (.s8-*). עמודת טקסט/אפשרויות מימין,
+   עמודה שמאלית: תמונה (מסגרת 264, עם הגדלה) + כותרת + טבלת צפיפויות מתחתיה.
+   ========================================================= */
+.s6-question { position: absolute; top: 139px; right: 40px; width: 1200px; display: flex; flex-direction: row; align-items: flex-start; gap: 16px; }
+.s6-col { flex: 1; min-width: 360px; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.s6-text { width: 792px; max-width: 100%; display: flex; flex-direction: column; gap: 4px; color: #303030; }
+.s6-text p { margin: 0; font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: normal; text-align: right; }
+.s6-text strong { font-weight: 700; }
+.s6-answers { width: fit-content; max-width: 100%; }
+.s6-answers .s3q-opt-text { white-space: nowrap; }
+.s6-side { flex: none; width: fit-content; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.s6-img { width: 0; min-width: calc(100% + 16px); margin: -8px; height: auto; aspect-ratio: 4 / 3; box-sizing: border-box; padding: 8px; } /* נמוכה מריבוע כדי שהטבלה לא תיחתך מתחת ל-bottom-bar */
+.s6-img-frame {
+  position: relative; width: 100%; height: 100%; box-sizing: border-box;
+  border: 1px solid rgba(174, 174, 174, 0.5); border-radius: 16px;
+  display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff;
+}
+.s6-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.s6-table-title { margin: 0 0 8px; font-family: Calibri, Arial, sans-serif; font-size: 20px; font-weight: 700; color: #303030; caption-side: top; text-align: center; }
+.s6-table { width: auto; border-collapse: separate; border-spacing: 0; font-family: Calibri, Arial, sans-serif; font-size: 22px; color: #303030; }
+/* Figma 716:24165 (Table Layout): שורה 52, padding 4/12, 22px; כותרת Subject/100 SemiBold + #d4d4d4; גוף לבן 400 + #ececec; רדיוס 8 עליון בלבד; טקסט לימין */
+.s6-table th, .s6-table td { box-sizing: border-box; height: 52px; padding: 4px 12px; background: #fff; line-height: normal; text-align: right; vertical-align: middle; font-weight: 400; border-bottom: 1px solid #ececec; border-left: 1px solid #ececec; }
+.s6-table tbody td:first-child { border-right: 1px solid #ececec; }
+.s6-table thead th { background: var(--subject-100, #d4f3ff); font-weight: 600; border-top: 1px solid #d4d4d4; border-bottom: 1px solid #d4d4d4; border-right: 1px solid #d4d4d4; border-left: 0; }
+.s6-table thead th:first-child { border-top-right-radius: 8px; }
+.s6-table thead th:last-child { border-top-left-radius: 8px; border-left: 1px solid #d4d4d4; }
+.s6-table td[dir="ltr"] { text-align: right; }
+
+/* ─── Image Zoom Popup — Figma 2194:11509 (מצב רגיל) / 2197:11866 (מוגדל) ───
+   כפתור ההגדלה: נכס Figma (PNG, 40×39) בפינה הימנית-תחתונה של מסגרת
+   התמונה (right 3 / bottom 14 לפי המיקום ב-Figma). הפופאפ: ישירות ב-body,
+   position:fixed, z-index מקסימלי; padding 8 + מסגרת פנימית r16 כמו רכיב
+   ה-img; כפתור סגירה 30×30 לבן עם מסגרת #303030 ב-19/19 (פינה שמאלית-עליונה). */
+.methodica-image-zoom-frame { position: relative; }
+.zoomable-image, .methodica-image-zoom-frame:has(.zoomable-image),
+[data-zoom-source], .methodica-image-zoom-frame:has([data-zoom-source]) { cursor: zoom-in; }
+.methodica-image-zoom-popup-clone { position: relative; width: 100%; height: 100%; overflow: hidden; background: #fff; }
+.methodica-image-zoom-popup-clone[hidden] { display: none; }
+/* עדשת הגדלה — רפרנס נראות ומיקום: יעד 3 סיין 1 מסך 3 (.img-zoom-btn):
+   עיגול לבן 44×44, מסגרת 2px Subject/500, ימין-למעלה (10/10) בתוך מסגרת
+   התמונה; hover = מילוי כחול + אייקון לבן. */
+.methodica-image-zoom-trigger {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 999px;
+  background: #fff;
+  border: 2px solid var(--subject-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.methodica-image-zoom-trigger:hover { background-color: var(--subject-500); }
+.methodica-image-zoom-trigger { background: #fff url('../unit-assets/icons/icon-zoom-lens-default.svg') center / 20.715px 20.923px no-repeat; }
+.methodica-image-zoom-trigger:hover { background-image: url('../unit-assets/icons/icon-zoom-lens-hover.svg'); }
+/* פופאפ הגדלה — 720-templates → "Image zoom" + 720-design-guidelines → "Image
+   Zoom Surface": ממורכז בקנבס (בתוך #app), רקע = "Shared popup backdrop" (לבן
+   80%, בלי טשטוש) כאח של המשטח; משטח לבן, רדיוס 24, בלי מסגרת/צל, ריפוד
+   64/24/24/24; אזור-המדיה (רדיוס 16) ממלא את האזור המרופד. הגודל/המיקום
+   נקבעים ב-script.js (layoutSurface). */
+.methodica-image-zoom-popup {
+  position: absolute;
+  inset: 0;
+  z-index: 2147483647;
+  display: none;
+  direction: rtl;
+}
+.methodica-image-zoom-popup.is-open { display: block; }
+.methodica-image-zoom-backdrop {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0.8;
+}
+.methodica-image-zoom-surface {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 0;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.methodica-image-zoom-media {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+/* מסגרת הרכיב img (Figma 2197:11979): התמונה ממלאת את כל המשטח; מסגרת 1px
+   rgba(174,174,174,.5) ברדיוס 16 מצוירת מעליה, 8px מהקצה */
+.methodica-image-zoom-media::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 16px;
+  pointer-events: none;
+}
+.methodica-image-zoom-popup-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+/* כפתור סגירה — רכיב Close (Figma 1589:17081 / design-guidelines §25.3):
+   40×40, עיגול לבן + מסגרת 2px Subject/500 + X 15×15; hover = מילוי Subject/500
+   + X לבן (נכסי SVG; החלפת מצב ב-CSS בלבד). 16px מלמעלה ומשמאל. */
+.methodica-image-zoom-close {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: url('../unit-assets/icons/icon-zoom-close-default.svg') center / 40px 40px no-repeat;
+  cursor: pointer;
+}
+.methodica-image-zoom-close:hover,
+.methodica-image-zoom-close:focus-visible {
+  background-image: url('../unit-assets/icons/icon-zoom-close-hover.svg');
+}
+.methodica-image-zoom-close:focus-visible,
+.methodica-image-zoom-trigger:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+
+/* תמונת שאלה (מסכים 2, 3, 5) — כמו .s8-img בסיין 1: מסגרת 380×380 בצד שמאל, עם הגדלה */
+.qimg { position: absolute; top: 139px; left: 40px; width: 380px; height: 380px; box-sizing: border-box; padding: 8px; }
+.qimg-frame {
+  position: relative; width: 100%; height: 100%; box-sizing: border-box;
+  border: 1px solid rgba(174, 174, 174, 0.5); border-radius: 16px;
+  display: flex; align-items: center; justify-content: center; overflow: hidden; background: #fff;
+}
+.qimg-photo { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+/* =========================================================
+   מסך 8 (#s7) — DragAndDropQuestion טקסטואלית + גרף מלווה (שקף 57). פריסה כמו מסך 5: טקסט מימין, .qimg משמאל.
+   כל מאפייני הכרטיס מוגדרים על מחלקות .s7-card / .s7-card__text עצמן (לא תחת #s7) — ה-ghost משובט ל-body
+   ויוצא מה-#s7 (720-templates → DragAndDropQuestion → "The floating drag ghost lives outside the screen").
+   מצבי Figma (1717:40975…1730:44201): Drop Zone מקווקו אפור / Hover תכלת מקווקו + לבן / Dropped Subject/100 + 1px Subject/500 /
+   Correct ירוק + ✓ / Incorrect אדום + ✗ (אייקון Type 2 בקצה הימני, מקומו שמור תמיד).
+   ========================================================= */
+.s7-question { position: absolute; top: 139px; right: 40px; width: 740px; display: flex; flex-direction: column; align-items: flex-start; direction: rtl; }
+.s7-text { display: flex; flex-direction: column; gap: 8px; color: #303030; }
+.s7-text p { margin: 0; font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: normal; text-align: right; }
+.s7-text strong { font-weight: 700; }
+.s7-sentences { margin-top: 28px; display: flex; flex-direction: column; gap: 20px; max-width: 700px; }
+.s7-sentence { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; font-family: Calibri, Arial, sans-serif; font-size: 24px; color: #303030; }
+.s7-words { white-space: nowrap; line-height: 1.2; }
+
+.s7-zone {
+  flex: none; box-sizing: border-box; width: 180px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: #f3f4f5; border: 1px dashed rgba(0, 0, 0, 0.6); border-radius: 12px;
+  cursor: pointer; direction: rtl;
+}
+.s7-zone.drag-over { background: #ffffff; border-color: var(--subject-500); }
+.s7-zone.occupied { border: 1px solid var(--subject-500); background: var(--subject-100, #d4f3ff); }
+.s7-zone.is-locked { cursor: default; }
+.s7-zone:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+
+.s7-tray { margin-top: 56px; display: flex; flex-direction: row; gap: 16px; direction: rtl; }
+.s7-slot { width: 180px; height: 52px; flex: none; }
+
+.s7-card {
+  position: relative; box-sizing: border-box; width: 180px; height: 52px; padding: 12px 20px;
+  display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 10px;   /* rtl: תוכן צמוד לקצה הימני — Figma justify-end */
+  background: #ffffff; border: 1px solid rgba(174, 174, 174, 0.5); border-radius: 12px;
+  font-family: Calibri, Arial, sans-serif; font-size: 22px; line-height: normal; color: #222222;
+  direction: rtl; text-align: right; white-space: nowrap;
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.s7-card__text { flex: none; font-family: Calibri, Arial, sans-serif; font-size: 22px; color: inherit; direction: rtl; text-align: right; }
+.s7-card__icon { flex: none; width: 26px; height: 26px; display: none; background: center / 26px 26px no-repeat; }
+.s7-card:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
+.s7-card.is-ghost { visibility: hidden; }   /* המשבצת נשמרת — פריסת המחסן יציבה */
+.s7-card.dragging { opacity: 0.35; }
+.s7-card.is-selected,
+.s7-card.pointer-drag-ghost { border-color: var(--subject-500); background: #ffffff; }   /* Draggable Item — Selected */
+.s7-card.pointer-drag-ghost { cursor: grabbing; }
+.s7-card.is-locked { cursor: default; }
+
+/* מונח בחלל: מילא את החלל (ללא מסגרת כפולה) */
+.s7-card.is-placed { width: 100%; height: 100%; border: 0; border-radius: 12px; background: transparent; }
+.s7-card.is-placed.pointer-drag-ghost { width: 180px; height: 52px; background: #ffffff; border: 1px solid var(--subject-500); }
+.s7-card.pointer-drag-ghost .s7-card__icon { display: none; }
+.s7-zone.is-correct { background: #ffffff; border: 1.5px solid #609e12; }
+.s7-zone.is-wrong { background: #ffffff; border: 1.5px solid #b20010; }
+.s7-card.is-correct .s7-card__icon { display: block; background-image: url('../unit-assets/icons/icon-dnd-correct.svg'); }
+.s7-card.is-wrong .s7-card__icon { display: block; background-image: url('../unit-assets/icons/icon-dnd-incorrect.svg'); }
+
+/* הגרף המלווה — SVG בתוך .qimg-frame (364×364), משוכפל חי בהגדלה */
+.qimg--lg { top: 119px; width: 484px; height: 504px; }
+.s7-graph { position: relative; width: 100%; height: 100%; background: #fff; flex: none; }
+.s7-graph-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.s7-graph-title { font-family: Calibri, Arial, sans-serif; font-size: 17px; font-weight: 700; fill: #303030; }
+.s7-grid line { stroke: #ececec; stroke-width: 1; }
+.s7-axes line { stroke: #000; stroke-width: 2; stroke-linecap: square; }
+.s7-axes polygon { fill: #000; }
+.s7-axis-letter { font-family: Calibri, Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #303030; direction: ltr; unicode-bidi: bidi-override; }
+.s7-ticks { direction: ltr; unicode-bidi: bidi-override; }
+.s7-ticks text { font-family: Calibri, Arial, sans-serif; font-size: 14px; fill: #303030; }
+.s7-axis-title { font-family: Calibri, Arial, sans-serif; font-size: 15px; fill: #303030; }
+.s7-line { stroke-width: 4; stroke-linecap: round; }
+.s7-line--marble, .s7-dot--marble { stroke: #e8702a; }
+.s7-line--marble { stroke-dasharray: 14 9; stroke-linecap: butt; } /* קו קטוע — הבחנה גם בלי צבע */
+.s7-line--liquid, .s7-dot--liquid { stroke: var(--subject-500); }
+.s7-dot { stroke-width: 2; }
+.s7-dot--marble { fill: #e8702a; stroke: #fff; }
+.s7-dot--liquid { fill: var(--subject-500); stroke: #fff; }
+.s7-line-label { font-family: Calibri, Arial, sans-serif; font-size: 16px; font-weight: 700; direction: ltr; }
+.s7-line-label--marble { fill: #e8702a; }
+.s7-line-label--liquid { fill: var(--subject-700); }
+
+
+/* =========================================================
+   מחוות-יד (גרירה / לחיצה) — מועתק מסיין 2 (מסכים 4–7); JS: dndGhStart / dndGhStop. ========================================================= */
+/* ─── מחוות-יד (Cursor Click) ───
+   Figma node 2915:35189 ("Cursor Click", Science/כחול — מאומת מול
+   fill/stroke בפועל, לא לפי שם-פונקציה, ראו index.html). ממוקם ע"י JS
+   (left/top) מעל הכרטיס הראשון-הלא-הפוך; יד סטטית, שתי טבעות מונפשות.
+   pointer-events:none חובה — לעולם לא לחסום את הכרטיס שמתחתיה. */
+.s2-gh {
+  position: absolute;
+  width: 28px;
+  height: 33px;
+  pointer-events: none;
+  z-index: 5;
+}
+.s2-gh.hidden { display: none; }
+.s2-gh-hand {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 33px;
+}
+.s2-gh-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+.s2-gh-ring--big {
+  width: 64px;
+  height: 64px;
+  left: 50%;
+  top: 50%;
+  margin-left: -32px;
+  margin-top: -32px;
+  animation: s2-gh-ring-big 2000ms 2 forwards;
+}
+.s2-gh-ring--small {
+  width: 12px;
+  height: 12px;
+  left: 50%;
+  top: 50%;
+  margin-left: -6px;
+  margin-top: -6px;
+  animation: s2-gh-ring-small 2000ms 2 forwards;
+}
+@keyframes s2-gh-ring-big {
+  0%    { opacity: 0;    scale: 0.05 0.05; }
+  5%    { opacity: 0.85; }
+  7.5%  {                scale: 0.22 0.22; }
+  22.5% {                scale: 0.6  0.6; }
+  35%   { opacity: 0.65; }
+  37.5% {                scale: 0.85 0.85; }
+  45%   { opacity: 0.35; }
+  50%   { opacity: 0;    scale: 1 1; }
+  100%  { opacity: 0;    scale: 1 1; }
+}
+@keyframes s2-gh-ring-small {
+  0%   { opacity: 0;    scale: 0.2 0.2; }
+  3%   { opacity: 0.75; scale: 1   1; }
+  10%  { opacity: 0;    scale: 1.1 1.1; }
+  100% { opacity: 0;    scale: 1.1 1.1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .s2-gh { display: none !important; }
+}
+
+/* ─── מחוות-יד לשאלות גרירה (מסכים 20, 27) ───
+   אותו נכס יד/טבעות כמו .s2-gh. שרשרת-שלבים בבעלות JS (dndGhStart): הופעה + לחיצה בכרטיס →
+   גרירה קדימה בלבד (transition על left/top) → עמידה ביעד → דהייה במקום → איפוס מיקום רק כשהיד
+   שקופה לגמרי. הטבעות מוצגות רק בשלב הלחיצה. */
+.dnd-gh {
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 250ms ease !important;
+}
+.dnd-gh.is-on { opacity: 1; }
+.dnd-gh.is-moving { transition: opacity 250ms ease, left 1100ms ease-in-out, top 1100ms ease-in-out !important;   /* !important: מנצח את "* { transition: none !important }" */ }
+.dnd-gh .s2-gh-ring { display: none; }
+.dnd-gh.is-click .s2-gh-ring { display: block; }
+
+
+/* מסך 1 ללא כפתור "חזרה": ההמשך נשאר בקצה השמאלי */
+.bottom-bar-inner > .btn-continue:only-child { margin-inline-start: auto; }
+
+/* עדכון מעצבת: מחוות-יד סטטית (לחיצה) — הטבעות מופיעות פעמיים בלבד (2 × 2000ms) ואז היד נעלמת.
+   מופעל מחדש בכל פעם ש-.hidden יורד (display מתאפס). מחוות הגרירה (.dnd-gh) מנוהלות ב-JS. */
+.s2-gh:not(.dnd-gh) { animation: s2-gh-life 4600ms linear forwards; }
+@keyframes s2-gh-life {
+  0%, 87% { opacity: 1; }
+  100%    { opacity: 0; }
+}

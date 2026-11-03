@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | علوم الهدف 10 | ساين 3</title>
+<link rel="stylesheet" href="styles.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/motion.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261102c">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-body-matter-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<div id="app">
+
+  <!-- ============ מסך 1 (data-screen="0") — TransitionScreen (שקף 50) ============
+       תבנית: TransitionScreen ShortText — זהה למסך 1 בסיין 2 (#s0; מחלקות s22-*), אותה דמות
+       (turquoise-avatar-weighting.mp4, מתנגן פעם אחת). תוכן: תסריט ההפקה, שקף 50 — שורת פתיחה
+       "אין כמו תרגול לחיזוק הלמידה", כותרת "4 שאלות", שורת סגירה "וכבר בהתחלה יש רמז! ענו נכון על
+       3 שאלות ומעלה כדי להתקדם.". כפתור ההמשך "אפשר להתחיל!". -->
+  <section class="screen active" data-screen="0" id="s0">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <p class="s22-lead">التمرين هو أفضل طريقة لتعزيز التعلّم</p>
+        <h1 class="s22-title">4 أسئلة</h1>
+        <p class="s22-body"><strong>والتلميح موجود منذ البداية! أجيبوا إجابة صحيحة عن 3 أسئلة فأكثر للمتابعة.</strong></p>
+      </div>
+      <div class="s22-video-wrap s22-video-wrap--compact" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s0-char-video" muted loop playsinline preload="auto"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source src="../unit-assets/videos/turquoise-avatar-weighting.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-continue" id="s0-continue" onclick="advanceScreen()">يمكن البدء!</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 2 (data-screen="1") — DropdownQuestion: שאלה 1 מתוך 4 (שקף 51) ============
+       תבנית: DropdownQuestion, וריאנט Single dropdown (משפט להשלמה). Figma 5596:25961 (מצבי סגור / פתוח / נבחר / משוב נכון).
+       הערת מפיקה: "DropdownQuestion — בסיסי — שאלה 1 מתוך 4". תוכן: תסריט ההפקה, שקף 51 — כותרת (מודגשת במקור) "השלימו
+       את המשפט מתוך מחסן המילים.", משפט "צפיפות היא ___ של החומר.", מחסן מילים: תכונה · כמות · מצב צבירה · תכונה משתנה.
+       תשובה נכונה: "תכונה" (לפי טקסט המשוב). 2 ניסיונות (התסריט שותק → ברירת-המחדל), רמז זמין מההתחלה (שקף 50: "כבר בהתחלה יש רמז"),
+       משוב נכון / שגוי סופי עם אותו הסבר (ברירת-המחדל "הסבר משותף"), שגוי ביניים: "התשובה אינה נכונה. שננסה שוב?".
+       סרגל התקדמות: שאלה 1 מתוך 4. הפופאפים — מחוץ ל-.screen (ישירות ב-#app), מזהים s1q-*. -->
+  <section class="screen" data-screen="1" id="s1">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s1-question" data-reveal="1">
+      <p class="s1-title">أكمِلوا الجملة من بنك الكلمات.</p>
+      <div class="s1-sentence">
+        <span class="s1-words">الكثافة هي</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-1" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-1" aria-label="اختاروا كلمة لإكمال الجملة" onclick="s1Toggle()">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-1"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-1" role="listbox" aria-label="مخزن الكلمات">
+        <li class="dq-option" role="option" tabindex="0" data-value="خاصيّة" onclick="s1Select('خاصيّة')">خاصيّة</li>
+        <li class="dq-option" role="option" tabindex="0" data-value="كمية" onclick="s1Select('كمية')">كمية</li>
+        <li class="dq-option" role="option" tabindex="0" data-value="حالة المادة" onclick="s1Select('حالة المادة')">حالة المادة</li>
+        <li class="dq-option" role="option" tabindex="0" data-value="خاصيّة متغيّرة" onclick="s1Select('خاصيّة متغيّرة')">خاصيّة متغيّرة</li>
+          </ul>
+        </div>
+        <span class="s1-words">للمادة.</span>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s1-live" aria-live="polite"></div>
+
+    <div class="qimg methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+      <div class="qimg-frame">
+        <img class="zoomable-image qimg-photo" src="assets/images/q2-same-material.png" alt="مكعبان معدنيان من نفس المادة، أحدهما صغير والآخر كبير" loading="lazy">
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s1q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s1q-hint" type="button" onclick="s1OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s1q-check" type="button" disabled onclick="s1Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 2) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s1q-popup" onpointerdown="s1PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s1q-popup-title"></p>
+    <div class="s8q-popup-body" id="s1q-popup-body"></div>
+    <div class="s19-popup-actions" id="s1q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 2) — Hint Card; הטקסט: שקף 51. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s1q-hint-overlay" onclick="s1CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>الكثافة تبقى ثابتة لكل مادة بغض النظر عن حجم الجسم. ماذا يعني ذلك بالنسبة لها؟</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s1CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 3 (data-screen="2") — SingleChoiceQuestion בלי תמונה: שאלה 2 מתוך 4 (שקף 52) ============
+       תבנית: SingleChoiceQuestion (הערת מפיקה: "SingleChoiceQuestionImage — בסיסי — שאלה 2 מתוך 4"; בשקף אין תמונה ואין
+       מקום לתמונה, לכן ללא עמודת תמונה). רפרנס: מסך 28 בסיין 1 (s27) — אותן מחלקות .s3q-opt / .s8q-*.
+       תוכן: תסריט ההפקה, שקף 52 — שאלה (מודגשת במקור): "לגוף מסוים מסה של 10 גרם ונפח של 2 סמ״ק. מהי צפיפותו?".
+       אפשרויות לפי סדר-y בשקף: 5 · 12 · 20 · 8 גרם/סמ"ק; נכון: 5 (10 ÷ 2, לפי משוב השקף). 2 ניסיונות (התסריט שותק),
+       רמז זמין מההתחלה (כפתור "אפשר רמז?" בשקף). משוב: נכון / שגוי סופי עם אותו הסבר ושבר 10/2 = 5; ביניים: "נסו שוב.".
+       סרגל התקדמות: שאלה 2 מתוך 4. הפופאפים — מחוץ ל-.screen, מזהים s2q-*. -->
+  <section class="screen" data-screen="2" id="s2">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s2-question">
+      <div class="s2-text" data-reveal="1">
+        <p class="s2-q">كتلة جسم معين 10 جرام وحجمه 2 سم³. ما كثافته؟</p>
+      </div>
+      <div class="s2-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s2qSelect('a')">
+            <span class="s3q-opt-text">5 جرام/سم³</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s2qSelect('b')">
+            <span class="s3q-opt-text">12 جرام/سم³</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s2qSelect('c')">
+            <span class="s3q-opt-text">20 جرام/سم³</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s2qSelect('d')">
+            <span class="s3q-opt-text">8 جرام/سم³</span>
+            <span class="s3q-radio"></span>
+          </div>
+      </div>
+    </div>
+
+    <div class="qimg methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+      <div class="qimg-frame">
+        <img class="zoomable-image qimg-photo" src="assets/images/q3-mass-volume.png" alt="حجر على ميزان مخبري يُظهر 10 جرام، وبجانبه أنبوب مُدرَّج يحتوي على ماء" loading="lazy">
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s2q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s2q-hint" type="button" onclick="s2qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s2q-check" type="button" disabled onclick="s2qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 3) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s2q-popup" onpointerdown="s2qPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s2q-popup-title"></p>
+    <div class="s8q-popup-body" id="s2q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 3) — Hint Card; הטקסט: שקף 52 (שורה + שבר מסה/נפח). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s2q-hint-overlay" onclick="s2qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>ضعوا البيانات في الصيغة: الكثافة = <span class="s2-frac" dir="rtl"><span>كتلة</span><span class="s2-frac__line"></span><span>حجم</span></span></p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s2qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 4 (data-screen="3") — שאלת בחירה על גרף: שאלה 3 מתוך 4 (שקף 53) ============
+       תבנית: SingleChoiceQuestion — וריאנט מקומי (720-templates → "Prefer a local template variant"): במקום כרטיסי-תמונה
+       (Figma 2134:26156 / 2134:26163 / 2134:26170 / 2134:26178) הבחירה היא על קו בגרף (בהערת המפיקה: ImageHotspotQuestion, וריאנט
+       נקודה/אזור — כאן הקו כולו הוא היעד). תוכן: תסריט ההפקה, שקף 53 — "בגרף שלפניכם מוצגים קווי מסה-נפח של ארבעה חומרים." +
+       (מודגש) "לחצו על הקו שמייצג את החומר בעל הצפיפות הגבוהה יותר.". ארבעת הקווים (שיפועים 0.5 / 1 / 2 / 2.5 גרם לסמ"ק — סדרות הגרף
+       בשקף); נכון: התלול ביותר (d). 2 ניסיונות (התסריט שותק), רמז זמין מההתחלה (כפתור "אפשר רמז?" בשקף), משוב: שקף 53.
+       סרגל התקדמות: שאלה 3 מתוך 4. הפופאפים — מחוץ ל-.screen, מזהים s3q-*. -->
+  <section class="screen" data-screen="3" id="s3">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s3-stage">
+      <div class="s3-text" data-reveal="1">
+        <p>في الرسم البياني أمامكم مُوضَّحة خطوط الكتلة-الحجم لأربع مواد.</p>
+        <p><strong>اضغطوا على الخط الذي يمثل المادة ذات الكثافة الأعلى.</strong></p>
+      </div>
+
+      <div class="s3-graph" data-reveal="2">
+        <svg class="s3-graph-svg" id="s3q-svg" viewBox="0 0 1280 636" role="radiogroup" aria-label="رسم بياني للكتلة-الحجم لأربع مواد (الكتلة بالجرام مقابل الحجم بسم³، الحجم من 0 إلى 5، الكتلة من 0 إلى 14). أربعة خطوط مستقيمة تنطلق من نقطة الأصل وترتفع. اختاروا الخط الذي يمثل المادة ذات الكثافة الأعلى.">
+          <rect class="s3-hitarea" x="340" y="232" width="660" height="330" fill="transparent"/>
+          <g class="s3-grid">
+            <line x1="360" y1="504" x2="960" y2="504"/>
+            <line x1="360" y1="460" x2="960" y2="460"/>
+            <line x1="360" y1="416" x2="960" y2="416"/>
+            <line x1="360" y1="372" x2="960" y2="372"/>
+            <line x1="360" y1="328" x2="960" y2="328"/>
+            <line x1="360" y1="284" x2="960" y2="284"/>
+            <line x1="360" y1="240" x2="960" y2="240"/>
+            <line x1="480" y1="240" x2="480" y2="548"/>
+            <line x1="600" y1="240" x2="600" y2="548"/>
+            <line x1="720" y1="240" x2="720" y2="548"/>
+            <line x1="840" y1="240" x2="840" y2="548"/>
+            <line x1="960" y1="240" x2="960" y2="548"/>
+          </g>
+          <g class="s3-axes"><line x1="360" y1="234" x2="360" y2="548"/><line x1="360" y1="548" x2="966" y2="548"/>
+            <polygon points="360,218 352,236 368,236"/><polygon points="982,548 964,540 964,556"/></g>
+          <text class="s3-axis-letter" x="360" y="208" text-anchor="middle">محور Y</text>
+          <text class="s3-axis-letter" x="1030" y="555" text-anchor="middle">محور X</text>
+          <text class="s3-axis-title" x="660" y="610" text-anchor="middle">الحجم (سم³)</text>
+          <text class="s3-axis-title" transform="translate(296 394) rotate(-90)" text-anchor="middle">الكتلة (غرام)</text>
+          <g class="s3-ticks s3-ticks--y">
+            <text x="342" y="554" text-anchor="end">0</text>
+            <text x="342" y="510" text-anchor="end">2</text>
+            <text x="342" y="466" text-anchor="end">4</text>
+            <text x="342" y="422" text-anchor="end">6</text>
+            <text x="342" y="378" text-anchor="end">8</text>
+            <text x="342" y="334" text-anchor="end">10</text>
+            <text x="342" y="290" text-anchor="end">12</text>
+            <text x="342" y="246" text-anchor="end">14</text>
+          </g>
+          <g class="s3-ticks s3-ticks--x">
+            <text x="360" y="578" text-anchor="middle">0</text>
+            <text x="480" y="578" text-anchor="middle">1</text>
+            <text x="600" y="578" text-anchor="middle">2</text>
+            <text x="720" y="578" text-anchor="middle">3</text>
+            <text x="840" y="578" text-anchor="middle">4</text>
+            <text x="960" y="578" text-anchor="middle">5</text>
+          </g>
+          <g class="s3-line" id="s3-line-a" data-id="a" role="radio" aria-checked="false" tabindex="0" aria-label="خط يصل إلى 2.5 جرام عند حجم 5 سم³">
+            <line class="s3-line__halo" x1="360" y1="548" x2="960" y2="493"/>
+            <line class="s3-line__main" x1="360" y1="548" x2="960" y2="493"/>
+            <circle class="s3-line__end" cx="960" cy="493" r="6"/>
+            <image class="s3-badge s3-badge--ok" href="../unit-assets/icons/icon-dnd-correct.svg" x="974" y="477" width="32" height="32" aria-hidden="true"/>
+            <image class="s3-badge s3-badge--bad" href="../unit-assets/icons/icon-dnd-incorrect.svg" x="974" y="477" width="32" height="32" aria-hidden="true"/>
+          </g>
+          <g class="s3-line" id="s3-line-b" data-id="b" role="radio" aria-checked="false" tabindex="0" aria-label="خط يصل إلى 5 جرام في حجم 5 سم³">
+            <line class="s3-line__halo" x1="360" y1="548" x2="960" y2="438"/>
+            <line class="s3-line__main" x1="360" y1="548" x2="960" y2="438"/>
+            <circle class="s3-line__end" cx="960" cy="438" r="6"/>
+            <image class="s3-badge s3-badge--ok" href="../unit-assets/icons/icon-dnd-correct.svg" x="974" y="422" width="32" height="32" aria-hidden="true"/>
+            <image class="s3-badge s3-badge--bad" href="../unit-assets/icons/icon-dnd-incorrect.svg" x="974" y="422" width="32" height="32" aria-hidden="true"/>
+          </g>
+          <g class="s3-line" id="s3-line-c" data-id="c" role="radio" aria-checked="false" tabindex="0" aria-label="خط يصل إلى 10 جرام في حجم 5 سم³">
+            <line class="s3-line__halo" x1="360" y1="548" x2="960" y2="328"/>
+            <line class="s3-line__main" x1="360" y1="548" x2="960" y2="328"/>
+            <circle class="s3-line__end" cx="960" cy="328" r="6"/>
+            <image class="s3-badge s3-badge--ok" href="../unit-assets/icons/icon-dnd-correct.svg" x="974" y="312" width="32" height="32" aria-hidden="true"/>
+            <image class="s3-badge s3-badge--bad" href="../unit-assets/icons/icon-dnd-incorrect.svg" x="974" y="312" width="32" height="32" aria-hidden="true"/>
+          </g>
+          <g class="s3-line" id="s3-line-d" data-id="d" role="radio" aria-checked="false" tabindex="0" aria-label="خط يصل إلى 12.5 جرام في حجم 5 سم³">
+            <line class="s3-line__halo" x1="360" y1="548" x2="960" y2="273"/>
+            <line class="s3-line__main" x1="360" y1="548" x2="960" y2="273"/>
+            <circle class="s3-line__end" cx="960" cy="273" r="6"/>
+            <image class="s3-badge s3-badge--ok" href="../unit-assets/icons/icon-dnd-correct.svg" x="974" y="257" width="32" height="32" aria-hidden="true"/>
+            <image class="s3-badge s3-badge--bad" href="../unit-assets/icons/icon-dnd-incorrect.svg" x="974" y="257" width="32" height="32" aria-hidden="true"/>
+          </g>
+        </svg>
+      </div>
+      <p class="sr-only" id="s3q-live" aria-live="polite"></p>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s3q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s3q-hint" type="button" onclick="s3qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s3q-check" type="button" disabled onclick="s3qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 4) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s3q-popup" onpointerdown="s3qPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s3q-popup-title"></p>
+    <div class="s8q-popup-body" id="s3q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 4) — Hint Card; הטקסט: שקף 53. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s3q-hint-overlay" onclick="s3qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>خط شديد الانحدار = كتلة أكبر في حجم 1 سم³.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s3qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 5 (data-screen="4") — DropdownQuestion, שני משפטי השלמה: שאלה 4 מתוך 4 (שקף 54) ============
+       תבנית: DropdownQuestion (Single dropdown × 2 — משפט השלמה ראשון ושני, כל אחד עם מחסן משלו). רפרנס: מסך 2 (s1) — אותן מחלקות .s1-* / .dq-* / .s8q-*.
+       הערת מפיקה: "בסיסי: שאלה 4 מתוך 4". תוכן: תסריט ההפקה, שקף 54 — כותרת "השלימו את החסר"; משפט 1: "צפיפות המים היא ___ גרם/סמ"ק."
+       (מחסן: 0 · 1 · 1.5 · 0.1; נכון: 1); משפט 2: "חומר בעל צפיפות 2.3 ___ במים." (מחסן: יצוף · ישקע · יתערבב · יתמוסס; נכון: ישקע).
+       2 ניסיונות (התסריט שותק → ברירת-המחדל), רמז זמין מההתחלה. משוב: נכון / שגוי סופי עם אותו הסבר; ביניים: "התשובה אינה נכונה. שננסה שוב?".
+       הפופאפים — מחוץ ל-.screen, מזהים s4q-*. -->
+  <section class="screen" data-screen="4" id="s4">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    <div class="progress-question__connector" data-connector="2"></div>
+    <div class="progress-question__item" data-question="3">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 3</span>
+    </div>
+    <div class="progress-question__connector" data-connector="3"></div>
+    <div class="progress-question__item" data-question="4">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 4</span>
+    </div>
+    </nav>
+
+    <div class="s1-question" data-reveal="1">
+      <p class="s1-title">أكملوا الناقص</p>
+      <div class="s1-sentence">
+        <span class="s1-words">كثافة الماء هي</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-41" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-41" aria-label="اختاروا رقمًا لإكمال الجملة الأولى" onclick="s4Toggle(1)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-41"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-41" role="listbox" aria-label="مخزن الكلمات">
+            <li class="dq-option" role="option" tabindex="0" data-value="0" onclick="s4Select(1,'0')">0</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="1" onclick="s4Select(1,'1')">1</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="1.5" onclick="s4Select(1,'1.5')">1.5</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="0.1" onclick="s4Select(1,'0.1')">0.1</li>
+          </ul>
+        </div>
+        <span class="s1-words">جرام/سم³.</span>
+      </div>
+      <div class="s1-sentence s1-sentence--second">
+        <span class="s1-words">مادة ذات كثافة 2.3</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-42" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-42" aria-label="اختاروا كلمة لإكمال الجملة الثانية" onclick="s4Toggle(2)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-42"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-42" role="listbox" aria-label="مخزن الكلمات">
+            <li class="dq-option" role="option" tabindex="0" data-value="يطفو" onclick="s4Select(2,'يطفو')">يطفو</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="يغوص" onclick="s4Select(2,'يغوص')">يغوص</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="يختلط" onclick="s4Select(2,'يختلط')">يختلط</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="سيذوب" onclick="s4Select(2,'سيذوب')">سيذوب</li>
+          </ul>
+        </div>
+        <span class="s1-words">في الماء.</span>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s4-live" aria-live="polite"></div>
+
+    <div class="qimg methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+      <div class="qimg-frame">
+        <img class="zoomable-image qimg-photo" src="assets/images/q5-water-stone.png" alt="كوب زجاج ممتلئ بالماء وحجر صغير يغوص فيه" loading="lazy">
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s4q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s4q-hint" type="button" onclick="s4OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s4q-check" type="button" disabled onclick="s4Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 5) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s4q-popup" onpointerdown="s4PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s4q-popup-title"></p>
+    <div class="s8q-popup-body" id="s4q-popup-body"></div>
+    <div class="s19-popup-actions" id="s4q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 5) — Hint Card; הטקסט: שקף 54. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s4q-hint-overlay" onclick="s4CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>كثافة الماء هي الخط الفاصل بين الطفو والغوص –<br>قيمة بسيطة ومستديرة.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s4CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 6 (data-screen="5") — TransitionScreen + בועת דיבור (שקף 55) ============
+       תבנית: TransitionScreen — זהה למסך 1 בסיין 3 (#s0: אותה דמות מרימה משקולות, turquoise-avatar-weighting.mp4, מתנגן פעם אחת)
+       עם בועת דיבור כמו מסך 2 בסיין 2 (#s1 שם; מחלקות s22-bubble*). הערת מפיקה: "מסך הזנקה תרגול סטנדרטי ב'".
+       תוכן: שקף 55 — שורת פתיחה "יופי של עבודה!", כותרת מודגשת "הנה עוד 2 תרגילים ברמת קושי גבוהה יותר.",
+       בועה "ברור לי שתצליחו!". התסריט לא מציין טקסט לכפתור → "המשך". -->
+  <section class="screen" data-screen="5" id="s5">
+
+    <div class="s22-content">
+      <div class="s22-text s22-text--long" data-reveal="1">
+        <p class="s22-lead">عمل رائع!</p>
+        <h1 class="s22-title s22-title--h5">إليكم تمرينين آخرين<br>بمستوى صعوبة أعلى.</h1>
+      </div>
+      <div class="s22-char-ph" data-reveal="2" data-reveal-fade>
+        <video class="s22-char-video" id="s5-char-video" muted loop playsinline preload="none"
+               disablepictureinpicture
+               controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+               aria-hidden="true">
+          <source data-lazy-src="../unit-assets/videos/turquoise-avatar-weighting.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="s22-bubble" data-reveal="3">
+        <svg class="s22-bubble-svg" width="250" height="93" viewBox="0 0 250 93" fill="none" aria-hidden="true"><path d="M12.5 1.5H222.5A11 11 0 0 1 233.5 12.5V31L248.5 46.5L233.5 62V80.5A11 11 0 0 1 222.5 91.5H12.5A11 11 0 0 1 1.5 80.5V12.5A11 11 0 0 1 12.5 1.5Z" fill="#fff" stroke="#019DE5" stroke-width="3"/></svg>
+        <p>أنا واثق من أنكم ستنجحون!</p>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s5-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s5-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 7 (data-screen="6") — SingleChoiceQuestionImage + טבלה: שאלה 1 מתוך 2 (שקף 56) ============
+       תבנית: SingleChoiceQuestionImage (הערת מפיקה: "סטנדרטי ב' — שאלה 1 מתוך 2"). רפרנס: מסך 9 בסיין 1 (s8) — אותן מחלקות
+       .s3q-opt / .s8q-* ופופאפ הגדלת תמונה; הפריסה (.s6-*) מותאמת: תמונה + טבלת צפיפויות מתחתיה בעמודה השמאלית.
+       תוכן: תסריט ההפקה, שקף 56 — "גוש מתכת לא מוכר שמסתו 270 גרם ונפחו 100 סמ״ק." + (מודגש) "חשבו את צפיפותו והיעזרו בטבלת
+       הצפיפויות כדי לזהות את סוג המתכת."; אפשרויות לפי סדר-y בשקף: 2.70 כסף · 2.70 אלומיניום (נכון) · 7.87 ברזל · 27 אין התאמה.
+       2 ניסיונות (התסריט שותק), רמז זמין מההתחלה, משוב: נכון / שגוי סופי עם אותו הסבר (שבר 270/100 = 2.7); ביניים: "נסו שוב.".
+       סרגל התקדמות: שאלה 1 מתוך 2 (סדרה ב'). הפופאפים — מחוץ ל-.screen, מזהים s6q-*. -->
+  <section class="screen" data-screen="6" id="s6">
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    </nav>
+
+    <div class="s6-question">
+
+      <div class="s6-col">
+        <div class="s6-text" data-reveal="1">
+          <p>قطعة معدن غير معروفة كتلتها <span dir="ltr">270</span> جرام وحجمه <span dir="ltr">100</span> سم³.</p>
+          <p><strong>احسبوا كثافته واستعينوا بجدول الكثافات لتحديد نوع المعدن.</strong></p>
+        </div>
+        <div class="s6-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s6qSelect('a')">
+            <span class="s3q-opt-text"><span dir="ltr">2.70</span> جرام/سم³ - الفضة</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s6qSelect('b')">
+            <span class="s3q-opt-text"><span dir="ltr">2.70</span> جرام/سم³ - الألومنيوم</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s6qSelect('c')">
+            <span class="s3q-opt-text"><span dir="ltr">7.87</span> جرام/سم³ - الحديد</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s6qSelect('d')">
+            <span class="s3q-opt-text"><span dir="ltr">27</span> جرام/سم³ - لا تطابق لأي معدن في الجدول</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="s6-side">
+        <div class="s6-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+          <div class="s6-img-frame">
+            <img class="zoomable-image s6-photo" src="assets/images/metal-block.png" alt="كتلة معدنية غير معروفة" loading="lazy">
+          </div>
+        </div>
+        <div class="s6-table-wrap" data-reveal="4">
+          <table class="s6-table">
+            <caption class="s6-table-title">كثافات معادن مختلفة</caption>
+            <thead><tr><th scope="col">الكثافة (جرام/سم³)</th><th scope="col">مادة</th></tr></thead>
+            <tbody>
+              <tr><td dir="ltr">2.70</td><td>الألومنيوم</td></tr>
+              <tr><td dir="ltr">7.87</td><td>الحديد</td></tr>
+              <tr><td dir="ltr">10.5</td><td>الفضة</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s6q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s6q-hint" type="button" onclick="s6qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s6q-check" type="button" disabled onclick="s6qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 7) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s6q-popup" onpointerdown="s6qPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s6q-popup-title"></p>
+    <div class="s8q-popup-body" id="s6q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 7) — Hint Card; הטקסט: שקף 56. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s6q-hint-overlay" onclick="s6qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>احسبوا أولًا الكثافة: اقسموا الكتلة على الحجم. بعد ذلك قارنوا النتيجة بالقيم الموجودة في جدول الكثافات.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s6qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 8 (data-screen="7") — DragAndDropQuestion טקסטואלית + תמונה מלווה (גרף): שאלה 2 מתוך 2 (שקף 57) ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי (מחסן מילים → 2 חללים בתוך משפטי השלמה; הערת מפיקה: "OrderedDragAndDropQuestion — שאלת גרירת
+       מילים ממחסן (לא בתבנית). המחסן מופיע למטה מתחת לטקסט"). מצבי Figma: 1717:40975 התחלה · 1717:40891 איזור גרירה · 1717:41017 אחרי שחרור ·
+       1717:41058 ניסיון ראשון · 1717:41092 משוב שגוי · 1730:44201 משוב נכון. פריסה כמו מסך 5 (#s4): טקסט מימין, תמונה מלווה (.qimg) משמאל —
+       כאן הגרף (גרף XY מקורי בשקף: גולה 0→12.5, נוזל 0→5 גרם על 0→5 סמ"ק) משוחזר כ-SVG עם הגדלה (data-zoom-source).
+       תוכן: תסריט ההפקה, שקף 57. מפתח: חלל 1 = "גדולה", חלל 2 = "תלול"; "מתון" = מסיח. 2 ניסיונות (התסריט שותק), רמז זמין מההתחלה,
+       משוב: נכון / שגוי סופי עם אותו הסבר; ביניים: "התשובה אינה נכונה. נסו שוב." (כשחלק נכון: "התשובה נכונה חלקית.").
+       סרגל התקדמות: שאלה 2 מתוך 2 (סדרה ב'). הפופאפים — מחוץ ל-.screen, מזהים s7q-*. -->
+  <section class="screen" data-screen="7" id="s7">
+      <!-- מחוות-יד — אותו נכס כמו בסיין 2; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s7-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+
+    <nav class="progress-question" aria-label="التنقُّل بين الأسئلة">
+    <div class="progress-question__item" data-question="1">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 1</span>
+    </div>
+    <div class="progress-question__connector" data-connector="1"></div>
+    <div class="progress-question__item" data-question="2">
+      <div class="progress-question__icon"></div>
+      <span class="progress-question__label">سؤال 2</span>
+    </div>
+    </nav>
+
+    <div class="s7-question">
+      <div class="s7-text" data-reveal="1">
+        <p>غُطست كرة زجاجية في سائل شفاف، وقد غاصت حتى القاع.<br>في الرسم البياني للكتلة-الحجم يظهر خط الكرة الزجاجية وخط السائل.</p>
+        <p><strong>اسحبوا الكلمات وأكملوا النص:</strong></p>
+      </div>
+
+      <div class="s7-sentences" data-reveal="2">
+        <div class="s7-sentence">
+          <span class="s7-words">الكُرَيَّة غاصت، لأن كثافتها</span>
+          <div class="s7-zone" id="s7-zone-t1" data-zone="t1" role="button" tabindex="0" aria-label="الفراغ الأول: كثافة الكرة بالنسبة إلى كثافة السائل" onclick="s7ZoneClick('t1', event)" onkeydown="s7ZoneKey(event, 't1')"></div>
+          <span class="s7-words">من كثافة السائل.</span>
+        </div>
+        <div class="s7-sentence">
+          <span class="s7-words">في الرسم البياني للكتلة-الحجم، تُمثَّل المادة ذات الكثافة الأكبر بخط</span>
+          <div class="s7-zone" id="s7-zone-t2" data-zone="t2" role="button" tabindex="0" aria-label="الفراغ الثاني: نوع الخط في الرسم البياني" onclick="s7ZoneClick('t2', event)" onkeydown="s7ZoneKey(event, 't2')"></div>
+          <span class="s7-words">أكبر.</span>
+        </div>
+      </div>
+
+      <div class="s7-tray" id="s7-tray" data-reveal="3" role="group" aria-label="مخزن الكلمات" onclick="s7TrayClick(event)">
+        <div class="s7-slot"><div class="s7-card" id="s7-d-mild" role="button" tabindex="0" aria-pressed="false"><span class="s7-card__text">معتدل</span></div></div>
+        <div class="s7-slot"><div class="s7-card" id="s7-d-big" role="button" tabindex="0" aria-pressed="false"><span class="s7-card__text">كبيرة</span></div></div>
+        <div class="s7-slot"><div class="s7-card" id="s7-d-steep" role="button" tabindex="0" aria-pressed="false"><span class="s7-card__text">شديد الانحدار</span></div></div>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s7-live" aria-live="polite"></div>
+
+    <div class="qimg qimg--lg methodica-image-zoom-frame" data-reveal="4" data-reveal-fade>
+      <div class="qimg-frame">
+        <div class="s7-graph" data-zoom-source role="img" aria-label="رسم بياني للكتلة حسب الحجم لسائل ولكُرَيَّة زجاجية. يخرج خطان مستقيمان من نقطة الأصل: خط الكُرَيَّة شديد الانحدار ويصل إلى 12.5 جرام عند حجم 5 سم³، وخط السائل معتدل الانحدار ويصل إلى 5 جرام عند نفس الحجم.">
+          <svg class="s7-graph-svg" viewBox="0 -20 364 384" aria-hidden="true">
+            <text class="s7-graph-title" x="182" y="16" text-anchor="middle">رسم بياني للكتلة / الحجم لسائل وكُرَيَّة</text>
+            <g class="s7-grid">
+              <line x1="52" y1="266" x2="312" y2="266"/><line x1="52" y1="232" x2="312" y2="232"/>
+              <line x1="52" y1="198" x2="312" y2="198"/><line x1="52" y1="164" x2="312" y2="164"/>
+              <line x1="52" y1="130" x2="312" y2="130"/><line x1="52" y1="96" x2="312" y2="96"/>
+              <line x1="52" y1="62" x2="312" y2="62"/>
+              <line x1="104" y1="62" x2="104" y2="300"/><line x1="156" y1="62" x2="156" y2="300"/>
+              <line x1="208" y1="62" x2="208" y2="300"/><line x1="260" y1="62" x2="260" y2="300"/>
+              <line x1="312" y1="62" x2="312" y2="300"/>
+            </g>
+            <g class="s7-axes"><line x1="52" y1="56" x2="52" y2="300"/><line x1="52" y1="300" x2="318" y2="300"/>
+              <polygon points="52,44 46,57 58,57"/><polygon points="330,300 317,294 317,306"/></g>
+            <text class="s7-axis-letter" x="64" y="52">Y</text>
+            <text class="s7-axis-title" x="84" y="52" text-anchor="end">الكتلة (غرام)</text>
+            <text class="s7-axis-letter" x="337" y="305">X</text>
+            <text class="s7-axis-title" x="358" y="346" text-anchor="start">الحجم (سم³)</text>
+            <g class="s7-ticks s7-ticks--y">
+              <text x="44" y="305" text-anchor="end">0</text><text x="44" y="271" text-anchor="end">2</text>
+              <text x="44" y="237" text-anchor="end">4</text><text x="44" y="203" text-anchor="end">6</text>
+              <text x="44" y="169" text-anchor="end">8</text><text x="44" y="135" text-anchor="end">10</text>
+              <text x="44" y="101" text-anchor="end">12</text><text x="44" y="67" text-anchor="end">14</text>
+            </g>
+            <g class="s7-ticks s7-ticks--x">
+              <text x="52" y="320" text-anchor="middle">0</text><text x="104" y="320" text-anchor="middle">1</text>
+              <text x="156" y="320" text-anchor="middle">2</text><text x="208" y="320" text-anchor="middle">3</text>
+              <text x="260" y="320" text-anchor="middle">4</text><text x="312" y="320" text-anchor="middle">5</text>
+            </g>
+            <line class="s7-line s7-line--liquid" x1="52" y1="300" x2="312" y2="215"/>
+            <line class="s7-line s7-line--marble" x1="52" y1="300" x2="312" y2="87.5"/>
+            <circle class="s7-dot s7-dot--liquid" cx="312" cy="215" r="4.5"/>
+            <circle class="s7-dot s7-dot--marble" cx="312" cy="87.5" r="4.5"/>
+            <text class="s7-line-label s7-line-label--liquid" x="320" y="220">سائل</text>
+            <text class="s7-line-label s7-line-label--marble" x="320" y="93">كرة زجاجية</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s7q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s7q-hint" type="button" onclick="s7OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s7q-check" type="button" disabled onclick="s7Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 8) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s7q-popup" onpointerdown="s7PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s7q-popup-title"></p>
+    <div class="s8q-popup-body" id="s7q-popup-body"></div>
+    <div class="s19-popup-actions" id="s7q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 8) — Hint Card; הטקסט: שקף 57. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s7q-hint-overlay" onclick="s7CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>الكرة غاصت في السائل. فكروا فيما يعلمه ذلك عن كثافة الكرة بالنسبة لكثافة السائل، وكيف تبدو الكثافة الأكبر في الرسم البياني للكتلة-الحجم.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s7CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- כפתור דיווח בעיות גלובלי — ויזואלי בלבד, כמו בסיין 1 (720-templates → _global-components.md → "Report / Issue button") -->
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen, ישירות ב-#app
+       (720-templates _global-components.md). Wired by delegation in ../unit-js/25-report.js — no onclick. -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل وجدتم مشكلة؟" title="هل وجدتم مشكلة؟">
+    <span class="flag-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 12 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.397164 17C0.177722 17 0 16.8239 0 16.6065V0.393501C0 0.176082 0.177722 0 0.397164 0C0.616607 0 0.794329 0.176082 0.794329 0.393501V16.607C0.794329 16.8245 0.616607 17.0005 0.397164 17.0005V17Z" fill="currentColor"/>
+        <g transform="translate(0, 0.5933)">
+          <path d="M2.76227 9.31542C1.91972 9.31542 1.06958 9.15545 0.213483 8.71363C0.0823588 8.64599 0 8.51124 0 8.36469V0.950975C0 0.814619 0.0715221 0.687925 0.188558 0.615989C0.305594 0.54459 0.45189 0.537611 0.574886 0.598811C0.577053 0.599884 0.578679 0.600958 0.580846 0.602032C2.31309 1.49586 4.05563 1.046 5.90003 0.569821C7.80946 0.0770055 9.78336 -0.431915 11.7865 0.601495C11.9176 0.669136 12 0.803882 12 0.950438V8.36415C12 8.4946 11.9344 8.617 11.8255 8.69001C11.7166 8.76302 11.5774 8.77805 11.4555 8.72974C11.443 8.7249 11.4311 8.71954 11.4197 8.71363C9.68745 7.8198 7.94491 8.26967 6.10051 8.7453C5.00709 9.02714 3.89199 9.31489 2.76281 9.31489L2.76227 9.31542ZM0.793787 8.11935C2.45559 8.87307 4.13094 8.44038 5.90003 7.98407C7.62469 7.53903 9.40191 7.08057 11.2062 7.75806V1.19631C9.54441 0.442591 7.86906 0.875281 6.09997 1.33159C4.37531 1.77663 2.59755 2.23509 0.793787 1.5576V8.11935Z" fill="currentColor"/>
+        </g>
+      </svg>
+    </span>
+    <span class="flag-btn__label">هل وجدتم مشكلة؟</span>
+  </button>
+
+  <!-- ═══ "מצאתם בעיה?" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-body-matter-01-02 (2026-11-02). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما ينبغي؟<br>أخبرونا بما حدث حتى نتعامل معه.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ما حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال تبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقينا التبليغ وسنهتم بالأمر بأقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق لن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261102c"></script>
+<script src="../unit-js/20-xapi.js?v=20261102c"></script>
+<script src="../unit-js/25-report.js?v=20261102c"></script>
+<script src="../unit-js/40-resume.js?v=20261102c"></script>
+<script src="../unit-js/50-loader.js?v=20261102c"></script>
+<script src="../unit-js/05-media.js?v=20261102c"></script>
+<script src="../unit-js/05-motion.js?v=20261102c"></script>
+<script src="../unit-js/07-btn-width.js?v=20261103"></script>
+<script src="script.js?v=20261102c"></script>
+<script src="../unit-js/90-boot.js?v=20261102c"></script>
+</body>
+</html>

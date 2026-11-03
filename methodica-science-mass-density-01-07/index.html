@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | علوم الهدف 10 | سيان 7</title>
+<link rel="stylesheet" href="styles.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/motion.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261102c">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-body-matter-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<div id="app">
+
+  <!-- ============ מסך 1 (data-screen="0") — TransitionScreen (שקף 84) ============
+       מסך הזנקה לשאלת השיא ב׳; זהה במבנה ובתוכן למסך 1 בסיין 6 (מחלקות s22-*). הדמות: מטפסת על הר
+       (turquoise-avatar-climbing.mp4). תוכן: תסריט ההפקה, שקף 84. התסריט לא מציין טקסט לכפתור → "המשך". -->
+  <section class="screen active" data-screen="0" id="s0">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <p class="s22-lead">كلّ الاحترام!<br>إذا لم تتمكنوا من الإجابة بشكل صحيح عن بعض الأسئلة، من المهم أن تفهموا ما الذي لا يزال غير واضح.</p>
+        <h1 class="s22-title">والآن يأتي السؤال الأكبر</h1>
+        <p class="s22-body">يتضمن 4 بنود. عليكم النجاح في 3 منها على الأقل.</p>
+      </div>
+      <div class="s22-video-wrap s22-video-wrap--compact" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s0-char-video" muted loop playsinline preload="auto"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source src="../unit-assets/videos/turquoise-avatar-climbing.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-continue" id="s0-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 2 (data-screen="1") — FullImageWithTextOverlay (שקף 79) ============
+       שקף סיפור מלווה לפני סעיפי שאלת השיא ב׳. רפרנס: מסך 2 בסיין 6 — רצועת מדיה מלאה + כרטיס טקסט צף.
+       הסרטון: curious-submarine-explorer.mp4 (הדמות בצוללת שטה, ג'ינרוט). בועת הדיבור מהשקף מוצגת מעל הסרטון. -->
+  <section class="screen" data-screen="1" id="s1">
+
+    <div class="fito-img" data-reveal="1" data-reveal-fade>
+      <video class="fito-video" id="s1-video" data-autoplay muted playsinline preload="none"
+             disablepictureinpicture tabindex="-1" aria-hidden="true">
+        <source data-lazy-src="assets/videos/curious-submarine-explorer.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="fito-text" data-reveal="2">
+      <p>غواصة هي سفينة حجمها الخارجي ثابت. يتم التحكم في موقع الغواصة بالنسبة لعمق البحر عن طريق تغيير كثافتها المتوسطة بواسطة خزانات الموازنة:</p>
+      <p><strong>للغوص والنزول إلى العمق:</strong> تُملأ الخزانات بمياه البحر. ونتيجة لذلك، <strong>تزداد كتلة الغواصة،</strong> كثافتها المتوسطة ترتفع (بالنسبة لكثافة مياه البحر*) وهي تغوص.</p>
+      <p><strong>للطفو والصعود إلى الأعلى:</strong> تُفرَّغ المياه وتُملأ الخزانات بالهواء المضغوط. ونتيجةً لذلك، <strong>تَقِلّ كتلة الغوّاصة</strong>، وتنخفض كثافتها المتوسطة (بالنسبة لكثافة مياه البحر*) فتصعد إلى الأعلى.</p>
+      <p class="fito-note">*كثافة مياه البحر: حوالي 1.03 جرام/سم³.</p>
+    </div>
+
+    <!-- קריינות (בקשת לקוחה): אודיו שמלווה את הסרטון והטקסט, מתחיל 1.5 שנ' אחרי הכניסה למסך; הלומד שולט בו בכפתור ההשמעה/עצירה (כמו במסך 2 בסיין 6) -->
+    <audio id="s1-audio" preload="none">
+      <source data-lazy-src="assets/audio/07-02-character.mp3" type="audio/mpeg">
+    </audio>
+    <button class="fito-sound fito-play is-paused" id="s1-play" type="button" aria-label="السرد الصوتي">
+      <span class="fito-play__pause" aria-hidden="true"><img class="fi-pause-circle" src="../unit-assets/icons/icon-pause-circle.svg" alt="" loading="lazy"><img class="fi-pause-bars" src="../unit-assets/icons/icon-pause-bars.svg" alt="" loading="lazy"></span>
+      <span class="fito-play__play" aria-hidden="true"><img class="fi-play-circle" src="../unit-assets/icons/icon-play-large-circle.svg" alt="" loading="lazy"><img class="fi-play-tri" src="../unit-assets/icons/icon-play-large-triangle.svg" alt="" loading="lazy"></span>
+    </button>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s1-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s1-continue" type="button" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 3 (data-screen="2") — DropdownQuestion × 2 + טבלה (שקף 80) ============
+       שאלת שיא ב׳ — סעיף 1 מתוך 4. רפרנס: מסך 5 בסיין 3 (#s4) — שני משפטי השלמה, אותן מחלקות .s1-* / .dq-* / .s8q-*;
+       במקום התמונה — טבלת הצפיפות הממוצעת של הצוללת (.qimg--table).
+       נכון: "ציפה" → נמוכה (0.99 < 1.03) · "צלילה" → גבוהה (1.04 > 1.03). נכון רק כששניהם נכונים; 2 ניסיונות (התסריט שותק → ברירת-המחדל).
+       מחסן לכל דרופדאון: נמוכה · גבוהה (בקשת מפיקה). רמז זמין מההתחלה. אין סרגל התקדמות. הפופאפים — מחוץ ל-.screen, מזהים s7q-*. -->
+  <section class="screen" data-screen="2" id="s2">
+
+    <div class="s1-question s7-question" data-reveal="1">
+      <p class="s7-q q-hang"><strong class="q-hang__num">أ.</strong><span>فيما يلي جدول يعرض الكثافة المتوسطة للغواصة في حالتَي<br>تشغيلها.</span></p>
+      <p class="s7-q s7-q--bold">استعينوا ببيانات الجدول وأكملوا الجمل:</p>
+      <div class="s1-sentence s7-sentence">
+        <span class="s1-words">في وضع "<strong>طفو</strong>"الكثافة المتوسطة للغواصة</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-71" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-71" aria-label="اختاروا كلمة لإكمال الجملة الأولى" onclick="s7Toggle(1)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-71"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-71" role="listbox" aria-label="مخزن الكلمات">
+            <li class="dq-option" role="option" tabindex="0" data-value="منخفضة" onclick="s7Select(1,'منخفضة')">منخفضة</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="عالية" onclick="s7Select(1,'عالية')">عالية</li>
+          </ul>
+        </div>
+        <span class="s7-br" aria-hidden="true"></span>
+        <span class="s1-words s7-after-br">مقارنةً بكثافة مياه البحر.</span>
+      </div>
+      <div class="s1-sentence s7-sentence s1-sentence--second">
+        <span class="s1-words">في وضع "<strong>الغوص</strong>"الكثافة المتوسطة للغواصة</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-72" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-72" aria-label="اختاروا كلمة لإكمال الجملة الثانية" onclick="s7Toggle(2)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-72"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-72" role="listbox" aria-label="مخزن الكلمات">
+            <li class="dq-option" role="option" tabindex="0" data-value="منخفضة" onclick="s7Select(2,'منخفضة')">منخفضة</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="عالية" onclick="s7Select(2,'عالية')">عالية</li>
+          </ul>
+        </div>
+        <span class="s7-br" aria-hidden="true"></span>
+        <span class="s1-words s7-after-br">مقارنةً بكثافة مياه البحر.</span>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s7-live" aria-live="polite"></div>
+
+    <div class="qimg qimg--table" data-reveal="3" data-reveal-fade>
+      <div class="qimg-frame">
+        <table class="s7-table">
+          <thead>
+            <tr>
+              <th scope="col">حالة الغواصة</th>
+              <th scope="col">الكثافة المتوسطة (جرام/سم³)<span class="s7-note">*قيم مُقرَّبة</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>"طفا":</strong> الحاويات مملوءة بالهواء</td>
+              <td>0.99</td>
+            </tr>
+            <tr>
+              <td><strong>"الغوص":</strong> الخزانات ممتلئة بمياه البحر</td>
+              <td>1.04</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="s7-table-foot">*كثافة مياه البحر: حوالي 1.03 جرام / سم³</p>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s7q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s7q-hint" type="button" onclick="s7OpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s7q-check" type="button" disabled onclick="s7Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 3) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s7q-popup" onpointerdown="s7PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s7q-popup-title"></p>
+    <div class="s8q-popup-body" id="s7q-popup-body"></div>
+    <div class="s19-popup-actions" id="s7q-popup-actions"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 3) — Hint Card; הטקסט: שקף 80 (גוף בלבד → כותרת גנרית "רמז"). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s7q-hint-overlay" onclick="s7CloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>قارنوا الكثافة المتوسطة للغواصة بكثافة مياه البحر (1.03 جرام لكل سم³).</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s7CloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- ============ מסך 4 (data-screen="3") — OrderedDragAndDropQuestion (שקף 81): שאלת שיא ב׳ — סעיף 2 מתוך 4 ============
+       תבנית: DragAndDropQuestion — וריאנט מקומי "סידור לפי סדר" (OrderedDragAndDropQuestion, כפי שמופיע בהערת המפיקה בשקף 81).
+       רפרנס: מסך 5 בסיין 5 (#s4) — אותו מנגנון, אותן מחלקות (.s4-* → .s3-*), בלי רמז ובלי סרגל התקדמות; 4 איזורי גרירה ממוספרים 1–4 + 4 שלבים.
+       מפתח (סדר השקף, מימין לשמאל): 1 מכלי האיזון מתמלאים במי ים · 2 מסת הצוללת גדלה · 3 הצפיפות הממוצעת גדלה · 4 הצוללת שוקעת.
+       הערת מפיקה: "הסדר בו מופיעים המסיחים הוא הסדר הנכון – יש לערבב". 2 ניסיונות (התסריט שותק). אין "אפשר רמז?" בשקף 81 → אין רמז.
+       הפופאפ — מחוץ ל-.screen, מזהים s3q-*. -->
+  <section class="screen" data-screen="3" id="s3">
+
+    <div class="s3-scroll" id="s3-scroll" tabindex="0" role="region" aria-label="السؤال، مواضع المراحل والمراحل للسحب">
+      <div class="s3-inner">
+      <!-- מחוות-יד — אותו נכס כמו בסיין 2; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="s3-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+        <div class="s3-text" data-reveal="1">
+          <p><strong>ب. رتّبوا المراحل التي تصف كيف تنتقل الغواصة من حالة الطفو إلى حالة الغوص:</strong></p>
+        </div>
+
+        <div class="s3-content" data-reveal="2">
+          <div class="s3-rows">
+            <div class="s3-row">
+              <span class="s3-num" aria-hidden="true">1</span>
+              <div class="s3-zone" id="s3-zone-z1" data-zone="z1" role="button" tabindex="0" aria-label="المكان 1 — منطقة للإفلات" onclick="s3ZoneClick('z1', event)" onkeydown="s3ZoneKey(event, 'z1')"></div>
+            </div>
+            <div class="s3-row">
+              <span class="s3-num" aria-hidden="true">2</span>
+              <div class="s3-zone" id="s3-zone-z2" data-zone="z2" role="button" tabindex="0" aria-label="المكان 2 — منطقة الإفلات" onclick="s3ZoneClick('z2', event)" onkeydown="s3ZoneKey(event, 'z2')"></div>
+            </div>
+            <div class="s3-row">
+              <span class="s3-num" aria-hidden="true">3</span>
+              <div class="s3-zone" id="s3-zone-z3" data-zone="z3" role="button" tabindex="0" aria-label="الموقع 3 — منطقة للإفلات" onclick="s3ZoneClick('z3', event)" onkeydown="s3ZoneKey(event, 'z3')"></div>
+            </div>
+            <div class="s3-row">
+              <span class="s3-num" aria-hidden="true">4</span>
+              <div class="s3-zone" id="s3-zone-z4" data-zone="z4" role="button" tabindex="0" aria-label="المكان 4 — منطقة للتحرير" onclick="s3ZoneClick('z4', event)" onkeydown="s3ZoneKey(event, 'z4')"></div>
+            </div>
+          </div>
+
+          <div class="s3-tray" id="s3-tray" role="group" aria-label="خطوات السحب" onclick="s3TrayClick(event)">
+            <div class="s3-slot"><div class="s3-card" id="s3-d-a1" role="button" tabindex="0" aria-pressed="false"><span class="s3-card__text">تُملأ خزانات الاتزان بمياه البحر.</span></div></div>
+            <div class="s3-slot"><div class="s3-card" id="s3-d-a2" role="button" tabindex="0" aria-pressed="false"><span class="s3-card__text">تزداد كتلة الغواصة.</span></div></div>
+            <div class="s3-slot"><div class="s3-card" id="s3-d-a3" role="button" tabindex="0" aria-pressed="false"><span class="s3-card__text">تزداد الكثافة المتوسطة.</span></div></div>
+            <div class="s3-slot"><div class="s3-card" id="s3-d-a4" role="button" tabindex="0" aria-pressed="false"><span class="s3-card__text">الغواصة تغوص.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s3-live" aria-live="polite"></div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s3q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-continue" id="s3q-check" type="button" disabled onclick="s3Check()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 4) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s3q-popup" onpointerdown="s3PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s3q-popup-title"></p>
+    <div class="s8q-popup-body" id="s3q-popup-body"></div>
+    <div class="s19-popup-actions" id="s3q-popup-actions"></div>
+  </div>
+
+  <!-- ============ מסך 5 (data-screen="4") — SingleChoiceQuestion בלי תמונה (שקף 82): שאלת שיא ב׳ — סעיף 3 מתוך 4 ============
+       תבנית: SingleChoiceQuestion (הערת מפיקה: "SingleChoiceQuestionImage"; בשקף אין תמונה ואין מקום לתמונה, לכן ללא עמודת תמונה).
+       רפרנס: מסך 3 בסיין 3 (#s2) — אותן מחלקות .s3q-opt / .s8q-* (.s2-* → .s4-*). אפשרויות לפי סדר-y בשקף: ריחוף (נכון) · 0.99 · 1.8 · נפח חיצוני.
+       אין "אפשר רמז?" בשקף 82 → אין רמז. 2 ניסיונות (התסריט שותק). הפופאפ — מחוץ ל-.screen, מזהה s4q-popup. -->
+  <section class="screen" data-screen="4" id="s4">
+
+    <div class="s4-question">
+      <div class="s4-text" data-reveal="1">
+        <p class="s4-q q-hang"><strong class="q-hang__num">ج.</strong><span>أحيانًا لا تطفو الغواصة إلى سطح الماء ولا تغوص إلى القاع،<br>بل تبقى معلّقة على عمق ثابت لفترة طويلة.</span></p>
+        <p class="s4-q"><strong>كيف يكون ذلك ممكنًا؟</strong></p>
+      </div>
+      <div class="s4-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+        <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s4qSelect('a')">
+          <span class="s3q-opt-text">الكثافة المتوسطة للغواصة تساوي كثافة مياه البحر (<span dir="ltr">1.03</span> جرام/سم³).<br>يتم تحقيق هذه الحالة عن طريق ضبط كمية الماء في خزانات الموازنة.</span>
+          <span class="s3q-radio"></span>
+        </div>
+        <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s4qSelect('b')">
+          <span class="s3q-opt-text">الكثافة المتوسطة للغواصة هي <span dir="ltr">0.99</span> جرام/سم³ ولذلك<br>تُفرَّغ خزانات الموازنة من مياه البحر لمنع الغواصة من الغوص.</span>
+          <span class="s3q-radio"></span>
+        </div>
+        <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s4qSelect('c')">
+          <span class="s3q-opt-text">الكثافة المتوسطة للغواصة هي <span dir="ltr">1.8</span> جرام/سم³ ولذلك<br>يتم ملء خزانات الاتزان بمياه البحر لتثبيتها في مكانها.</span>
+          <span class="s3q-radio"></span>
+        </div>
+        <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s4qSelect('d')">
+          <span class="s3q-opt-text">الكثافة المتوسطة للغواصة لا تؤثر على قدرتها على البقاء في عمق ثابت،<br>بل إن تغيير حجمها الخارجي هو ما يتيح ذلك.</span>
+          <span class="s3q-radio"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s4q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-continue" id="s4q-check" type="button" disabled onclick="s4qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 5) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s4q-popup" onpointerdown="s4qPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s4q-popup-title"></p>
+    <div class="s8q-popup-body" id="s4q-popup-body"></div>
+  </div>
+
+  <!-- ============ מסך 6 (data-screen="5") — SingleChoiceQuestionImage (שקף 83): שאלת שיא ב׳ — סעיף 4 מתוך 4 ============
+       תבנית: SingleChoiceQuestionImage. רפרנס: מסך 9 בסיין 1 (#s8) — עמודת טקסט/אפשרויות מימין, תמונה 380×380 משמאל עם הגדלה (.s8-* → .s5-*).
+       תמונה: image55.png מהשקף ("Picture 22") → assets/images/student-claim.jpg (ללא טקסט חלופי בשקף — alt תיאורי).
+       אפשרויות לפי סדר-y בשקף: מהנדסים · מערכות שולטות · 0.99/1.04 (נכון) · כל הצוללות קלות. רמז זמין מההתחלה (כפתור "אפשר רמז?" בשקף 83).
+       2 ניסיונות (התסריט שותק). הפופאפים — מחוץ ל-.screen, מזהים s5q-*. -->
+  <section class="screen" data-screen="5" id="s5">
+
+    <div class="s5-question">
+
+      <div class="s5-col">
+        <div class="s5-text" data-reveal="1">
+          <p class="q-hang"><strong class="q-hang__num">د.</strong><span>إليكم ادعاء إحدى الطالبات: "يجب أن تكون الغواصة مصنوعة من مادة أخف من الماء، وإلا فلن تستطيع الطفو أبدًا." <strong>أي من المبررات التالية يتناول الادعاء بطريقة علمية وبصياغة جيدة.</strong></span></p>
+        </div>
+        <div class="s5-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s5qSelect('a')">
+            <span class="s3q-opt-text">هذا الادعاء غير صحيح، لأن المهندسين يعرفون كيف يبنون غواصات تطفو.<br>لذلك لا حاجة إلى فحص البيانات أو حساب الكثافة.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s5qSelect('b')">
+            <span class="s3q-opt-text">الادعاء غير صحيح، لأن الأنظمة في الغواصة تتحكم في الطفو، ولذلك<br>لا يؤثر نوع المادة على قدرتها على الطفو.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s5qSelect('c')">
+            <span class="s3q-opt-text">الادِّعاء غير دقيق. يتحدَّد الطفو حسب الكثافة المتوسطة لـِ<br>الغوّاصة. على سبيل المثال، في<span dir="ltr">0.99</span> هي تطفو، وفي<span dir="ltr">1.04</span> هي تغوص.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s5qSelect('d')">
+            <span class="s3q-opt-text">الادّعاء صحيح، لأن جميع الغواصات مصنوعة من مادة كثافتها منخفضة<br>من كثافة الماء.</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="s5-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+        <div class="s5-img-frame">
+          <img class="zoomable-image s5-photo" src="assets/images/student-claim.jpg" alt="طالبة مبتسمة جالسة في الصف، تمسك قلمًا فوق دفتر" loading="lazy">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s5q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s5q-hint" type="button" onclick="s5qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s5q-check" type="button" disabled onclick="s5qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 6) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s5q-popup" onpointerdown="s5qPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s5q-popup-title"></p>
+    <div class="s8q-popup-body" id="s5q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ רמז (מסך 6) — Hint Card; הטקסט: שקף 83 (גוף בלבד → כותרת גנרית "רמז"). -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s5q-hint-overlay" onclick="s5qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>ابحثوا عن التبرير الذي يعرض بيانات صحيحة، ويشرح المبدأ الفيزيائي، ويُظهر كيف تُعزّز البيانات الادّعاء.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s5qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- כפתור דיווח בעיות גלובלי — ויזואלי בלבד, כמו בסיינים 1–5 -->
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen, ישירות ב-#app
+       (720-templates _global-components.md). Wired by delegation in ../unit-js/25-report.js — no onclick. -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل وجدتم مشكلة؟" title="هل وجدتم مشكلة؟">
+    <span class="flag-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 12 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.397164 17C0.177722 17 0 16.8239 0 16.6065V0.393501C0 0.176082 0.177722 0 0.397164 0C0.616607 0 0.794329 0.176082 0.794329 0.393501V16.607C0.794329 16.8245 0.616607 17.0005 0.397164 17.0005V17Z" fill="currentColor"/>
+        <g transform="translate(0, 0.5933)">
+          <path d="M2.76227 9.31542C1.91972 9.31542 1.06958 9.15545 0.213483 8.71363C0.0823588 8.64599 0 8.51124 0 8.36469V0.950975C0 0.814619 0.0715221 0.687925 0.188558 0.615989C0.305594 0.54459 0.45189 0.537611 0.574886 0.598811C0.577053 0.599884 0.578679 0.600958 0.580846 0.602032C2.31309 1.49586 4.05563 1.046 5.90003 0.569821C7.80946 0.0770055 9.78336 -0.431915 11.7865 0.601495C11.9176 0.669136 12 0.803882 12 0.950438V8.36415C12 8.4946 11.9344 8.617 11.8255 8.69001C11.7166 8.76302 11.5774 8.77805 11.4555 8.72974C11.443 8.7249 11.4311 8.71954 11.4197 8.71363C9.68745 7.8198 7.94491 8.26967 6.10051 8.7453C5.00709 9.02714 3.89199 9.31489 2.76281 9.31489L2.76227 9.31542ZM0.793787 8.11935C2.45559 8.87307 4.13094 8.44038 5.90003 7.98407C7.62469 7.53903 9.40191 7.08057 11.2062 7.75806V1.19631C9.54441 0.442591 7.86906 0.875281 6.09997 1.33159C4.37531 1.77663 2.59755 2.23509 0.793787 1.5576V8.11935Z" fill="currentColor"/>
+        </g>
+      </svg>
+    </span>
+    <span class="flag-btn__label">هل وجدتم مشكلة؟</span>
+  </button>
+
+  <!-- ═══ "מצאתם בעיה?" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-body-matter-01-02 (2026-11-02). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما ينبغي؟<br>أخبرونا بما حدث حتى نتعامل معه.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ما حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال تبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقينا التبليغ وسنهتم بالأمر بأقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق لن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261102c"></script>
+<script src="../unit-js/20-xapi.js?v=20261102c"></script>
+<script src="../unit-js/25-report.js?v=20261102c"></script>
+<script src="../unit-js/40-resume.js?v=20261102c"></script>
+<script src="../unit-js/50-loader.js?v=20261102c"></script>
+<script src="../unit-js/05-media.js?v=20261102c"></script>
+<script src="../unit-js/05-motion.js?v=20261102c"></script>
+<script src="../unit-js/07-btn-width.js?v=20261103"></script>
+<script src="script.js?v=20261102c"></script>
+<script src="../unit-js/90-boot.js?v=20261102c"></script>
+</body>
+</html>

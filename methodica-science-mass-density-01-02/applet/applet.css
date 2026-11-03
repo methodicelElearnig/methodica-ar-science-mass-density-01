@@ -1,0 +1,103 @@
+/* יישומון מעבדת הצפיפות — מסך 3 (שקפים 43+44). מסגרת 680×456; כל המיקומים בפיקסלים בתוכה (ראו applet.js). */
+.lab-root {
+  direction: ltr;               /* סדר פיזי יציב; הטקסטים עצמם rtl */
+  background: transparent;
+  overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ─── מאזניים ─── */
+.lab-balance {
+  position: absolute;
+  left: 190px; top: 200px; width: 300px; height: 300px;
+  pointer-events: none;
+}
+/* צג המאזניים — ממוקם על ה-LCD שבתמונה (x 33.5%–66.1%, y 69.3%–77%) */
+.lab-lcd {
+  position: absolute;
+  left: 292px; top: 410px; width: 96px; height: 21px;
+  background: linear-gradient(180deg, #2a68ff 0%, #1156f0 100%);   /* מכסה את הספרות שבתמונה (0.00) — הערך החי מצויר כאן */
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: flex-end; gap: 3px;
+  padding: 0 6px 0 3px;
+  box-sizing: border-box;
+  font-family: Calibri, Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: #0b0b2b;
+  pointer-events: none;
+}
+.lab-lcd b { font-size: 18px; font-weight: 700; font-style: italic; letter-spacing: .5px; line-height: 1; }
+.lab-lcd i { font-size: 11px; font-style: normal; font-weight: 700; align-self: flex-start; margin-top: 2px; }
+
+/* ─── משורה ─── */
+.lab-cyl {
+  position: absolute;
+  left: 6px; top: 150px; width: 170px; height: 316px;
+  pointer-events: none;
+}
+
+/* ─── חומרים (קוביות) ─── */
+.lab-cube {
+  position: absolute;
+  width: 84px; height: 84px;
+  cursor: grab;
+  touch-action: none;
+  z-index: 3;
+  outline: none;
+  will-change: left, top, transform;
+}
+.lab-cube.is-dragging { cursor: grabbing; z-index: 10; }
+.lab-cube:focus-visible { outline: 3px solid var(--subject-500, #019de5); outline-offset: 4px; border-radius: 10px; }
+.lab-cube img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.lab-ghost {
+  position: absolute;
+  width: 84px; height: 84px; object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.lab-ghost.is-on { opacity: 0; }   /* בלי "צל" בבית בזמן גרירה */
+
+/* תווית חומר */
+.lab-chip {
+  position: absolute;
+  width: 112px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid rgba(174, 174, 174, 0.7);
+  border-radius: 12px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; font-weight: 700; color: #303030;
+  direction: rtl;
+}
+
+/* אזורי שחרור — מסגרת מקווקווה בזמן גרירה מעליהם */
+.lab-zone {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px dashed transparent;
+  border-radius: 16px;
+  pointer-events: none;
+}
+.lab-zone.is-over { border-color: var(--subject-500, #019de5); background: rgba(1, 157, 229, 0.06); }
+
+/* כפתורי איפוס */
+.lab-reset {
+  position: absolute;
+  height: 32px; width: 90px; padding: 0;
+  box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;
+  color: var(--subject-700, #007ac6);
+  border: 1px solid var(--subject-700, #007ac6);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 18px; font-weight: 400;
+  direction: rtl;
+  cursor: pointer;
+  z-index: 4;
+}
+.lab-reset:hover { font-weight: 600; }
+.lab-reset:focus-visible { outline: 3px solid var(--subject-500, #019de5); outline-offset: 2px; }

@@ -1,0 +1,43 @@
+=== send-metadata LIVE ===
+[INFO] Base URL     : https://kata.cet.ac.il
+[INFO] Metadata dir : C:\Users\Vadim\OneDrive - methodic.co.il\Projects_ACTIVE\MOE\720\2026\methodica-science-mass-density-01\git-repo\methodica-science-mass-density-01\metadata
+[INFO] Mode         : LIVE
+[INFO] CREATED unit methodica-science-mass-density-01 (HTTP 201)
+[INFO] CREATED component methodica-science-mass-density-01-01 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-001 (HTTP 201)
+[ERROR] FAILED  item methodica-science-mass-density-01-01-002 — POST /api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F (HTTP 422) {"type":"about:blank","title":"Unprocessable Entity","status":422,"code":"validation.failed","errors":[{"type":"value_error","loc":["body","questions",0],"msg":"Value error, performance question correctAnswers must carry at least one step","input":{"questionId":"https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-01/methodica-science-mass-de…
+[INFO] CREATED item methodica-science-mass-density-01-01-003 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-004 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-005 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-006 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-007 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-008 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-009 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-010 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-011 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-01-012 (HTTP 201)
+[INFO] CREATED component methodica-science-mass-density-01-02 (HTTP 201)
+[ERROR] FAILED  item methodica-science-mass-density-01-02-001 — POST /api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-02%2F (HTTP 422) {"type":"about:blank","title":"Unprocessable Entity","status":422,"code":"validation.failed","errors":[{"type":"value_error","loc":["body","questions",0],"msg":"Value error, performance question correctAnswers must carry at least one step","input":{"questionId":"https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-02/methodica-science-mass-de…
+[INFO] CREATED item methodica-science-mass-density-01-02-002 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-02-003 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-02-004 (HTTP 201)
+[INFO] CREATED component methodica-science-mass-density-01-03 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-03-001 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-03-002 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-03-003 (HTTP 201)
+[ERROR] FAILED  item methodica-science-mass-density-01-03-004 — POST /api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F (HTTP 422) {"type":"about:blank","title":"Unprocessable Entity","status":422,"code":"validation.failed","errors":[{"type":"value_error","loc":["body","questions",0],"msg":"Value error, performance question correctAnswers must carry at least one step","input":{"questionId":"https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-03/methodica-science-mass-de…
+[INFO] CREATED item methodica-science-mass-density-01-03-005 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-03-006 (HTTP 201)
+[INFO] CREATED component methodica-science-mass-density-01-04 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-04-001 (HTTP 201)
+[INFO] CREATED component methodica-science-mass-density-01-05 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-05-001 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-05-002 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-05-003 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-05-004 (HTTP 201)
+[INFO] CREATED component methodica-science-mass-density-01-06 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-06-001 (HTTP 201)
+[INFO] CREATED component methodica-science-mass-density-01-07 (HTTP 201)
+[INFO] CREATED item methodica-science-mass-density-01-07-001 (HTTP 201)
+[INFO] LINKED  component methodica-science-mass-density-01-03 recommendedAfterFail -> [methodica-science-mass-density-01-02] (HTTP 200)
+[INFO] Done. created=34 updated=1 failed=3

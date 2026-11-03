@@ -1,0 +1,81 @@
+=== send-metadata DRY-RUN (no network) ===
+[INFO] Base URL     : https://kata.cet.ac.il
+[INFO] Metadata dir : C:\Users\Vadim\OneDrive - methodic.co.il\Projects_ACTIVE\MOE\720\2026\methodica-science-mass-density-01\git-repo\methodica-science-mass-density-01\metadata
+[INFO] Mode         : DRY-RUN (no network)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units
+[INFO] CREATED unit methodica-science-mass-density-01 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units/methodica-science-mass-density-01/components
+[INFO] CREATED component methodica-science-mass-density-01-01 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-001 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-002 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-003 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-004 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-005 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-006 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-007 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-008 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-009 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-010 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-011 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-01%2F
+[INFO] CREATED item methodica-science-mass-density-01-01-012 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units/methodica-science-mass-density-01/components
+[INFO] CREATED component methodica-science-mass-density-01-02 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-02%2F
+[INFO] CREATED item methodica-science-mass-density-01-02-001 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-02%2F
+[INFO] CREATED item methodica-science-mass-density-01-02-002 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-02%2F
+[INFO] CREATED item methodica-science-mass-density-01-02-003 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-02%2F
+[INFO] CREATED item methodica-science-mass-density-01-02-004 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units/methodica-science-mass-density-01/components
+[INFO] CREATED component methodica-science-mass-density-01-03 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F
+[INFO] CREATED item methodica-science-mass-density-01-03-001 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F
+[INFO] CREATED item methodica-science-mass-density-01-03-002 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F
+[INFO] CREATED item methodica-science-mass-density-01-03-003 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F
+[INFO] CREATED item methodica-science-mass-density-01-03-004 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F
+[INFO] CREATED item methodica-science-mass-density-01-03-005 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F
+[INFO] CREATED item methodica-science-mass-density-01-03-006 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units/methodica-science-mass-density-01/components
+[INFO] CREATED component methodica-science-mass-density-01-04 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-04%2F
+[INFO] CREATED item methodica-science-mass-density-01-04-001 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units/methodica-science-mass-density-01/components
+[INFO] CREATED component methodica-science-mass-density-01-05 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-05%2F
+[INFO] CREATED item methodica-science-mass-density-01-05-001 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-05%2F
+[INFO] CREATED item methodica-science-mass-density-01-05-002 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-05%2F
+[INFO] CREATED item methodica-science-mass-density-01-05-003 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-05%2F
+[INFO] CREATED item methodica-science-mass-density-01-05-004 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units/methodica-science-mass-density-01/components
+[INFO] CREATED component methodica-science-mass-density-01-06 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-06%2F
+[INFO] CREATED item methodica-science-mass-density-01-06-001 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/content-units/methodica-science-mass-density-01/components
+[INFO] CREATED component methodica-science-mass-density-01-07 (HTTP 000)
+[INFO] DRY-RUN POST https://kata.cet.ac.il/api/v1/component/items?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-07%2F
+[INFO] CREATED item methodica-science-mass-density-01-07-001 (HTTP 000)
+[INFO] DRY-RUN PATCH https://kata.cet.ac.il/api/v1/component?componentKey=https%3A%2F%2Flomdot.education.gov.il%2Fmetodica%2F720active%2Fscience%2Fmass-density%2F01%2Fmethodica-science-mass-density-01-03%2F
+[INFO] LINKED  component methodica-science-mass-density-01-03 recommendedAfterFail -> [methodica-science-mass-density-01-02] (HTTP 000)
+[INFO] Done. created=37 updated=1 failed=0

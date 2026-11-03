@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | علوم الهدف 10 | ساين 4</title>
+<link rel="stylesheet" href="styles.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/motion.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261102c">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-body-matter-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<div id="app">
+
+  <!-- ============ מסך 1 (data-screen="0") — TransitionScreen (שקף 59) ============
+       תבנית: TransitionScreen ShortText — אותו מבנה כמו מסך 1 בסיין 2 (מחלקות s22-*).
+       תוכן: תסריט ההפקה, שקף 59 — שורת פתיחה "השלמת בהצלחה את התרגול - כל הכבוד!",
+       כותרת "זמן טוב ללמוד גם בצורה אחרת,", שורת סגירה (מודגשת במקור) "כי למידה מתרחשת בכל מיני צורות.".
+       הדמות: turquoise-avatar-in-class.mp4, מתנגן פעם אחת. כפתורים: חזרה / המשך. -->
+  <section class="screen active" data-screen="0" id="s0">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <p class="s22-lead">لقد أكملتم التمرين بنجاح - أحسنتم!</p>
+        <h1 class="s22-title">هذا وقت مناسب للتعلّم بطريقة مختلفة أيضًا،</h1>
+        <p class="s22-body"><strong>لأن التعلّم يتم بعدّة طرق.</strong></p>
+      </div>
+      <div class="s22-video-wrap s22-video-wrap--compact" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s0-char-video" muted loop playsinline preload="auto"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source src="assets/videos/turquoise-avatar-in-class.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-continue" id="s0-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 2 (data-screen="1") — משימת כיתה: משרטטים גרף מסה / נפח (שקפים 60+61) ============
+       שוכפל ממסך 2 בסיין 4 של יעד 11 (משימת כיתה, עמודת טקסט s2-*). דמות: אותו קליפ "בכיתה"
+       כמו במסך 1, בפינה השמאלית-תחתונה כמו מסך 5 בסיין 1 (עמודה 240px, left:41, bottom:74),
+       עם בועה "לחצו עלי לדוגמה". לחיצה על הדמות/הבועה פותחת פופאפ עם דוגמת הגרף (שקף 61). -->
+  <section class="screen" data-screen="1" id="s1">
+    <div class="s2-content">
+      <h1 class="s2-title" data-reveal="1">مهمة صفّية: رسم بياني للكتلة / الحجم</h1>
+      <div class="s2-body">
+        <div class="s2-group" data-reveal="1">
+          <p class="s2-section-body">فيما يلي جداول تتضمن بيانات الكتلة والحجم لأربع مواد.</p>
+        </div>
+        <div class="s2-group" data-reveal="2">
+          <p class="s2-section-bold">المهمة:</p>
+          <p class="s2-section-body s2-step">رسم محور إحداثيات بالمسطرة على ورقة A4 مربعات.</p>
+          <p class="s2-section-body s2-step">على المحور الأفقي، محور X، حددوا قيمًا من 0 إلى 5 (كل 1 سنتيمتر / 2 مربعات = 1 سم³).</p>
+          <p class="s2-section-body s2-step">على المحور الرأسي، محور Y، حددوا قيمًا من 0 إلى 13 (كل 1 سنتيمتر / 2 مربعات = 1 جرام).</p>
+          <p class="s2-section-body s2-step">لكل مادة، ارسموا نقاط الكتلة/الحجم وفقًا للجدول، وصلوها بخط مستقيم (كل مادة بلون مختلف).</p>
+        </div>
+        <div class="s2-data" data-reveal="3">
+          <p class="s2-section-bold s2-caption">جداول بيانات لمواد مختلفة</p>
+          <div class="s2-tables">
+        <table class="s2-table">
+          <thead>
+            <tr><th colspan="2">مادة أ</th></tr>
+            <tr class="s2-table-sub"><th>الحجم (سم³)</th><th>الكتلة (غرام)</th></tr>
+          </thead>
+          <tbody><tr><td>1</td><td>0.2</td></tr><tr><td>2</td><td>0.5</td></tr><tr><td>3</td><td>0.7</td></tr><tr><td>4</td><td>1</td></tr><tr><td>5</td><td>1.2</td></tr></tbody>
+        </table>
+        <table class="s2-table">
+          <thead>
+            <tr><th colspan="2">مادة ب</th></tr>
+            <tr class="s2-table-sub"><th>الحجم (سم³)</th><th>الكتلة (غرام)</th></tr>
+          </thead>
+          <tbody><tr><td>1</td><td>0.5</td></tr><tr><td>2</td><td>1</td></tr><tr><td>3</td><td>1.5</td></tr><tr><td>4</td><td>2</td></tr><tr><td>5</td><td>2.5</td></tr></tbody>
+        </table>
+        <table class="s2-table">
+          <thead>
+            <tr><th colspan="2">مادة ج</th></tr>
+            <tr class="s2-table-sub"><th>الحجم (سم³)</th><th>الكتلة (غرام)</th></tr>
+          </thead>
+          <tbody><tr><td>1</td><td>2.5</td></tr><tr><td>2</td><td>5</td></tr><tr><td>3</td><td>7.5</td></tr><tr><td>4</td><td>10</td></tr><tr><td>5</td><td>12.5</td></tr></tbody>
+        </table>
+        <table class="s2-table">
+          <thead>
+            <tr><th colspan="2">مادة د</th></tr>
+            <tr class="s2-table-sub"><th>الحجم (سم³)</th><th>الكتلة (غرام)</th></tr>
+          </thead>
+          <tbody><tr><td>1</td><td>1</td></tr><tr><td>2</td><td>2</td></tr><tr><td>3</td><td>3</td></tr><tr><td>4</td><td>4</td></tr><tr><td>5</td><td>5</td></tr></tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s2-char-wrap" data-reveal="4" data-reveal-fade id="s1-char" role="button" tabindex="0"
+         aria-label="اضغطوا عليّ للاطلاع على مثال — فتح مثال الرسم البياني" onclick="s1OpenExample()"
+         onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); s1OpenExample(); }">
+      <div class="s2-bubble"><p>اضغطوا علي كمثال</p></div>
+      <div class="s2-char-card">
+        <div class="s2-char-clip">
+          <video class="s2-char-video" id="s1-char-video" data-autoplay muted loop playsinline
+                 disablepictureinpicture aria-hidden="true" preload="none">
+            <source data-lazy-src="assets/videos/turquoise-avatar-in-class.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <!-- פופאפ דוגמת הגרף (שקף 61) — בתוך .screen כדי שייסגר/יתאפס עם המעבר -->
+    <div class="popup-backdrop m-popup hidden" id="s1-example-popup" onclick="if (event.target === this) s1CloseExample()">
+      <div class="s2-example" role="dialog" aria-modal="true" aria-label="مثال على رسم بياني للكتلة بدلالة الحجم">
+        <img class="s2-example-img" src="assets/images/graph-example.png" alt="مثال على صفحة مرسومة بالمربعات تحتوي على نظام محاور: الكتلة (جرام) بدلالة الحجم (سم³) لمواد مختلفة" loading="lazy">
+        <button type="button" class="s2-example-close" id="s1-example-close" onclick="s1CloseExample()" aria-label="إغلاق المثال"></button>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s1-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s1-continue" onclick="advanceScreen()">رجعتُ</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 3 (data-screen="2") — DropdownQuestion, 6 דרופדאונים (שקף 62) ============
+       תבנית: DropdownQuestion (Single dropdown × 6 — חמש שאלות, לשאלה 4 שני דרופדאונים). רפרנס: מסך 5 בסיין 3 (s4) — אותן מחלקות .dq-* / .s8q-*.
+       תוכן: תסריט ההפקה, שקף 62 — כותרת "משימת כיתה: משרטטים גרף מסה / נפח" (ממורכזת, כמו במסך הקודם), פתיח
+       "לאחר שסיימתם, התבוננו בגרף שיצרתם וענו על השאלות הבאות:", מחסן לכל דרופדאון: א · ב · ג · ד.
+       נכון (לפי הטבלאות במסך הקודם: צפיפות = מסה/נפח; א≈0.24, ב=0.5, ג=2.5, ד=1 = מים): 1) ד · 2) ג · 3) א · 4) א ו-ב (בכל סדר) · 5) ג.
+       2 ניסיונות (התסריט שותק → ברירת-המחדל), ללא רמז (אין טקסט רמז בתסריט). משוב: נכון / נכון חלקית / שגוי סופי; ביניים: "התשובה אינה נכונה. שננסה שוב?".
+       הפופאפ — מחוץ ל-.screen, מזהה s2q-popup. -->
+  <section class="screen" data-screen="2" id="s2">
+
+    <h1 class="mq-title" data-reveal="1">مهمة صفّية: رسم بياني للكتلة / الحجم</h1>
+
+    <div class="mq-body" data-reveal="2">
+      <p class="mq-intro">بعد أن تنتهوا، تأمّلوا في الرسم البياني الذي أنشأتموه وأجيبوا عن الأسئلة التالية:</p>
+
+      <div class="mq-row">
+        <span class="mq-words">ما هي المادة التي تمثل الماء؟</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-1" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-1" aria-label="اختاروا مادة — أي مادة هي الماء" onclick="s2Toggle(1)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-1"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-1" role="listbox" aria-label="مخزن المواد">
+            <li class="dq-option" role="option" tabindex="0" data-value="أ" onclick="s2Select(1,'أ')">أ</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ب" onclick="s2Select(1,'ب')">ب</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ت" onclick="s2Select(1,'ت')">ت</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ث" onclick="s2Select(1,'ث')">ث</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mq-row">
+        <span class="mq-words">ما هي المادة الأكثر كثافة؟</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-2" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-2" aria-label="اختاروا مادة — أي مادة هي الأكثر كثافة" onclick="s2Toggle(2)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-2"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-2" role="listbox" aria-label="مخزن المواد">
+            <li class="dq-option" role="option" tabindex="0" data-value="أ" onclick="s2Select(2,'أ')">أ</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ب" onclick="s2Select(2,'ب')">ب</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ت" onclick="s2Select(2,'ت')">ت</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ث" onclick="s2Select(2,'ث')">ث</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mq-row">
+        <span class="mq-words">ما هي المادة الأقل كثافة؟</span>
+        <div class="dq-dropdown-wrap">
+          <button class="dq-btn" id="dq-btn-3" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-3" aria-label="اختاروا مادة — ما هي المادة الأقل كثافة" onclick="s2Toggle(3)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-3"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-3" role="listbox" aria-label="مخزن المواد">
+            <li class="dq-option" role="option" tabindex="0" data-value="أ" onclick="s2Select(3,'أ')">أ</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ب" onclick="s2Select(3,'ب')">ب</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ت" onclick="s2Select(3,'ت')">ت</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ث" onclick="s2Select(3,'ث')">ث</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mq-row">
+        <span class="mq-words">ما هي المواد التي تطفو في الماء؟</span>
+        <div class="dq-dropdown-wrap dq-dropdown-wrap--up">
+          <button class="dq-btn" id="dq-btn-4" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-4" aria-label="اختاروا مادة أولى تطفو في الماء" onclick="s2Toggle(4)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-4"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-4" role="listbox" aria-label="مخزن المواد">
+            <li class="dq-option" role="option" tabindex="0" data-value="أ" onclick="s2Select(4,'أ')">أ</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ب" onclick="s2Select(4,'ب')">ب</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ت" onclick="s2Select(4,'ت')">ت</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ث" onclick="s2Select(4,'ث')">ث</li>
+          </ul>
+        </div>
+        <span class="mq-words">و-</span>
+        <div class="dq-dropdown-wrap dq-dropdown-wrap--up">
+          <button class="dq-btn" id="dq-btn-5" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-5" aria-label="اختاروا مادة ثانية تطفو على الماء" onclick="s2Toggle(5)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-5"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-5" role="listbox" aria-label="مخزن المواد">
+            <li class="dq-option" role="option" tabindex="0" data-value="أ" onclick="s2Select(5,'أ')">أ</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ب" onclick="s2Select(5,'ب')">ب</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ت" onclick="s2Select(5,'ت')">ت</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ث" onclick="s2Select(5,'ث')">ث</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mq-row">
+        <span class="mq-words">ما هي المواد التي ستغوص في الماء؟</span>
+        <div class="dq-dropdown-wrap dq-dropdown-wrap--up">
+          <button class="dq-btn" id="dq-btn-6" type="button" data-empty="true" aria-haspopup="listbox" aria-expanded="false" aria-controls="dq-list-6" aria-label="اختاروا مادة تغوص في الماء" onclick="s2Toggle(6)">
+            <img class="dq-chevron" src="../unit-assets/icons/icon-dropdown-chevron.svg" width="16" height="8" alt="" loading="lazy">
+            <span class="dq-selected" id="dq-selected-6"></span>
+          </button>
+          <ul class="dq-list hidden" id="dq-list-6" role="listbox" aria-label="مخزن المواد">
+            <li class="dq-option" role="option" tabindex="0" data-value="أ" onclick="s2Select(6,'أ')">أ</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ب" onclick="s2Select(6,'ب')">ب</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ت" onclick="s2Select(6,'ت')">ت</li>
+            <li class="dq-option" role="option" tabindex="0" data-value="ث" onclick="s2Select(6,'ث')">ث</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sr-only" id="s2-live" aria-live="polite"></div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s2q-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s2q-check" type="button" disabled onclick="s2Check()">هل إجابتي صحيحة؟</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- פופאפ משוב (מסך 3) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי. -->
+  <div class="s8q-popup m-popup hidden" id="s2q-popup" onpointerdown="s2PopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s2q-popup-title"></p>
+    <div class="s8q-popup-body" id="s2q-popup-body"></div>
+    <div class="s19-popup-actions" id="s2q-popup-actions"></div>
+  </div>
+
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen, ישירות ב-#app
+       (720-templates _global-components.md). Wired by delegation in ../unit-js/25-report.js — no onclick. -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل وجدتم مشكلة؟" title="هل وجدتم مشكلة؟">
+    <span class="flag-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 12 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.397164 17C0.177722 17 0 16.8239 0 16.6065V0.393501C0 0.176082 0.177722 0 0.397164 0C0.616607 0 0.794329 0.176082 0.794329 0.393501V16.607C0.794329 16.8245 0.616607 17.0005 0.397164 17.0005V17Z" fill="currentColor"/>
+        <g transform="translate(0, 0.5933)">
+          <path d="M2.76227 9.31542C1.91972 9.31542 1.06958 9.15545 0.213483 8.71363C0.0823588 8.64599 0 8.51124 0 8.36469V0.950975C0 0.814619 0.0715221 0.687925 0.188558 0.615989C0.305594 0.54459 0.45189 0.537611 0.574886 0.598811C0.577053 0.599884 0.578679 0.600958 0.580846 0.602032C2.31309 1.49586 4.05563 1.046 5.90003 0.569821C7.80946 0.0770055 9.78336 -0.431915 11.7865 0.601495C11.9176 0.669136 12 0.803882 12 0.950438V8.36415C12 8.4946 11.9344 8.617 11.8255 8.69001C11.7166 8.76302 11.5774 8.77805 11.4555 8.72974C11.443 8.7249 11.4311 8.71954 11.4197 8.71363C9.68745 7.8198 7.94491 8.26967 6.10051 8.7453C5.00709 9.02714 3.89199 9.31489 2.76281 9.31489L2.76227 9.31542ZM0.793787 8.11935C2.45559 8.87307 4.13094 8.44038 5.90003 7.98407C7.62469 7.53903 9.40191 7.08057 11.2062 7.75806V1.19631C9.54441 0.442591 7.86906 0.875281 6.09997 1.33159C4.37531 1.77663 2.59755 2.23509 0.793787 1.5576V8.11935Z" fill="currentColor"/>
+        </g>
+      </svg>
+    </span>
+    <span class="flag-btn__label">هل وجدتم مشكلة؟</span>
+  </button>
+
+  <!-- ═══ "מצאתם בעיה?" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-body-matter-01-02 (2026-11-02). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما ينبغي؟<br>أخبرونا بما حدث حتى نتعامل معه.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ما حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال تبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقينا التبليغ وسنهتم بالأمر بأقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق لن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261102c"></script>
+<script src="../unit-js/20-xapi.js?v=20261102c"></script>
+<script src="../unit-js/25-report.js?v=20261102c"></script>
+<script src="../unit-js/40-resume.js?v=20261102c"></script>
+<script src="../unit-js/50-loader.js?v=20261102c"></script>
+<script src="../unit-js/05-media.js?v=20261102c"></script>
+<script src="../unit-js/05-motion.js?v=20261102c"></script>
+<script src="../unit-js/07-btn-width.js?v=20261103"></script>
+<script src="script.js?v=20261102c"></script>
+<script src="../unit-js/90-boot.js?v=20261102c"></script>
+</body>
+</html>

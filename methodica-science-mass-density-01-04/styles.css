@@ -1,0 +1,739 @@
+/* =========================================================
+   לומדה 720 — מדעים יעד 10 | מסה וצפיפות | סיין 4
+   שלב תשתית (Prompt 1) — אין תוכן אמיתי עדיין. מבנה זה הועתק
+   מהמנוע המאומת של methodica-science-mass-density-01-01 (סיין 1,
+   הראשון שנבנה ביעד הזה), ריק מכל תוכן פרטני של אותו סיין.
+   ========================================================= */
+
+/* ---------- Subject theme tokens (720-templates skill:
+   _global-components.md → "Subject theme colors")
+   נושא "מדעים" — ערכי הכחול הרשמיים לפי הנספח המאוחד ב-
+   תבנית-פתיחה-לפרויקט-לומדה-חדש.md (זהים לשאר סיני היעד, לא הומצאו). ---------- */
+:root {
+  --subject-500: #019de5; /* Science theme — פוקוס/נבחר/גרירה */
+  --subject-700: #007ac6; /* Science theme — hint/back/כפתורים */
+  --subject-100: #d4f3ff; /* Science theme — כותרת טבלה (כמו סיין 1) */
+}
+
+/* ---------- Fonts (עותק אחד לכל היחידה, ב-../unit-assets/fonts —
+   כל סיין הוא חבילה עצמאית, בלי תלות בתיקיה משותפת) ---------- */
+@font-face {
+  font-family: 'Assistant';
+  src: url('../unit-assets/fonts/assistant-hebrew.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Assistant';
+  src: url('../unit-assets/fonts/assistant-latin.woff2') format('woff2');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+                 U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+/* ---------- Reset ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  direction: rtl;
+  font-family: Calibri, Arial, sans-serif;
+  background: #ffffff;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+}
+button:disabled { cursor: default; }
+img { display: block; max-width: none; }
+
+/* ---------- Canvas & viewport scaling ---------- */
+#app {
+  width: 1280px;
+  height: 710px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  background: #fff;
+  overflow: hidden;
+  /* רווח צדדי נוסף מכל צד מעבר למסגרת העיצוב 1280 (מוגדר ב-scaleApp), כמו בסיין 2 */
+  --ex: 0px;
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--ex, 0px);
+  width: 1280px;
+  display: none;
+}
+.screen.active { display: block; }
+
+/* transitions removed on purpose — Figma states change instantly */
+* { transition: none !important; }
+
+/* ════════════════════════════════════════════════════════
+   GLOBAL — Bottom bar (74px) + כפתורי ניווט. מועתק 1:1 מסיין 1.
+   ═══════════════════════════════════════════════════════════ */
+.bottom-bar {
+  position: absolute;
+  bottom: -3px;           /* -3px hides the bottom border line */
+  left: calc(-1 * var(--ex, 0px));
+  right: calc(-1 * var(--ex, 0px));
+  height: 74px;
+  background: #ffffff;
+  border-top: 0.4px solid #AEAEAE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom-bar-inner {
+  width: 1232px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn-continue {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: linear-gradient(180deg, #005FBE 9%, #0059B2 23.361%, #003971 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 12px 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-continue:disabled {
+  background: #AEAEAE;
+  color: #303030;
+  cursor: not-allowed;
+}
+.btn-continue:not(:disabled):hover { font-weight: 600; }
+.btn-continue:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+.btn-back {
+  display: flex; align-items: center; justify-content: center;
+  height: 39px;
+  background: #ffffff;
+  color: var(--subject-700);
+  border: 1px solid var(--subject-700);
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 12px 20px;
+  min-width: 140px;
+  box-sizing: border-box;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-back:hover { font-weight: 600; border-width: 1.5px; }
+.btn-back:focus-visible {
+  outline: 3px solid var(--subject-500);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   מסך 1 (#s0) — TransitionScreen, ShortText (מחלקות s22-* זהות לסיין 2). כותרת רחבה → בלוק טקסט 1000px.
+   בלוק טקסט 790 רחב, ממורכז, top:115; כותרת H-4 (64/700), שורות B-1 (28/400).
+   מרווח: שורת פתיחה→כותרת 34px (gap 24 + 10), כותרת→שורת סגירה 24px.
+   הדמות/הפלייסהולדר בתחתית, צמודה לקו הסרגל (640×360).
+   ═══════════════════════════════════════════════════════════ */
+.s22-content {
+  position: absolute;
+  inset: 0 0 74px 0;
+}
+.s22-text {
+  position: absolute;
+  top: 115px;
+  left: 140px;
+  width: 1000px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  color: #303030;
+  text-align: center;
+}
+.s22-lead {
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+.s22-title {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.s22-body {
+  width: 100%;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.25;
+}
+.s22-body strong { font-weight: 700; }
+.s22-video-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 320px;
+  width: 640px;
+  height: 360px;
+}
+.s22-video-wrap--compact {
+  /* שלוש שורות טקסט — המדיה מוקטנת ביחס 16:9 כדי לא להיחפף לטקסט
+     (TransitionScreen.md → "Vertical fit at the canvas floor", שלב 3) */
+  left: 373.5px;
+  width: 533px;
+  height: 300px;
+}
+.s22-video-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 16px; /* כמו מסגרת הדמות ב-Figma (4924:26135) — רדיוס בלבד, בלי מסגרת נראית */
+}
+@supports (text-box: trim-both cap alphabetic) {
+  .s22-lead, .s22-title, .s22-body { text-box: trim-both cap alphabetic; }
+  .s22-lead, .s22-body { line-height: 1.3; }
+  .s22-title { line-height: 1.1; }
+}
+
+.s22-char-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none; /* דקורטיבי בלבד */
+  transform: none; /* קליפ "בכיתה": הפריים מלא, בלי הזזה — כדי שלא ייחתך בתחתית */
+}
+
+/* (לא בשימוש) פלייסהולדר זמני במקום הגיף/הדמות (שקף 41: "מקום לגיף") */
+.s22-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f6f9;
+  border: 2px dashed #AEAEAE;
+  border-radius: 16px;
+}
+.s22-placeholder-label {
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #8a8a8a;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL — רקע פופאפ (זהה לסיין 1: .popup-backdrop)
+   ═══════════════════════════════════════════════════════════ */
+.popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(243, 244, 245, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+.popup-backdrop.hidden { display: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   מסך 2 (#s1) — משימת כיתה: משרטטים גרף מסה / נפח (שקפים 60+61)
+   עמודת תוכן s2-* — הועתקה 1:1 ממסך 2 בסיין 4 של יעד 11 (משימת כיתה):
+   top:64 / right:40 / bottom:76, כותרת 40/700 ממורכזת, גוף 24, גלילה פנימית
+   עם סקרולבר Figma בצד ימין (direction:ltr על המיכל, rtl על הגוף).
+   סטייה אחת מוצהרת: padding-left:300px על .s2-body — מפנה מקום לדמות+בועה
+   בפינה השמאלית-תחתונה (כמו מסך 5 בסיין 1), והכותרת נשארת ממורכזת במסך.
+   ═══════════════════════════════════════════════════════════ */
+.s2-content {
+  position: absolute;
+  top: 64px; bottom: 76px; left: calc(-1 * var(--ex, 0px)); right: calc(-1 * var(--ex, 0px)); /* הסקרולבר צמוד לקצה הימני של המסך; מרווח התוכן נשמר ב-padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  overflow-y: auto;
+  direction: ltr;
+  --s2-pl: calc(298px + var(--ex, 0px)); /* ימין הדמות (ex+34+240) + 24 */
+  --s2-pr: 84px; /* סקרולבר 12 + 72 לפי Figma ContentPopup — מעוגן לקצה החלון, לא למסגרת 1280 */
+  padding: 0 var(--s2-pr) 0 var(--s2-pl);
+}
+.s2-content::-webkit-scrollbar { width: 12px; }
+.s2-content::-webkit-scrollbar-track { background: rgba(201, 206, 216, 0.4); border: 0.5px solid #f3f4f5; border-radius: 16px; }
+.s2-content::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.56); border-radius: 24px; }
+.s2-content::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.s2-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #303030;
+  margin: 0;
+  width: 100%;
+  max-width: 1112px; /* אותו מיכל כמו .s2-body — הכותרת צמודה לימין */
+  text-align: right;
+  direction: rtl;
+}
+.s2-body {
+  width: 100%;
+  max-width: 1112px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  direction: rtl;
+}
+.s2-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.s2-section-bold {
+  font-size: 24px;
+  font-weight: 700;
+  color: #303030;
+  text-align: right;
+  direction: rtl;
+  line-height: 1.6;
+  margin: 0;
+}
+.s2-section-body {
+  font-size: 24px;
+  font-weight: 400;
+  color: #303030;
+  text-align: right;
+  direction: rtl;
+  line-height: 1.6;
+  margin: 0;
+}
+.s2-group { counter-reset: s2step; }
+.s2-step { counter-increment: s2step; }
+.s2-step::before { content: counter(s2step) ". "; }
+.s2-data { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.s2-caption { text-align: center; }
+
+/* טבלאות — עיצוב הטבלה מסיין 1 (.s2-table / .s5-table, Figma 716:24165):
+   כותרת --subject-100 SemiBold 600 עם גבול #d4d4d4, גוף לבן 400 עם גבול #ececec,
+   פינות עליונות מעוגלות 8, טקסט #303030. מידות תא (גובה 52, padding 4/12, גופן 22)
+   לפי Figma — בלי הקטנה. */
+.s2-tables {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  direction: rtl;
+}
+.s2-table {
+  flex: 1 1 0;
+  min-width: 0;
+  direction: ltr; /* כמו בתסריט: נפח משמאל, מסה מימין */
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+.s2-table th, .s2-table td {
+  box-sizing: border-box;
+  height: 52px;
+  padding: 4px 12px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 22px; /* Figma 716:24165: Q-1/Q-3 = 22px, גובה שורה 52, padding 4/12 */
+  line-height: normal;
+  color: #303030;
+  text-align: right;
+  vertical-align: middle;
+  background: #ffffff;
+}
+.s2-table .s2-table-sub th { line-height: 1.15; } /* כותרת בשתי שורות: "נפח / (סמ"ק)" — כמו בטבלת הצפיפויות בסיין 1 */
+.s2-table thead th {
+  background: var(--subject-100);
+  font-weight: 600;
+  border-top: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4;
+  border-right: 1px solid #d4d4d4;
+}
+.s2-table thead tr:first-child th { text-align: right; border-right: 1px solid #d4d4d4; border-left: 1px solid #d4d4d4; border-top-right-radius: 8px; border-top-left-radius: 8px; }
+.s2-table thead tr:last-child th:first-child { border-left: 1px solid #d4d4d4; }
+.s2-table tbody td {
+  font-weight: 400;
+  border-bottom: 1px solid #ececec;
+  border-right: 1px solid #ececec;
+}
+.s2-table tbody td:first-child { border-left: 1px solid #ececec; }
+
+.s2-char-wrap {
+  position: absolute;
+  left: 34px; /* .screen כבר מוזז ב-ex; 34 = קצה שמאל של כפתור "חזרתי, בואו נמשיך" (bottom-bar-inner 1232 + padding 10) */
+  bottom: 90px; /* 16px מעל פס התחתית */
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 16px;
+}
+.s2-char-wrap:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+.s2-bubble {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 3px solid var(--subject-500);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.s2-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border-right: 3px solid var(--subject-500);
+  border-bottom: 3px solid var(--subject-500);
+  transform: translateX(-50%) rotate(45deg);
+}
+.s2-bubble p {
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
+  text-align: center;
+  line-height: normal;
+}
+.s2-char-card {
+  width: 240px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0; /* התמונה באותו רוחב וקצה כמו הכפתור */
+}
+.s2-char-clip {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.s2-char-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* פופאפ דוגמת הגרף (שקף 61) */
+.s2-example {
+  position: relative;
+  background: #ffffff;
+  border-radius: 24px;
+  width: auto;
+  max-width: calc(100% - 120px);
+  height: 676px;
+  box-sizing: border-box;
+  padding: 8px;
+  display: block;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+.s2-example-img {
+  flex: none;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1122 / 1402;
+  object-fit: contain;
+  border: 1px solid #c8cbd4;
+}
+.s2-example-close {
+  position: absolute; top: 16px; left: 16px; width: 40px; height: 40px; padding: 0;
+  border: none; border-radius: 50%; cursor: pointer;
+  background: url('../unit-assets/icons/icon-zoom-close-default.svg') center / 40px 40px no-repeat;
+}
+.s2-example-close:hover, .s2-example-close:focus-visible { background-image: url('../unit-assets/icons/icon-zoom-close-hover.svg'); }
+.s2-example-close:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+
+/* ═══════════════════════════════════════════════════════════
+   מסך 3 (#s2) — DropdownQuestion × 6 (שקף 62). רפרנס: מסך 5 בסיין 3 (.dq-* / .s8q-popup / .popup-action — מועתקים 1:1).
+   כותרת: ממורכזת במסגרת 1280 (top:64, 40/700 — כמו .s2-title במסך הקודם). בלוק השאלות: ממורכז, תוכנו מיושר לימין (RTL).
+   ═══════════════════════════════════════════════════════════ */
+:root { --subject-300: #b9ecff; }
+.s8q-popup { left: var(--ex, 0px); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.mq-title {
+  position: absolute;
+  top: 64px; left: 0; right: 0;
+  margin: 0;
+  font-size: 40px;
+  font-weight: 700;
+  color: #303030;
+  text-align: center;
+}
+.mq-body {
+  position: absolute;
+  top: 139px;
+  right: 40px;
+  width: 792px;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.mq-intro {
+  margin: 0 0 16px; /* כמו Figma question/Variant5: 16px בין הטקסט למשפט ההשלמה, בלי שורה ריקה */
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #303030;
+  text-align: right;
+}
+.mq-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 32px;
+  font-size: 24px;
+  color: #303030;
+}
+.mq-row > .mq-words:first-child { width: 270px; } /* דרופדאונים מיושרים בעמודה */
+.mq-words {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dq-dropdown-wrap { --dq-w: 200px; position: relative; width: var(--dq-w); height: 42px; }
+.dq-dropdown-wrap:has(.dq-list:not(.hidden)) { z-index: 10; }
+.dq-btn {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  direction: ltr;
+  width: var(--dq-w);
+  height: 42px;
+  padding: 0 17px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid rgba(174, 174, 174, 0.5);
+  border-radius: 10px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #303030;
+  cursor: pointer;
+}
+.dq-btn:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+.dq-chevron { flex-shrink: 0; width: 16px; height: 8px; display: block; }
+.dq-selected {
+  flex: 1 1 auto;
+  min-width: 0;
+  direction: rtl;
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+.dq-btn[aria-expanded="true"] { border: 1.5px solid var(--subject-500); padding: 0 16.5px; }
+.dq-btn[aria-expanded="true"][data-empty="true"] .dq-selected { text-align: center; opacity: 0.5; }
+.dq-btn[aria-expanded="true"][data-empty="true"] .dq-selected::before { content: 'اختاروا إجابة'; }
+.dq-btn:disabled { cursor: default; }
+.dq-btn.dq-correct { border: 1px solid #609e12; padding: 0 17px; gap: 10px; }
+.dq-btn.dq-wrong { border: 1px solid #b20010; padding: 0 17px; gap: 10px; }
+.dq-correct .dq-chevron, .dq-wrong .dq-chevron { display: none; }
+.dq-check-ico, .dq-wrong-ico { flex-shrink: 0; width: 16px; height: 16px; display: block; }
+
+.dq-list {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% - 15px);
+  left: 0;
+  width: var(--dq-w);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 24px 8px 8px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+}
+/* שורות תחתונות: הרשימה נפתחת כלפי מעלה כדי לא להיחתך בקצה הקנבס / מאחורי סרגל הניווט */
+.dq-dropdown-wrap--up .dq-list {
+  top: auto;
+  bottom: calc(100% - 15px);
+  padding: 8px 8px 24px;
+}
+.dq-list.hidden { display: none; }
+.dq-option {
+  position: relative;
+  padding: 8px 20px;
+  border-radius: 8px;
+  direction: rtl;
+  text-align: right;
+  font-size: 24px;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.dq-option + .dq-option::before {
+  content: '';
+  position: absolute;
+  top: -4.5px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #ececec;
+}
+.dq-option:hover, .dq-option:focus-visible, .dq-option.is-selected { background: var(--subject-300); outline: none; }
+
+/* פופאפ משוב — זהה למסך 5 בסיין 3 */
+.s8q-popup {
+  position: absolute;
+  left: 0;
+  bottom: 74px;
+  width: 426px;
+  max-width: calc(100% - 32px);
+  box-sizing: border-box;
+  padding: 24px;
+  border: 0.3px solid #aeaeae;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  direction: rtl;
+  z-index: 55;
+  cursor: move;
+  touch-action: none;
+}
+.s8q-popup { left: var(--ex, 0px); }
+.s8q-popup.hidden { display: none; }
+.s8q-popup-title {
+  margin: 0;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; font-weight: 700; line-height: normal;
+  color: #222; text-align: right;
+}
+.s8q-popup-body p {
+  margin: 0 0 8px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; font-weight: 400; line-height: normal;
+  color: #222; text-align: right;
+}
+.s8q-popup-body p:last-child { margin-bottom: 0; }
+.s8q-popup-body:empty { display: none; }
+.s8q-popup:has(.s8q-popup-body:empty) { gap: 16px; }
+.s19-popup-actions { display: flex; }
+.s19-popup-actions:empty { display: none; }
+.popup-action {
+  height: 39px;
+  box-sizing: border-box;
+  padding: 0 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: #ffffff;
+  color: #222222;
+  border: 1px solid #484848;
+  border-radius: 1000px;
+  font-family: Calibri, Arial, sans-serif;
+  font-size: 20px; font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.popup-action:hover { font-weight: 600; }
+.popup-action:focus-visible { outline: 3px solid var(--subject-500); outline-offset: 2px; }
+
+/* מסך 1 ללא כפתור "חזרה": ההמשך נשאר בקצה השמאלי */
+.bottom-bar-inner > .btn-continue:only-child { margin-inline-start: auto; }
+
+
+/* GLOBAL — Report/issue button (.flag-btn), מועתק מסיין 1 */
+.flag-btn {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 88px;
+  padding: 10px 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.flag-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 1000px;
+  background: #ececec;
+  border: 0.5px solid rgba(0, 0, 0, 0.06);
+  color: #484848;
+  box-sizing: border-box;
+}
+.flag-btn__icon svg {
+  width: 12px;
+  height: 17px;
+}
+.flag-btn__label {
+  display: none;
+  font-family: Calibri, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--subject-500);
+  text-align: center;
+  width: 80px;
+}
+.flag-btn:hover .flag-btn__icon,
+.flag-btn:focus-visible .flag-btn__icon {
+  background: #ffffff;
+  border: 0.7px solid var(--subject-500);
+  color: var(--subject-500);
+}
+.flag-btn:hover .flag-btn__label,
+.flag-btn:focus-visible .flag-btn__label {
+  display: block;
+}
+.flag-btn:focus-visible {
+  outline: 2px solid var(--subject-500);
+  outline-offset: 2px;
+  border-radius: 8px;
+}

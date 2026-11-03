@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وحدة تعليمية 720 | علوم الهدف 10 | ساين 6</title>
+<link rel="stylesheet" href="styles.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/motion.css?v=20261102c">
+<link rel="stylesheet" href="../unit-css/25-report.css?v=20261102c">
+</head>
+<body>
+
+<!-- ═══ Boot cover (ADDING-REPORTING-AND-RESUME.md §8.11) ═══
+     Hides screen 0 while a saved position is read and painted, so the learner never sees the
+     first screen flash before the restored one. A SIBLING of #app (scaleApp transforms #app).
+     unit-js/50-loader.js removes it on every exit path (dropBootCover); this inline net removes it
+     after 800 ms regardless — or, while a restore is in flight (window.__resumeInFlight), waits for
+     it up to a hard 6 s. Copied from methodica-science-body-matter-01. -->
+<div id="boot-cover" style="position:fixed;inset:0;z-index:9999;background:#fff"></div>
+<script>
+(function () {
+  var t0 = Date.now();
+  function tick() {
+    var c = document.getElementById('boot-cover');
+    if (!c || !c.parentNode) return;
+    if (window.__resumeInFlight && Date.now() - t0 < 6000) { setTimeout(tick, 100); return; }
+    c.parentNode.removeChild(c);
+  }
+  setTimeout(tick, 800);
+})();
+</script>
+<div id="app">
+
+  <!-- ============ מסך 1 (data-screen="0") — TransitionScreen (שקף 84) ============
+       מסך הזנקה לשאלת השיא; זהה במבנה למסך 1 בסיין 5 (מחלקות s22-*). הדמות: מטפסת על הר
+       (turquoise-avatar-climbing.mp4). תוכן: תסריט ההפקה, שקף 70 — שלוש שורות פתיחה (20pt),
+       כותרת (40pt מודגש), שורת סגירה מודגשת. התסריט לא מציין טקסט לכפתור → "המשך". -->
+  <section class="screen active" data-screen="0" id="s0">
+
+    <div class="s22-content">
+      <div class="s22-text" data-reveal="1">
+        <p class="s22-lead">كلّ الاحترام!<br>إذا لم تتمكنوا من الإجابة بشكل صحيح عن بعض الأسئلة، من المهم أن تفهموا ما الذي لا يزال غير واضح.</p>
+        <h1 class="s22-title">والآن يأتي السؤال الأكبر</h1>
+        <p class="s22-body">يتضمن 4 بنود. عليكم النجاح في 3 منها على الأقل.</p>
+      </div>
+      <div class="s22-video-wrap s22-video-wrap--compact" data-reveal="2" data-reveal-fade>
+        <div class="s22-video-clip">
+          <video class="s22-char-video" id="s0-char-video" muted loop playsinline preload="auto"
+                 disablepictureinpicture
+                 controlsList="nodownload noremoteplayback nofullscreen noplaybackrate"
+                 aria-hidden="true">
+            <source src="../unit-assets/videos/turquoise-avatar-climbing.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-continue" id="s0-continue" onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 2 (data-screen="1") — FullImageWithTextOverlay (שקף 71) ============
+       כמו מסך 1 בסיין 1: רצועת מדיה מלאה + כרטיס טקסט צף. הסרטון (ג'ינרוט של הים והחומרים, עם סאונד) טרם סופק —
+       פלייסהולדר. הכפתור "לחצו לצפייה בגרף…" (מעל הסרגל) פותח את פופאפ הגרף (שקף 72, #graph-popup-backdrop).
+       "המשך" נעול עד שהפופאפ נפתח (הערת מפיקה, שקף 72). -->
+  <section class="screen" data-screen="1" id="s1">
+
+    <div class="fito-img" data-reveal="1" data-reveal-fade>
+      <video class="fito-video" id="s1-video" data-autoplay muted playsinline preload="none"
+             disablepictureinpicture tabindex="-1" aria-hidden="true">
+        <source data-lazy-src="assets/videos/underwater-plastic-pollution-loop.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="fito-text" data-reveal="2">
+      <p>كل عام تصل إلى المحيطات ملايين الأطنان من النفايات البلاستيكية.</p>
+      <p>يقوم باحثون بيئيون يخططون لجمع النفايات بقياس كثافة أنواع البلاستيك الشائعة في النفايات في المختبر، وذلك للتنبؤ بالمكان الذي ستوجد فيه كل نفاية في البحر، كما جمعوا معلومات عن الاستخدام الشائع لكل نوع.</p>
+    </div>
+
+    <!-- כפתור עצירה/הפעלה לווידאו (נגישות: וידאו מעל 3 שניות חייב אפשרות עצירה). הסרטון נעצר אוטומטית בסיומו ואפשר לצפות שוב. -->
+    <button class="fito-sound fito-play" id="s1-play" type="button" aria-label="إيقاف الفيديو">
+      <span class="fito-play__pause" aria-hidden="true"><img class="fi-pause-circle" src="../unit-assets/icons/icon-pause-circle.svg" alt="" loading="lazy"><img class="fi-pause-bars" src="../unit-assets/icons/icon-pause-bars.svg" alt="" loading="lazy"></span>
+      <span class="fito-play__play" aria-hidden="true"><img class="fi-play-circle" src="../unit-assets/icons/icon-play-large-circle.svg" alt="" loading="lazy"><img class="fi-play-tri" src="../unit-assets/icons/icon-play-large-triangle.svg" alt="" loading="lazy"></span>
+    </button>
+
+    <button class="btn-continue s1-graph-btn" id="s1-graph-btn" type="button" onclick="openGraphPopup()">اضغطوا لمشاهدة الرسم البياني لبيانات الباحثين</button>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s1-back" onclick="backScreen()">عودة</button>
+        <button class="btn-continue" id="s1-continue" type="button" disabled onclick="advanceScreen()">متابعة</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 3 (data-screen="2") — SingleChoiceQuestionImage (שקף 73) ============
+       שאלת שיא א׳ — סעיף 1 מתוך 4. תבנית: SingleChoiceQuestionImage (720-templates → SingleChoiceQuestion.md),
+       רפרנס: מסך 9 בסיין 1 — אבל במקום תמונה, תרשים העמודות של פופאפ הגרף (שקף 72) מוצג בלי כפתורי "?",
+       עם עדשת הגדלה (מודול Image Zoom, [data-zoom-source]). בתסריט אין רמז → אין כפתור/פופאפ רמז.
+       שני ניסיונות (ברירת מחדל), בלי סרגל התקדמות. הנכונה: ב׳. סדר האפשרויות — סדר ה-DOM בשקף (ראו דוח).
+       סדר DOM: עמודת הטקסט קודם (פיזית ימין), התרשים אחריה (פיזית שמאל). -->
+  <section class="screen" data-screen="2" id="s2">
+
+    <div class="s8-question">
+
+      <div class="s8-col">
+        <div class="s8-text" data-reveal="1">
+          <div class="s8-body">
+            <p class="s8-q q-hang"><strong class="q-hang__num">أ.</strong><span>بناءً على بيانات الرسم البياني: أي من أنواع البلاستيك سيطفو على سطح مياه البحر،
+              <br>
+              وأيّها ستغوص؟
+              <br>
+              تذكروا - كثافة مياه البحر هي 1.03 جرام / سم³.</span></p>
+          </div>
+        </div>
+
+        <div class="s8-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s2qSelect('a')">
+            <span class="s3q-opt-text">جميع أنواع البلاستيك ستطفو.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s2qSelect('b')">
+            <span class="s3q-opt-text">البولي بروبيلين والبولي إيثيلين سيطفوان. البولي فينيل كلورايد والبوليستر سيغوصان.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s2qSelect('c')">
+            <span class="s3q-opt-text">بولي بروبيلين وبولي إيثيلين سيغوصان. أما PVC وبوليستر فسيطفوان.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s2qSelect('d')">
+            <span class="s3q-opt-text">جميع أنواع البلاستيك ستغوص.</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- תרשים העמודות (אותו SVG של פופאפ הגרף, בלי כפתורי "?") במסגרת 380×380 + עדשת הגדלה.
+           [data-zoom-source] = מקור מורכב: מוצג בפופאפ ההגדלה כשכפול חי. -->
+      <div class="s8-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+        <div class="s8-img-frame">
+          <div class="s2-graph" data-zoom-source>
+            <svg class="s2-graph-svg" viewBox="0 0 930 570" role="img" font-family="Calibri, Arial, sans-serif" aria-label="مخطط أعمدة: كثافة أنواع البلاستيك الشائعة في النفايات (جرام/سم³). PVC 1.40، البوليستر 1.38، البولي إيثيلين 0.95، البولي بروبيلين 0.90."><text x="500" y="36" text-anchor="middle" font-size="31" font-weight="700" fill="#1f3864">كثافة أنواع البلاستيك الشائعة في النفايات</text><line x1="86" x2="915" y1="68.0" y2="68.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="75.0" text-anchor="end" font-size="21" fill="#303030">1.6</text><line x1="86" x2="915" y1="119.5" y2="119.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="126.5" text-anchor="end" font-size="21" fill="#303030">1.4</text><line x1="86" x2="915" y1="171.0" y2="171.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="178.0" text-anchor="end" font-size="21" fill="#303030">1.2</text><line x1="86" x2="915" y1="222.5" y2="222.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="229.5" text-anchor="end" font-size="21" fill="#303030">1.0</text><line x1="86" x2="915" y1="274.0" y2="274.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="281.0" text-anchor="end" font-size="21" fill="#303030">0.8</text><line x1="86" x2="915" y1="325.5" y2="325.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="332.5" text-anchor="end" font-size="21" fill="#303030">0.6</text><line x1="86" x2="915" y1="377.0" y2="377.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="384.0" text-anchor="end" font-size="21" fill="#303030">0.4</text><line x1="86" x2="915" y1="428.5" y2="428.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="435.5" text-anchor="end" font-size="21" fill="#303030">0.2</text><line x1="86" x2="915" y1="480.0" y2="480.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="487.0" text-anchor="end" font-size="21" fill="#303030">0.0</text><line x1="86" x2="86" y1="62" y2="480" stroke="#7f7f7f" stroke-width="1.5"/><rect x="124" y="120" width="129" height="360" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="188.5" y="108" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.40</text><text x="188.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي فينيل كلورايد (PVC)</text><rect x="332" y="125" width="129" height="355" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="396.5" y="113" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.38</text><text x="396.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليستر</text><rect x="540" y="235" width="129" height="245" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="604.5" y="223" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.95</text><text x="604.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي إيثيلين</text><rect x="748" y="248" width="129" height="232" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="812.5" y="236" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.90</text><text x="812.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليبروبيلين</text><text x="500" y="552" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">نوع البلاستيك</text><text transform="translate(34 275) rotate(-90)" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">الكثافة (جرام/سم³)</text></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s2q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-continue" id="s2q-check" type="button" disabled onclick="s2qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 4 (data-screen="3") — SingleChoiceQuestionImage (שקף 74) ============
+       שאלת שיא א׳ — סעיף 2 מתוך 4. כמו מסך 3 (#s2): אותו תרשים עמודות (בלי כפתורי "?", עם עדשת הגדלה), אבל בתסריט יש רמז
+       (גוף בלבד → בלי כותרת, כמו שאר הרמזים בסיין) — זמין מההתחלה (אין הערת "אחרי ניסיון שגוי").
+       שני ניסיונות (ברירת מחדל), בלי סרגל התקדמות. הנכונה: ג׳ (פוליאתילן) — 19 גרם / 20 סמ״ק = 0.95 גרם/סמ״ק, כערך העמודה של פוליאתילן
+       (הסקה מהנתונים: בתסריט/בהערות אין סימון מפורש של התשובה). סדר האפשרויות — סדר ה-DOM בשקף.
+       מזהים/פונקציות: s74* (id של הסקשן = s74; data-screen = 3). -->
+  <section class="screen" data-screen="3" id="s74">
+
+    <div class="s8-question">
+
+      <div class="s8-col">
+        <div class="s8-text" data-reveal="1">
+          <div class="s8-body">
+            <p class="s8-q q-hang"><strong class="q-hang__num">ب.</strong><span>خلال البحث، عثر الباحثون على جسم من البلاستيك لم يتمكنوا من التعرف عليه.
+              <br>
+              قاموا بقياس كتلته وحجمه:
+            <br>
+            الكتلة: 19 جرام<br>
+              الحجم: 20 سم³</span></p>
+          
+            <p class="s8-q"><strong>ما هو نوع البلاستيك الذي وجده الباحثون؟</strong></p>
+          </div>
+        </div>
+
+        <div class="s8-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s74qSelect('a')">
+            <span class="s3q-opt-text">بوليبروبيلين</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s74qSelect('b')">
+            <span class="s3q-opt-text">بوليستر</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s74qSelect('c')">
+            <span class="s3q-opt-text">بولي إيثيلين</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s74qSelect('d')">
+            <span class="s3q-opt-text">بولي فينيل كلورايد (PVC)</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- תרשים העמודות (אותו SVG כמו במסך 3) במסגרת 380×380 + עדשת הגדלה. -->
+      <div class="s8-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+        <div class="s8-img-frame">
+          <div class="s2-graph" data-zoom-source>
+            <svg class="s2-graph-svg" viewBox="0 0 930 570" role="img" font-family="Calibri, Arial, sans-serif" aria-label="مخطط أعمدة: كثافة أنواع البلاستيك الشائعة في النفايات (جرام/سم³). PVC 1.40، البوليستر 1.38، البولي إيثيلين 0.95، البولي بروبيلين 0.90."><text x="500" y="36" text-anchor="middle" font-size="31" font-weight="700" fill="#1f3864">كثافة أنواع البلاستيك الشائعة في النفايات</text><line x1="86" x2="915" y1="68.0" y2="68.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="75.0" text-anchor="end" font-size="21" fill="#303030">1.6</text><line x1="86" x2="915" y1="119.5" y2="119.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="126.5" text-anchor="end" font-size="21" fill="#303030">1.4</text><line x1="86" x2="915" y1="171.0" y2="171.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="178.0" text-anchor="end" font-size="21" fill="#303030">1.2</text><line x1="86" x2="915" y1="222.5" y2="222.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="229.5" text-anchor="end" font-size="21" fill="#303030">1.0</text><line x1="86" x2="915" y1="274.0" y2="274.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="281.0" text-anchor="end" font-size="21" fill="#303030">0.8</text><line x1="86" x2="915" y1="325.5" y2="325.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="332.5" text-anchor="end" font-size="21" fill="#303030">0.6</text><line x1="86" x2="915" y1="377.0" y2="377.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="384.0" text-anchor="end" font-size="21" fill="#303030">0.4</text><line x1="86" x2="915" y1="428.5" y2="428.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="435.5" text-anchor="end" font-size="21" fill="#303030">0.2</text><line x1="86" x2="915" y1="480.0" y2="480.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="487.0" text-anchor="end" font-size="21" fill="#303030">0.0</text><line x1="86" x2="86" y1="62" y2="480" stroke="#7f7f7f" stroke-width="1.5"/><rect x="124" y="120" width="129" height="360" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="188.5" y="108" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.40</text><text x="188.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي فينيل كلورايد (PVC)</text><rect x="332" y="125" width="129" height="355" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="396.5" y="113" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.38</text><text x="396.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليستر</text><rect x="540" y="235" width="129" height="245" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="604.5" y="223" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.95</text><text x="604.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي إيثيلين</text><rect x="748" y="248" width="129" height="232" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="812.5" y="236" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.90</text><text x="812.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليبروبيلين</text><text x="500" y="552" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">نوع البلاستيك</text><text transform="translate(34 275) rotate(-90)" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">الكثافة (جرام/سم³)</text></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s74q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s74q-hint" type="button" onclick="s74qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s74q-check" type="button" disabled onclick="s74qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 6 (שקף 76; data-screen="5") — SingleChoiceQuestionImage ============
+       שאלת שיא א׳ — סעיף 4 מתוך 4. כמו מסך 3 (#s2) אבל עם תמונה (פעיל סביבתי) במקום התרשים; רפרנס: מסך 9 בסיין 1.
+       עדשת הגדלה (img.zoomable-image). בתסריט יש רמז (גוף בלבד → כותרת גנרית) — זמין מההתחלה (אין הערת "אחרי ניסיון שגוי").
+       שני ניסיונות (ברירת מחדל), בלי סרגל התקדמות. הנכונה: ג׳ (שקף: תיבת טקסט 35, מסומנת ירוק).
+       סדר האפשרויות — סדר ה-DOM בשקף. סדר DOM: עמודת הטקסט קודם (פיזית ימין), התמונה אחריה (פיזית שמאל). -->
+  <section class="screen" data-screen="5" id="s3">
+
+    <div class="s8-question">
+
+      <div class="s8-col">
+        <div class="s8-text" data-reveal="1">
+          <div class="s8-body">
+            <p class="s8-q q-hang"><strong class="q-hang__num">د.</strong><span>ادّعى ناشط بيئي:<br>"يكفي أن نضع شِباكًا على سطح البحر،
+
+كي نجمع بذلك كل نفايات البلاستيك."</span></p>
+            <p class="s8-q"><strong>ما هي أفضل طريقة لدعم ادعائه أو معارضته؟</strong></p>
+          </div>
+        </div>
+
+        <div class="s8-answers s3q-answers" role="radiogroup" aria-label="خيارات الإجابة" data-reveal="2">
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="a" onclick="s3qSelect('a')">
+            <span class="s3q-opt-text">اعتمادًا على أن الادعاء منطقي، لأن الشبكة المنصوبة تلتقط كل شيء يصطدم بها.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="b" onclick="s3qSelect('b')">
+            <span class="s3q-opt-text">للبدء بوضع شباك في البحر، وفقط إذا لم تُجمَع النفايات، إعادة النظر في هذا الادعاء.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="c" onclick="s3qSelect('c')">
+            <span class="s3q-opt-text">لجمع عينات بلاستيكية من عدة أعماق في البحر وفحص ما إذا كانت البيانات تدعم الادعاء.</span>
+            <span class="s3q-radio"></span>
+          </div>
+          <div class="s3q-opt" role="radio" aria-checked="false" tabindex="0" data-id="d" onclick="s3qSelect('d')">
+            <span class="s3q-opt-text">جمع عينات من سطح البحر فقط، لأن هناك تتواجد النفايات التي من المفترض أن تجمعها الشباك.</span>
+            <span class="s3q-radio"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- תמונת השאלה (assets/images/environmental-activist.png, 1536×1024; בשקף נחתכה l16%/r14% ≈ ריבוע ממורכז → object-fit: cover).
+           מסגרת 380×380 + עדשת הגדלה (מודול Image Zoom Popup, script.js). -->
+      <div class="s8-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+        <div class="s8-img-frame">
+          <img class="zoomable-image s8-photo" src="assets/images/environmental-activist.png"
+               alt="ناشط بيئي يبتسم، يرتدي قميصًا أخضر عليه رمز إعادة التدوير، ويداه متشابكتان" loading="lazy">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="s3q-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-hint" id="s3q-hint" type="button" onclick="s3qOpenHint()">
+            <img class="s3q-hint-icon" src="../unit-assets/icons/icon-hint-blue.svg" alt="" loading="lazy">
+            <span class="nav-label" data-label="هل يمكنني الحصول على تلميح؟">هل يمكنني الحصول على تلميح؟</span>
+          </button>
+          <button class="btn-continue" id="s3q-check" type="button" disabled onclick="s3qCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ מסך 5 (data-screen="4") — DragAndDropQuestion, וריאנט מקומי "השלמת פסקה" (שקף 75) ============
+       שאלת שיא א׳ — סעיף 3 מתוך 4. אותה חלוקת מסך כמו מסכים 3, 4 ו-6 (טקסט+שאלה בצד ימין, תרשים הצפיפויות במסגרת 380×380 + עדשת הגדלה משמאל),
+       אבל סוג השאלה: גרירה (רפרנס: סיין 5 מסך 2 — מנגנון Pointer-DnD, צבעי מצבים, פופאפ משוב + View My Answer Toggle).
+       וריאנט מקומי: 6 חללים *בתוך* שתי פסקאות (משפט-הקשר) + מחסן של 6 מילים (בלי מסיחים), מילה לכל חלל.
+       מפתח לפי הפתרון בשקף (החללים מימין לשמאל): פסקה 1 — פוליפרופילן · פוליאתילן · נמוכה; פסקה 2 — פוליאסטר · פי-וי-סי · גבוהה.
+       שני סוגי הפלסטיק בכל משפט — סדרם חופשי (שניהם נכונים מדעית). 2 ניסיונות; בתסריט אין רמז → אין כפתור/פופאפ רמז; אין סרגל התקדמות.
+       קידומת fbd-* (ולא s75-*) כדי שלא תלויה במספר המסך. הפופאפ — מחוץ ל-.screen, מזהה fbd-popup. -->
+  <section class="screen" data-screen="4" id="s75">
+      <!-- מחוות-יד — אותו נכס כמו בסיין 2; ממוקמת ב-JS (dndGhStart) בקואורדינטות ה-stage -->
+      <div class="s2-gh dnd-gh hidden" id="fbd-gh" aria-hidden="true">
+        <img class="s2-gh-ring s2-gh-ring--big" src="../unit-assets/icons/gesture-ripple-big.svg" alt="" loading="lazy">
+        <img class="s2-gh-ring s2-gh-ring--small" src="../unit-assets/icons/gesture-ripple-small.svg" alt="" loading="lazy">
+        <img class="s2-gh-hand" src="../unit-assets/icons/gesture-hand.svg" alt="" loading="lazy">
+      </div>
+
+    <div class="s8-question">
+
+      <div class="s8-col">
+        <div class="s8-text" data-reveal="1">
+          <div class="s8-body">
+            <p class="s8-q q-hang"><strong class="q-hang__num">ج.</strong><span>اسحبوا الكلمات من المخزن لإكمال الفقرة:</span></p>
+          </div>
+        </div>
+
+        <div class="fbd-board" data-reveal="2">
+          <div class="fbd-paras">
+            <p class="fbd-para">في عملية البحث التي أُجريَت فوق سطح البحر، عُثِر بشكل أساسي على شظايا <span class="fbd-zone" id="fbd-zone-z1" data-zone="z1" role="button" tabindex="0" aria-label="فراغ 1 — منطقة للإفلات" onclick="fbdZoneClick('z1', event)" onkeydown="fbdZoneKey(event, 'z1')"></span> و-<span class="fbd-zone" id="fbd-zone-z2" data-zone="z2" role="button" tabindex="0" aria-label="فراغ 2 — منطقة الإفلات" onclick="fbdZoneClick('z2', event)" onkeydown="fbdZoneKey(event, 'z2')"></span> لأن كثافتها <span class="fbd-zone" id="fbd-zone-z3" data-zone="z3" role="button" tabindex="0" aria-label="فراغ 3 — منطقة للإفلات" onclick="fbdZoneClick('z3', event)" onkeydown="fbdZoneKey(event, 'z3')"></span> من كثافة مياه البحر.</p>
+            <p class="fbd-para">في قاع البحر وُجدت بشكل أساسي شظايا <span class="fbd-zone" id="fbd-zone-z4" data-zone="z4" role="button" tabindex="0" aria-label="فراغ 4 — منطقة للإفلات" onclick="fbdZoneClick('z4', event)" onkeydown="fbdZoneKey(event, 'z4')"></span> و-<span class="fbd-zone" id="fbd-zone-z5" data-zone="z5" role="button" tabindex="0" aria-label="فراغ 5 — منطقة للتحرير" onclick="fbdZoneClick('z5', event)" onkeydown="fbdZoneKey(event, 'z5')"></span> لأن كثافتها <span class="fbd-zone" id="fbd-zone-z6" data-zone="z6" role="button" tabindex="0" aria-label="فراغ 6 — منطقة للإفلات" onclick="fbdZoneClick('z6', event)" onkeydown="fbdZoneKey(event, 'z6')"></span> من كثافة مياه البحر.</p>
+          </div>
+
+          <div class="fbd-tray" id="fbd-tray" role="group" aria-label="مخزن الكلمات للسحب" onclick="fbdTrayClick(event)">
+            <div class="fbd-slot"><div class="fbd-card" id="fbd-d-pe" role="button" tabindex="0" aria-pressed="false"><span class="fbd-card__text">بولي إيثيلين</span></div></div>
+            <div class="fbd-slot"><div class="fbd-card" id="fbd-d-high" role="button" tabindex="0" aria-pressed="false"><span class="fbd-card__text">عالية</span></div></div>
+            <div class="fbd-slot"><div class="fbd-card" id="fbd-d-pp" role="button" tabindex="0" aria-pressed="false"><span class="fbd-card__text">بوليبروبيلين</span></div></div>
+            <div class="fbd-slot"><div class="fbd-card" id="fbd-d-pvc" role="button" tabindex="0" aria-pressed="false"><span class="fbd-card__text">بولي فينيل كلورايد (PVC)</span></div></div>
+            <div class="fbd-slot"><div class="fbd-card" id="fbd-d-low" role="button" tabindex="0" aria-pressed="false"><span class="fbd-card__text">منخفضة</span></div></div>
+            <div class="fbd-slot"><div class="fbd-card" id="fbd-d-pes" role="button" tabindex="0" aria-pressed="false"><span class="fbd-card__text">بوليستر</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- אותו תרשים כמו במסך 3 (בלי כפתורי "?") + עדשת הגדלה -->
+      <div class="s8-img methodica-image-zoom-frame" data-reveal="3" data-reveal-fade>
+        <div class="s8-img-frame">
+          <div class="s2-graph" data-zoom-source>
+            <svg class="s2-graph-svg" viewBox="0 0 930 570" role="img" font-family="Calibri, Arial, sans-serif" aria-label="مخطط أعمدة: كثافة أنواع البلاستيك الشائعة في النفايات (جرام/سم³). PVC 1.40، البوليستر 1.38، البولي إيثيلين 0.95، البولي بروبيلين 0.90."><text x="500" y="36" text-anchor="middle" font-size="31" font-weight="700" fill="#1f3864">كثافة أنواع البلاستيك الشائعة في النفايات</text><line x1="86" x2="915" y1="68.0" y2="68.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="75.0" text-anchor="end" font-size="21" fill="#303030">1.6</text><line x1="86" x2="915" y1="119.5" y2="119.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="126.5" text-anchor="end" font-size="21" fill="#303030">1.4</text><line x1="86" x2="915" y1="171.0" y2="171.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="178.0" text-anchor="end" font-size="21" fill="#303030">1.2</text><line x1="86" x2="915" y1="222.5" y2="222.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="229.5" text-anchor="end" font-size="21" fill="#303030">1.0</text><line x1="86" x2="915" y1="274.0" y2="274.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="281.0" text-anchor="end" font-size="21" fill="#303030">0.8</text><line x1="86" x2="915" y1="325.5" y2="325.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="332.5" text-anchor="end" font-size="21" fill="#303030">0.6</text><line x1="86" x2="915" y1="377.0" y2="377.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="384.0" text-anchor="end" font-size="21" fill="#303030">0.4</text><line x1="86" x2="915" y1="428.5" y2="428.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="435.5" text-anchor="end" font-size="21" fill="#303030">0.2</text><line x1="86" x2="915" y1="480.0" y2="480.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="487.0" text-anchor="end" font-size="21" fill="#303030">0.0</text><line x1="86" x2="86" y1="62" y2="480" stroke="#7f7f7f" stroke-width="1.5"/><rect x="124" y="120" width="129" height="360" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="188.5" y="108" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.40</text><text x="188.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي فينيل كلورايد (PVC)</text><rect x="332" y="125" width="129" height="355" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="396.5" y="113" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.38</text><text x="396.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليستر</text><rect x="540" y="235" width="129" height="245" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="604.5" y="223" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.95</text><text x="604.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي إيثيلين</text><rect x="748" y="248" width="129" height="232" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="812.5" y="236" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.90</text><text x="812.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليبروبيلين</text><text x="500" y="552" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">نوع البلاستيك</text><text transform="translate(34 275) rotate(-90)" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">الكثافة (جرام/سم³)</text></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sr-only" id="fbd-live" aria-live="polite"></div>
+
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <button class="btn-back" id="fbd-back" onclick="backScreen()">عودة</button>
+        <div class="s3q-bar-actions">
+          <button class="btn-continue" id="fbd-check" type="button" disabled onclick="fbdCheck()">هل إجابتي صحيحة؟</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ פופאפ גרף (שקף 72) ============
+       Figma: RecallPopup 4259:22713 (ContentPopup + מסגרת 1px #303030 + General Popup Close Btn), backdrop אחים.
+       תוכן: טקסט השקף + תמונת הגרף. 4 כפתורי "?" על העמודות (פי-וי-סי, פוליאסטר, פוליאתילן, פוליפרופילן —
+       משמאל לימין בגרף), לחיצה מציגה את שימוש הפלסטיק; אחד פתוח בכל רגע. -->
+  <div class="popup-backdrop hidden" id="graph-popup-backdrop" onclick="closeGraphPopupOnBackdrop(event)">
+    <div class="content-popup" id="graph-popup" role="dialog" aria-modal="true" aria-labelledby="graph-popup-title">
+      <button class="general-popup-close" id="graph-popup-close" type="button" onclick="closeGraphPopup()" aria-label="إغلاق">
+        <img class="general-popup-close__x" src="../unit-assets/icons/icon-popup-close-x.svg" alt="" loading="lazy">
+        <img class="general-popup-close__x general-popup-close__x--hover" src="../unit-assets/icons/icon-popup-close-x-hover.svg" alt="" loading="lazy">
+      </button>
+      <div class="content-popup-body" onclick="graphCloseTips()">
+        <p id="graph-popup-title">كثافة مياه البحر هي 1.03 جرام لكل سم³.</p>
+        <p>فيما يلي رسم بياني لكثافات أنواع البلاستيك المختلفة التي وجدها الباحثون في البحر.<br>بالضغط عليها يمكنكم اكتشاف الاستخدام الذي يُستعمل له كل نوع من البلاستيك.</p>
+        <p><strong>دعونا نساعد الباحثين على الإجابة عن أسئلة مبنية على البيانات.</strong></p>
+        <div class="s1-graph">
+          <svg class="s1-graph-img" viewBox="0 0 930 570" role="img" font-family="Calibri, Arial, sans-serif" aria-label="مخطط أعمدة: كثافة أنواع البلاستيك الشائعة في النفايات (جرام/سم³). PVC 1.40، البوليستر 1.38، البولي إيثيلين 0.95، البولي بروبيلين 0.90."><text x="500" y="36" text-anchor="middle" font-size="31" font-weight="700" fill="#1f3864">كثافة أنواع البلاستيك الشائعة في النفايات</text><line x1="86" x2="915" y1="68.0" y2="68.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="75.0" text-anchor="end" font-size="21" fill="#303030">1.6</text><line x1="86" x2="915" y1="119.5" y2="119.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="126.5" text-anchor="end" font-size="21" fill="#303030">1.4</text><line x1="86" x2="915" y1="171.0" y2="171.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="178.0" text-anchor="end" font-size="21" fill="#303030">1.2</text><line x1="86" x2="915" y1="222.5" y2="222.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="229.5" text-anchor="end" font-size="21" fill="#303030">1.0</text><line x1="86" x2="915" y1="274.0" y2="274.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="281.0" text-anchor="end" font-size="21" fill="#303030">0.8</text><line x1="86" x2="915" y1="325.5" y2="325.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="332.5" text-anchor="end" font-size="21" fill="#303030">0.6</text><line x1="86" x2="915" y1="377.0" y2="377.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="384.0" text-anchor="end" font-size="21" fill="#303030">0.4</text><line x1="86" x2="915" y1="428.5" y2="428.5" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="435.5" text-anchor="end" font-size="21" fill="#303030">0.2</text><line x1="86" x2="915" y1="480.0" y2="480.0" stroke="#d9d9d9" stroke-width="1.5"/><text direction="ltr" x="76" y="487.0" text-anchor="end" font-size="21" fill="#303030">0.0</text><line x1="86" x2="86" y1="62" y2="480" stroke="#7f7f7f" stroke-width="1.5"/><rect x="124" y="120" width="129" height="360" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="188.5" y="108" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.40</text><text x="188.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي فينيل كلورايد (PVC)</text><rect x="332" y="125" width="129" height="355" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="396.5" y="113" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">1.38</text><text x="396.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليستر</text><rect x="540" y="235" width="129" height="245" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="604.5" y="223" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.95</text><text x="604.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بولي إيثيلين</text><rect x="748" y="248" width="129" height="232" fill="#4472c4" stroke="#2f528f" stroke-width="1.5"/><text x="812.5" y="236" text-anchor="middle" font-size="25" font-weight="700" fill="#1f3864">0.90</text><text x="812.5" y="510" text-anchor="middle" font-size="25" fill="#303030">بوليبروبيلين</text><text x="500" y="552" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">نوع البلاستيك</text><text transform="translate(34 275) rotate(-90)" text-anchor="middle" font-size="27" font-weight="700" fill="#303030">الكثافة (جرام/سم³)</text></svg>
+          <div class="s1-q" style="--x:20.2">
+            <button class="s1-q-btn" type="button" aria-expanded="false" aria-controls="s1-tip-1" aria-label="فيم يُستخدم PVC؟" onclick="graphToggleTip(event, this)">?</button>
+            <div class="s1-q-tip" id="s1-tip-1" hidden>أنابيب وعبوات صلبة</div>
+          </div>
+          <div class="s1-q" style="--x:42.6">
+            <button class="s1-q-btn" type="button" aria-expanded="false" aria-controls="s1-tip-2" aria-label="لماذا يُستخدم البوليستر؟" onclick="graphToggleTip(event, this)">?</button>
+            <div class="s1-q-tip" id="s1-tip-2" hidden>قناني المشروبات</div>
+          </div>
+          <div class="s1-q" style="--x:65">
+            <button class="s1-q-btn" type="button" aria-expanded="false" aria-controls="s1-tip-3" aria-label="لماذا يُستخدم البولي إيثيلين؟" onclick="graphToggleTip(event, this)">?</button>
+            <div class="s1-q-tip" id="s1-tip-3" hidden>أكياس وحاويات التنظيف</div>
+          </div>
+          <div class="s1-q" style="--x:87.3">
+            <button class="s1-q-btn" type="button" aria-expanded="false" aria-controls="s1-tip-4" aria-label="لماذا يُستخدم البولي بروبيلين؟" onclick="graphToggleTip(event, this)">?</button>
+            <div class="s1-q-tip" id="s1-tip-4" hidden>سدادات القناني والمصّاصات</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- פופאפ משוב (מסך 3, שקף 73) — מחוץ לכל .screen, ישירות ב-#app. Figma "Popup Feedback" 525:9012.
+       ללא כפתור-סגירה (החלטת-מוצר מאושרת, _global-components.md → "No manual close"); גריר חופשי. -->
+  <div class="s8q-popup m-popup hidden" id="s2q-popup"
+       onmousedown="s2qPopupMouseDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s2q-popup-title"></p>
+    <div class="s8q-popup-body" id="s2q-popup-body"></div>
+  </div>
+
+  <!-- פופאפ משוב (מסך 4, שקף 74) + פופאפ רמז — מחוץ לכל .screen, ישירות ב-#app. ללא כפתור-סגירה במשוב. -->
+  <div class="s8q-popup m-popup hidden" id="s74q-popup"
+       onmousedown="s74qPopupMouseDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s74q-popup-title"></p>
+    <div class="s8q-popup-body" id="s74q-popup-body"></div>
+  </div>
+
+  <!-- רמז: גוף בלבד בשקף → כותרת גנרית "רמז" (aria-label). סגירה: "חזרה לשאלה" / לחיצה מחוץ / Escape; בלי X. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s74q-hint-overlay"
+       onclick="s74qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>احسبوا الكثافة، وبعد ذلك، حدّدوا نوع البلاستيك في الرسم البياني.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s74qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- פופאפ משוב (מסך 6, שקף 76) + פופאפ רמז — מחוץ לכל .screen, ישירות ב-#app. ללא כפתור-סגירה במשוב. -->
+  <div class="s8q-popup m-popup hidden" id="s3q-popup"
+       onmousedown="s3qPopupMouseDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="s3q-popup-title"></p>
+    <div class="s8q-popup-body" id="s3q-popup-body"></div>
+  </div>
+
+  <!-- רמז: גוף בלבד בשקף → כותרת גנרית "רמז" (aria-label). סגירה: "חזרה לשאלה" / לחיצה מחוץ / Escape; בלי X. -->
+  <div class="s8q-hint-overlay m-popup hidden" id="s3q-hint-overlay"
+       onclick="s3qCloseHintOnBackdrop(event)">
+    <div class="s8q-hint-card" role="dialog" aria-modal="true" aria-label="تلميح">
+      <img class="s8q-hint-bulb" src="../unit-assets/icons/icon-idea-white-lg.svg" alt="" loading="lazy">
+      <div class="s8q-hint-body">
+        <p>فكّروا فيما أظهرته بيانات الكثافة في الرسم البياني حول المكان الذي يوجد فيه كل نوع من أنواع البلاستيك في البحر.</p>
+      </div>
+      <button class="s8q-hint-close" type="button" onclick="s3qCloseHint()">عودة إلى السؤال</button>
+    </div>
+  </div>
+
+  <!-- פופאפ משוב (מסך 5, שקף 75) — מחוץ לכל .screen, ישירות ב-#app; גריר חופשי; View My Answer Toggle בשגוי סופי (הערת מפיקה: "אפשר לדלג לתשובה שלי"). -->
+  <div class="s8q-popup m-popup hidden" id="fbd-popup" onpointerdown="fbdPopupDown(event)" role="status" aria-live="polite">
+    <p class="s8q-popup-title" id="fbd-popup-title"></p>
+    <div class="s8q-popup-body" id="fbd-popup-body"></div>
+    <div class="s19-popup-actions" id="fbd-popup-actions"></div>
+  </div>
+
+  <!-- כפתור דיווח בעיות גלובלי — ויזואלי בלבד, כמו בסיינים 1–5 -->
+  <!-- כפתור "מצאתם בעיה?" — רכיב גלובלי יחיד, מחוץ לכל .screen, ישירות ב-#app
+       (720-templates _global-components.md). Wired by delegation in ../unit-js/25-report.js — no onclick. -->
+  <button id="report-btn" class="flag-btn" type="button" aria-label="هل وجدتم مشكلة؟" title="هل وجدتم مشكلة؟">
+    <span class="flag-btn__icon" aria-hidden="true">
+      <svg viewBox="0 0 12 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.397164 17C0.177722 17 0 16.8239 0 16.6065V0.393501C0 0.176082 0.177722 0 0.397164 0C0.616607 0 0.794329 0.176082 0.794329 0.393501V16.607C0.794329 16.8245 0.616607 17.0005 0.397164 17.0005V17Z" fill="currentColor"/>
+        <g transform="translate(0, 0.5933)">
+          <path d="M2.76227 9.31542C1.91972 9.31542 1.06958 9.15545 0.213483 8.71363C0.0823588 8.64599 0 8.51124 0 8.36469V0.950975C0 0.814619 0.0715221 0.687925 0.188558 0.615989C0.305594 0.54459 0.45189 0.537611 0.574886 0.598811C0.577053 0.599884 0.578679 0.600958 0.580846 0.602032C2.31309 1.49586 4.05563 1.046 5.90003 0.569821C7.80946 0.0770055 9.78336 -0.431915 11.7865 0.601495C11.9176 0.669136 12 0.803882 12 0.950438V8.36415C12 8.4946 11.9344 8.617 11.8255 8.69001C11.7166 8.76302 11.5774 8.77805 11.4555 8.72974C11.443 8.7249 11.4311 8.71954 11.4197 8.71363C9.68745 7.8198 7.94491 8.26967 6.10051 8.7453C5.00709 9.02714 3.89199 9.31489 2.76281 9.31489L2.76227 9.31542ZM0.793787 8.11935C2.45559 8.87307 4.13094 8.44038 5.90003 7.98407C7.62469 7.53903 9.40191 7.08057 11.2062 7.75806V1.19631C9.54441 0.442591 7.86906 0.875281 6.09997 1.33159C4.37531 1.77663 2.59755 2.23509 0.793787 1.5576V8.11935Z" fill="currentColor"/>
+        </g>
+      </svg>
+    </span>
+    <span class="flag-btn__label">هل وجدتم مشكلة؟</span>
+  </button>
+
+  <!-- ═══ "מצאתם בעיה?" — issue-report dialogs (ADDING-REPORTING-AND-RESUME.md §7) ═══
+       Copied from methodica-science-body-matter-01-02 (2026-11-02). Last children of #app, outside
+       every .screen: .report-modal-overlay is position:absolute; inset:0 against #app, so it aligns
+       with the scaled canvas. All three carry `hidden`; behaviour in ../unit-js/25-report.js, style in
+       ../unit-css/25-report.css. -->
+  <div id="report-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-modal-title">
+    <div class="report-modal-box">
+      <button class="report-close-btn" type="button" onclick="tryCloseReportModal()" aria-label="إغلاق">&#10005;</button>
+      <h2 class="report-modal-title" id="report-modal-title">الإبلاغ عن مشكلة</h2>
+      <p class="report-modal-body">هل هناك شيء غير واضح أو لا يعمل كما ينبغي؟<br>أخبرونا بما حدث حتى نتعامل معه.</p>
+
+      <div class="report-field">
+        <label class="report-label" for="report-type"><span class="required-star">*</span> ما نوع المشكلة</label>
+        <div class="report-custom-select" id="report-type-wrapper">
+          <button class="report-select-btn is-placeholder" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span class="report-select-value">اختاروا نوع المشكلة</span>
+          </button>
+          <ul class="report-select-list" role="listbox" hidden>
+            <li class="report-select-option" data-value="technical" role="option">عطل تقني أو شيء ما لا يعمل</li>
+            <li class="report-select-option" data-value="unclear" role="option">شيء غير واضح لي</li>
+            <li class="report-select-option" data-value="other" role="option">آخر</li>
+          </ul>
+          <input type="hidden" id="report-type" value="">
+        </div>
+        <span class="report-field-error" id="report-type-error" hidden>اختاروا نوع المشكلة</span>
+      </div>
+
+      <div class="report-field">
+        <label class="report-label" for="report-text"><span class="required-star">*</span> ماذا حدث؟</label>
+        <textarea class="report-textarea" id="report-text" maxlength="250" rows="4" placeholder="فصّلوا ماذا حدث لنتمكن من فهم المشكلة" onblur="reportTextBlur()"></textarea>
+        <span class="report-field-error" id="report-text-error" hidden>اكتبوا ما حدث</span>
+        <span class="report-char-count" id="report-char-count">0 / 250</span>
+      </div>
+
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="tryCloseReportModal()">إلغاء</button>
+        <button class="report-submit-btn" type="button" onclick="submitReport()" disabled>إرسال تبليغ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- מצב "הדיווח נשלח". דיאלוג נפרד מדיאלוג הנטישה שמתחתיו — אין לאחד ביניהם. -->
+  <div id="report-thanks-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-thanks-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-thanks-title">تم إرسال التبليغ، شكرًا!</h2>
+      <p class="report-modal-body">تلقينا التبليغ وسنهتم بالأمر بأقرب وقت.</p>
+      <div class="report-actions">
+        <button class="report-submit-btn" type="button" onclick="closeReportThanks()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- אישור נטישה: נפתח רק כשיש קלט שלא נשלח. -->
+  <div id="report-confirm-modal"
+       class="report-modal-overlay"
+       hidden
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="report-confirm-title">
+    <div class="report-modal-box report-confirm-box">
+      <h2 class="report-modal-title" id="report-confirm-title">هل تريدون إغلاق النافذة فعلًا؟</h2>
+      <p class="report-modal-body">إذا ضغطتم على إغلاق لن يتم إرسال التبليغ</p>
+      <div class="report-actions">
+        <button class="report-cancel-btn" type="button" onclick="forceCloseReportModal()">إغلاق النافذة</button>
+        <button class="report-submit-btn" type="button" onclick="backToReportForm()">أريد التبليغ</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+<!-- 720 platform layer (reporting / resume): shared files first, the part's own script, 90-boot last.
+     Same ?v= in every part (guide §3.4); 90-boot.js is a separate tag on purpose (§3.2). -->
+<script src="../unit-js/10-identity.js?v=20261102c"></script>
+<script src="../unit-js/20-xapi.js?v=20261102c"></script>
+<script src="../unit-js/25-report.js?v=20261102c"></script>
+<script src="../unit-js/40-resume.js?v=20261102c"></script>
+<script src="../unit-js/50-loader.js?v=20261102c"></script>
+<script src="../unit-js/05-media.js?v=20261102c"></script>
+<script src="../unit-js/05-motion.js?v=20261102c"></script>
+<script src="../unit-js/07-btn-width.js?v=20261103"></script>
+<script src="script.js?v=20261102c"></script>
+<script src="../unit-js/90-boot.js?v=20261102c"></script>
+</body>
+</html>
