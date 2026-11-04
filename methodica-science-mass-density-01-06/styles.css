@@ -950,7 +950,7 @@ img { display: block; max-width: none; }
 .s8q-hint-close:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
 /* מסך 6 (#s3): רוחב המסיחים לפי המסיח הארוך ביותר (שורה אחת), והתמונה במיקום כמו מסך 9 בסיין 1 (top:139) */
-#s3 .s8-answers, #s74 .s8-answers { width: fit-content; }
+#s2 .s8-answers, #s3 .s8-answers, #s74 .s8-answers { width: fit-content; }
 
 /* מסכים 3, 4, 5 (#s2, #s74, #s75): תרשים מוגדל (500×380 במקום 380×380) */
 #s2 .s8-img, #s74 .s8-img, #s75 .s8-img { width: 500px; }
@@ -992,7 +992,7 @@ img { display: block; max-width: none; }
   display: inline-flex;
   vertical-align: middle;
   box-sizing: border-box;
-  width: 176px;
+  width: 236px;
   height: 44px;
   margin: 0 4px;
   align-items: stretch;

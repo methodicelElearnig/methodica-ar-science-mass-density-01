@@ -955,7 +955,7 @@ img { display: block; max-width: none; }
 .s7-text { display: flex; flex-direction: column; gap: 8px; color: #303030; }
 .s7-text p { margin: 0; font-family: Calibri, Arial, sans-serif; font-size: 24px; font-weight: 400; line-height: normal; text-align: right; }
 .s7-text strong { font-weight: 700; }
-.s7-sentences { margin-top: 28px; display: flex; flex-direction: column; gap: 20px; max-width: 700px; }
+.s7-sentences { margin-top: 28px; display: flex; flex-direction: column; gap: 20px; max-width: 740px; }
 .s7-sentence { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; font-family: Calibri, Arial, sans-serif; font-size: 24px; color: #303030; }
 .s7-words { white-space: nowrap; line-height: 1.2; }
 

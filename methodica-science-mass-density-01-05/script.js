@@ -666,7 +666,12 @@ function s1Fit() {
   let w = 0, h = 0;
   sec.querySelectorAll('.s1-slot > .s1-card').forEach(function (c) {
     /* משפט שהונח באיזור מוסתר מהרשימה (offsetWidth = 0) — משתמשים בגודל שנמדד כשהיה גלוי */
-    if (c.offsetWidth) { c.dataset.fitW = c.offsetWidth; c.dataset.fitH = c.offsetHeight; }
+    if (c.offsetWidth) {
+      /* רוחב טבעי של המשפט בשורה אחת (scrollWidth) + ריפוד 2×20 + מסגרת 2 + אייקון ✓/✗ (26 + רווח 10) + מרווח ביטחון */
+      const t = c.querySelector('.s1-card__text');
+      c.dataset.fitW = Math.ceil((t ? t.scrollWidth : c.offsetWidth) + 40 + 2 + 36 + 56);
+      c.dataset.fitH = c.offsetHeight;
+    }
     w = Math.max(w, +c.dataset.fitW || 0);
     h = Math.max(h, +c.dataset.fitH || 0);
   });

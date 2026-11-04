@@ -544,14 +544,14 @@ img { display: block; max-width: none; }
 .s1-slot { width: max-content; max-width: 100%; min-height: 52px; flex: none; }
 
 .s1-card {
-  position: relative; box-sizing: border-box; width: max-content; max-width: 760px; min-height: 52px; padding: 12px 20px;
+  position: relative; box-sizing: border-box; width: max-content; max-width: 1080px; min-height: 52px; padding: 12px 20px;
   display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 10px;   /* rtl: תוכן צמוד לקצה הימני */
   background: #ffffff; border: 1px solid rgba(174, 174, 174, 0.5); border-radius: 12px;
   font-family: Calibri, Arial, sans-serif; font-size: 22px; line-height: normal; color: #222222;
   direction: rtl; text-align: right;
   cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none;
 }
-.s1-card__text { flex: 1 1 auto; min-width: 0; font-family: Calibri, Arial, sans-serif; font-size: 22px; line-height: normal; color: inherit; direction: rtl; text-align: right; }
+.s1-card__text { flex: 1 1 auto; min-width: 0; font-family: Calibri, Arial, sans-serif; font-size: 22px; line-height: normal; color: inherit; direction: rtl; text-align: right; white-space: nowrap; }
 .s1-card__icon { flex: none; width: 26px; height: 26px; display: none; background: center / 26px 26px no-repeat; }
 .s1-card:focus-visible { outline: 3px solid var(--subject-700); outline-offset: 2px; }
 .s1-card.is-ghost { visibility: hidden; }
