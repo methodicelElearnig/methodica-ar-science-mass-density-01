@@ -35,7 +35,7 @@
       name: 'الحديد', density: '7.9', floats: false,
       home: { x: 497, y: 420 }, slot: { x: 196, y: FLOOR_Y - CUBE * IN_GLASS / 2 }, sub: '0%',
       img: 'applet/images/cube-iron.png',
-      sr: 'مكعب الحديد يغوص إلى قاع الكوب.'
+      sr: 'مكعب الحديد يغرق إلى قاع الكوب.'
     }
   };
 
@@ -53,10 +53,10 @@
   ['pine', 'iron'].forEach(function (k) {
     var c = CUBES[k];
     html += '<div class="ap-cube" id="ap-cube-' + k + '" data-k="' + k + '" role="button" tabindex="0" ' +
-              'aria-label="مكعب ' + c.name + '، الكثافة ' + c.density + ' جرام/سم³. اسحبوا إلى الكأس، أو اضغطوا Enter لإدخاله إلى الكأس ومرة أخرى لإخراجه">' +
+              'aria-label="مكعب ' + c.name + '، الكثافة ' + c.density + ' غرام/سم³. اسحبوا إلى الكوب، أو اضغطوا Enter لإدخاله إلى الكوب ومرة أخرى لإخراجه">' +
               '<img class="ap-cube__img" src="' + c.img + '" alt="" draggable="false">' +
               '<img class="ap-cube__tint" src="' + c.img + '" alt="" draggable="false" style="--sub:' + c.sub + '">' +
-              '<span class="ap-cube__tag"><b>' + c.density + '</b><i>جرام / سم³</i></span></div>';
+              '<span class="ap-cube__tag"><b>' + c.density + '</b><i>غرام / سم³</i></span></div>';
   });
   html += '<p class="sr-only" id="ap-live" aria-live="polite"></p>';
   root.innerHTML = html;
@@ -244,7 +244,7 @@
     if (!el) return;
     e.preventDefault();
     var c = CUBES[el.dataset.k];
-    if (c.state === 'glass') { c.token = (c.token || 0) + 1; stopAnim(c); sendHome(c); live.textContent = 'تمّت إعادة المكعّب.'; }
+    if (c.state === 'glass') { c.token = (c.token || 0) + 1; stopAnim(c); sendHome(c); live.textContent = 'تمّت إعادة المكعب.'; }
     else if (c.state === 'home') dropIntoGlass(c);
   });
 })();

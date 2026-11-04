@@ -336,7 +336,7 @@ const S1 = {
   order: ['d2', 'reasoning', 'd4', 'claim', 'd1', 'evidence', 'd3'],
   zones: ['claim', 'evidence', 'reasoning'],
   correct: { claim: 'claim', evidence: 'evidence', reasoning: 'reasoning' },   // איזור → משפט
-  zoneName: { claim: 'ادّعاء', evidence: 'دليل', reasoning: 'التبرير' },
+  zoneName: { claim: 'ادعاء', evidence: 'دليل', reasoning: 'التبرير' },
   maxAttempts: 2
 };
 const S1_EXPLAIN = ['الدليل هو أن القطعة أزاحت حجم ماء أكبر من سبيكة الذهب ذات الكتلة نفسها. من هنا يتبين أن حجمها أكبر، وبالتالي فإن كثافتها أقل من كثافة الذهب. لذلك فإن الاستنتاج هو أن القطعة ليست مصنوعة من ذهب خالص.'];
@@ -774,12 +774,12 @@ function s1PopupUp(e) {
 const S2 = {
   order: ['cork', 'al', 'poly'],
   correct: { cork: 'float', poly: 'float', al: 'sink' },
-  zoneName: { float: 'يطفو على سطح الزيت', sink: 'سيغوص إلى قاع الوعاء' },
+  zoneName: { float: 'يطفو على سطح الزيت', sink: 'سيغرق إلى قاع الوعاء' },
   maxAttempts: 2
 };
 const S2_EXPLAIN = [
   'سدادة الفلين والبولي بروبيلين سيطفوان على سطح الزيت، لأن كثافتهما أقل من كثافة زيت الزيتون.',
-  'الألومنيوم سيغوص، لأن كثافته أعلى من كثافة الزيت.'
+  'الألومنيوم سيغرق، لأن كثافته أعلى من كثافة الزيت.'
 ];
 const S2_FEEDBACK = {
   retry:   { bg: '#ffdbdc', title: 'الإجابة غير صحيحة.', body: ['حاولوا مرة أخرى.'] },
@@ -923,7 +923,7 @@ function s2Tap(id) {
     return;
   }
   s2Selected = (s2Selected === id) ? null : id;
-  s2Say(s2Selected ? s2CardLabel(id) + ' تم الاختيار. اختاروا منطقة: سيطفو على سطح الزيت أو سيغوص إلى قاع الوعاء.' : '');
+  s2Say(s2Selected ? s2CardLabel(id) + ' تم الاختيار. اختاروا منطقة: سيطفو على سطح الزيت أو سيغرق إلى قاع الوعاء.' : '');
   s2Render();
 }
 function s2CardKey(e) {

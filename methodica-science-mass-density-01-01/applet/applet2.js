@@ -33,7 +33,7 @@
       name: 'نقود نحاسية', label: 'نقود نحاسية', floats: false, w: 110, h: 112,
       home: { x: 497, y: 420 }, slot: { x: 160, y: FLOOR_Y - 112 * IN_GLASS / 2 }, sub: '0%',
       img: 'applet/images/coin-copper.png',
-      sr: 'قطعة النحاس المعدنية تغوص إلى قاع الكأس.'
+      sr: 'قطعة النحاس المعدنية تغرق إلى قاع الكوب.'
     }
   };
   var KEYS = ['boat', 'coin'];
@@ -58,7 +58,7 @@
     var c = CUBES[k];
     html += '<div class="ap-cube" id="a20-cube-' + k + '" data-k="' + k + '" role="button" tabindex="0" ' +
               'style="width:' + c.w + 'px;height:' + c.h + 'px" ' +
-              'aria-label="' + c.name + '. اسحبوا إلى الكأس، أو اضغطوا Enter لإدخاله إلى الكأس ومرة أخرى لإخراجه">' +
+              'aria-label="' + c.name + '. اسحبوا إلى الكوب، أو اضغطوا Enter لإدخاله إلى الكوب ومرة أخرى لإخراجه">' +
               '<img class="ap-cube__img" src="' + c.img + '" alt="" draggable="false">' +
               '<img class="ap-cube__tint" src="' + c.img + '" alt="" draggable="false" style="--sub:' + c.sub + '"></div>';
   });
@@ -247,7 +247,7 @@
     if (!el) return;
     e.preventDefault();
     var c = CUBES[el.dataset.k];
-    if (c.state === 'glass') { c.token = (c.token || 0) + 1; stopAnim(c); sendHome(c); live.textContent = 'تمّت إعادة المكعّب.'; }
+    if (c.state === 'glass') { c.token = (c.token || 0) + 1; stopAnim(c); sendHome(c); live.textContent = 'تمّت إعادة المكعب.'; }
     else if (c.state === 'home') dropIntoGlass(c);
   });
 })();

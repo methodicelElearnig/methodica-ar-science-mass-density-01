@@ -252,10 +252,10 @@ function resetScreenState1() {
    ב-Figma לטקסט bold/heading, לא עדות-PPTX). ראו ARCHITECTURE.md. ==== */
 const IMAGE_CARD_POPUPS = {
   'density-jordan': [
-    'غرقت الحقيبة والمفاتيح في الماء، لكن القبّعة طفت.',
+    'غرقت الحقيبة والمفاتيح في الماء، لكن القبعة طفت.',
     '<strong>لماذا يحدث هذا؟</strong>',
     'لكل مادة خاصيّة تميزها وحدها، تُقاس بكمية الكتلة الموجودة داخل كل وحدة حجم.<br>تُسمى هذه الخاصيّة <strong>الكثافة.</strong>',
-    'ستحدد قيمة الكثافة لكل مادة ما إذا كانت ستغوص أو تطفو، سنتعلم عن ذلك لاحقًا.'
+    'ستحدد قيمة الكثافة لكل مادة ما إذا كانت ستغرق أو تطفو، سنتعلم عن ذلك لاحقًا.'
   ],
   'density-crown': [
     '<strong>هل تتذكرون أرخميدس وتاج الملك؟</strong><br>قِسنا حجم التاج، لكن بقي سؤالًا واحدًا مفتوحًا:',
@@ -1832,7 +1832,7 @@ function s14AddPine() {
   t.classList.remove('is-swap'); void t.offsetWidth; t.classList.add('is-swap');
   s14Draw('pine', function () {
     st.pine = true; s14Clear(); s14Buttons();
-    s14El('s14-live').textContent = 'تمت إضافة خط لخشب الصنوبر. كثافة خشب الصنوبر: 0.5 جرام لكل سم³';
+    s14El('s14-live').textContent = 'تمت إضافة خط لخشب الصنوبر. كثافة خشب الصنوبر: 0.5 غرام لكل سم³';
   });
 }
 function startScreen14() {
@@ -2451,10 +2451,10 @@ function createPointerDnd(opts) {
 const S19 = {
   order: ['ice', 'gold', 'oil', 'glass', 'oak', 'silver'],
   correct: { gold: 'sink', glass: 'sink', silver: 'sink', ice: 'float', oil: 'float', oak: 'float' },
-  zoneName: { float: 'يطفو في الماء', sink: 'يغوص في الماء' },
+  zoneName: { float: 'يطفو في الماء', sink: 'يغرق في الماء' },
   maxAttempts: 2
 };
-const S19_EXPLAIN = 'لمعرفة ما إذا كانت مادة ما ستطفو أو تغوص في الماء، قارنوا كل كثافة بـ 1 جرام لكل سم³. لذلك، فإن المادة التي تغوص في الماء هي مادة كثافتها أكبر من 1، والمادة التي تطفو على سطح الماء هي مادة كثافتها أقل من 1.';
+const S19_EXPLAIN = 'لمعرفة ما إذا كانت مادة ما ستطفو أو تغرق في الماء، قارنوا كل كثافة بـ 1 غرام لكل سم³. لذلك، فإن المادة التي تغرق في الماء هي مادة كثافتها أكبر من 1، والمادة التي تطفو على سطح الماء هي مادة كثافتها أقل من 1.';
 const S19_FEEDBACK = {
   retry:   { bg: '#ffdbdc', title: 'إجابة غير صحيحة.', body: ['اقرأوا التلميح وحاولوا مرة أخرى.'] },
   correct: { bg: '#f2ffe8', title: 'إجابة صحيحة.', body: [S19_EXPLAIN] },
@@ -2591,7 +2591,7 @@ function s19Tap(id) {
     return;
   }
   s19Selected = (s19Selected === id) ? null : id;
-  s19Say(s19Selected ? s19CardLabel(id) + ' تم الاختيار. اختاروا منطقة: سيطفو في الماء أو سيغوص في الماء.' : '');
+  s19Say(s19Selected ? s19CardLabel(id) + ' تم الاختيار. اختاروا منطقة: سيطفو في الماء أو سيغرق في الماء.' : '');
   s19Render();
 }
 function s19CardKey(e) {
