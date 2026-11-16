@@ -32,9 +32,9 @@
   };
 
   var ITEMS = {
-    a: { name: "المادة أ'", mass: 81,   vol: 30, home: { x: 424, y: 52 }, img: 'assets/images/cube-aluminum-noshadow.png' },
-    b: { name: "مادة ب'", mass: 25,   vol: 50, home: { x: 256, y: 52 }, img: 'assets/images/cube-pine-noshadow.png' },
-    c: { name: "مادة ج'", mass: 89.6, vol: 10, home: { x: 88, y: 52 }, img: 'assets/images/cube-copper-noshadow.png' }
+    a: { name: "مادة أ", mass: 81,   vol: 30, home: { x: 424, y: 52 }, img: 'assets/images/cube-aluminum-noshadow.png' },
+    b: { name: "مادة ب", mass: 25,   vol: 50, home: { x: 256, y: 52 }, img: 'assets/images/cube-pine-noshadow.png' },
+    c: { name: "مادة ت", mass: 89.6, vol: 10, home: { x: 88, y: 52 }, img: 'assets/images/cube-copper-noshadow.png' }
   };
   var KEYS = ['a', 'b', 'c'];
 

@@ -887,7 +887,7 @@ function s3qPopupUp(e) {
    • שגוי סופי: הפתרון מוצג + View My Answer Toggle; חזרה למסך פתור — תמיד בתצוגת הפתרון.
    ========================================================= */
 const S4_EXPLAIN = ['كثافة الماء هي 1 غرام/سم³.', 'المادة التي تكون كثافتها أعلى من 1، سوف تغرق في الماء.'];
-const S4Q = { correct: { 1: '1', 2: 'يغرق' }, maxAttempts: 2 };
+const S4Q = { correct: { 1: '1', 2: 'تغرق' }, maxAttempts: 2 };
 const S4_FEEDBACK = {
   retry:   { bg: '#ffdbdc', title: 'الإجابة غير صحيحة.', body: ['هل نحاول مرة أخرى؟'] },
   correct: { bg: '#f2ffe8', title: 'الإجابة صحيحة.', body: S4_EXPLAIN },
