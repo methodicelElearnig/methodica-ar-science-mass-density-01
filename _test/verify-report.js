@@ -141,7 +141,8 @@ for (const c of COMPONENTS) {
   ok(c, 'platform script tags: 10..50 first, in order', JSON.stringify(names.slice(0, 5)) === JSON.stringify(head), names.join(' '));
   ok(c, 'platform script tags: 05-media.js then 05-motion.js before script.js', names.indexOf('05-media.js') === 5 && names.indexOf('05-motion.js') === 6 && names.indexOf('script.js') > 6, names.join(' '));
   ok(c, 'platform script tags: 90-boot.js last, once', names[names.length - 1] === '90-boot.js' && names.filter((n) => n === '90-boot.js').length === 1, names.join(' '));
-  ok(c, 'platform script tags: nothing unexpected', names.every((n) => head.includes(n) || ['05-media.js', '05-motion.js', 'script.js', '90-boot.js', 'applet.js', 'applet2.js'].includes(n)), names.join(' '));
+  /* Arabic build: 07-btn-width.js (hover width lock for the Arabic SemiBold labels) is the one Arabic-only shared file. */
+  ok(c, 'platform script tags: nothing unexpected', names.every((n) => head.includes(n) || ['05-media.js', '05-motion.js', '07-btn-width.js', 'script.js', '90-boot.js', 'applet.js', 'applet2.js'].includes(n)), names.join(' '));
   for (const u of tags) {
     const v = (/[?&]v=([^&#]+)/.exec(u) || [])[1];
     ok(c, '?v= on ' + u, !!v);
