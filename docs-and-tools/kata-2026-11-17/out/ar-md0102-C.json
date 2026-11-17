@@ -1,0 +1,208 @@
+{
+ "steps": "steps/ar-md0102-C.txt",
+ "student": "VADIM-AR-MD0102-C-1117",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/",
+ "registration": "77cd5491-408e-412f-958a-5c4ab550a837",
+ "when": "2026-11-17T12:58:48.039Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "كتلة (غرام) - مادة أ[.]81[,]حجم (سم³) - مادة أ[.]30[,]الكثافة (غرام/سم³) - مادة أ[.]2.7[,]كتلة (غرام) - مادة ب[.]25[,]حجم (سم³) - مادة ب[.]50[,]الكثافة (غرام/سم³) - مادة ب[.]0.5[,]كتلة (غرام) - مادة ت[.]89.6[,]حجم (سم³) - مادة ت[.]10[,]الكثافة (غرام/سم³) - مادة ت[.]8.96"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/q2",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "نحاس (الكثافة: 8.96)[.]الخط العلوي في الرسم البياني[,]الألومنيوم (الكثافة: 2.7)[.]الخط الأوسط في الرسم البياني[,]خشب الصنوبر (الكثافة: 0.5)[.]الخط السفلي في الرسم البياني"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-002/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-002/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "16.2 غرام"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-002/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "true"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q2",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "false"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q3",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "true"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q4",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "true"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-004/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-004/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "كرة رصاص مجوَّفة (فارغة من الداخل) - الكثافة: 0.8 (غرام/سم³)[.]يطفو[,]كرة زجاجية صلبة - الكثافة: 2.5 (غرام/سم³)[.]يغرق[,]طوّافة من خشب البلوط - الكثافة: 0.7 (غرام/سم³)[.]يطفو[,]كرة رصاص صلبة - الكثافة: 11.3 (غرام/سم³)[.]يغرق[,]قنينة زجاجية فارغة ومغلقة - الكثافة: 0.6 (غرام/سم³)[.]يطفو"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-004/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   currentScreen === 2 → true",
+  "ok   s2qDone === true && s2qOutcome === 'correct' → true",
+  "ok   currentScreen === 3 → true",
+  "ok   s3Done === true && s3Outcome === 'correct' → true",
+  "ok   currentScreen === 4 → true",
+  "ok   s4Done === true && s4Outcome === 'correct' → true",
+  "ok   currentScreen === 5 → true",
+  "ok   s5Done === true && s5Outcome === 'correct' → true",
+  "ok   currentScreen === 6 → true",
+  "ok   s6Done === true && s6Outcome === 'correct' → true",
+  "xapiPartResult() → {\"success\":true,\"score\":{\"scaled\":1}}",
+  "ok   document.getElementById('s6q-check').disabled === true → true"
+ ],
+ "problems": [],
+ "logs": [],
+ "hebrew": []
+}

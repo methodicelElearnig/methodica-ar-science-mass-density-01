@@ -1,0 +1,83 @@
+# comp https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/
+# student VADIM-AR-MD0101-C-1117
+# expect true 1
+window.W=async(sel,ms=25000)=>{const t=Date.now();let e;while(Date.now()-t<ms){e=document.querySelector(sel);if(e&&!e.disabled&&e.offsetParent!==null)break;await new Promise(r=>setTimeout(r,200));}if(!e||e.disabled)throw new Error('not enabled: '+sel);e.click();await new Promise(r=>setTimeout(r,300));}
+window.pdrag=(s,t)=>{if(typeof s==='string')s=document.getElementById(s);if(typeof t==='string')t=document.getElementById(t);const r=s.getBoundingClientRect(),q=t.getBoundingClientRect();const o={bubbles:true,cancelable:true,pointerId:7,pointerType:'mouse',button:0,buttons:1,isPrimary:true};const sx=r.x+r.width/2,sy=r.y+r.height/2,x=q.x+q.width/2,y=q.y+q.height/2;s.dispatchEvent(new PointerEvent('pointerdown',{...o,clientX:sx,clientY:sy}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:sx+12,clientY:sy+12}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:x,clientY:y}));document.dispatchEvent(new PointerEvent('pointerup',{...o,clientX:x,clientY:y}));}
+window.NEXT=async(n,ms=40000)=>{const t=Date.now();while(currentScreen===n&&Date.now()-t<ms){const b=[...document.querySelectorAll('#s'+n+' .btn-continue, #s'+n+' [onclick="advanceScreen()"]')].filter(e=>!e.disabled&&e.offsetParent!==null);if(b.length)b[b.length-1].click();await new Promise(r=>setTimeout(r,500));}if(currentScreen===n)throw new Error('stuck on '+n);}
+await NEXT(0)
+await NEXT(1)
+@expect currentScreen === 2
+document.querySelectorAll('#s2 .frc-card').forEach(c=>c.click())
+S2_TABLE_ROWS.forEach(c=>{const v=s2TableCorrectValues(c);S2_TABLE_FIELD_KEYS.forEach(k=>{const i=s2TableFieldEl(c,k);if(i&&!i.disabled&&!i.readOnly){i.value=String(v[k]);i.dispatchEvent(new Event('input',{bubbles:true}))}})})
+@print S2_TABLE_ROWS.map(c=>S2_TABLE_FIELD_KEYS.map(k=>s2TableFieldEl(c,k).value).join('/')).join(' ')
+await W('#s2-continue')
+@expect s2TableDone === true && s2TableOutcome === 'correct'
+await NEXT(2)
+@expect currentScreen === 3
+s3qSelect(S3Q.correctId)
+await W('#s3q-check')
+@expect s3qDone === true
+await NEXT(3)
+await NEXT(4)
+await NEXT(5)
+await NEXT(6)
+await NEXT(7)
+@expect currentScreen === 8
+s8qSelect(S8Q.correctId)
+await W('#s8q-check')
+@expect s8qDone === true
+await NEXT(8)
+await NEXT(9)
+await NEXT(10)
+await NEXT(11)
+await NEXT(12)
+@expect currentScreen === 13
+for(let i=0;i<60&&s13State.marked<S13_N;i++){document.querySelector('#s13 [onclick="s13Step()"]').click();await new Promise(r=>setTimeout(r,500))}
+await NEXT(13)
+await NEXT(14)
+@expect currentScreen === 15
+s15qSelect(S15Q.correctId)
+await W('#s15q-check')
+@expect s15qDone === true
+await NEXT(15)
+@expect currentScreen === 16
+document.getElementById('ap-cube-iron').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))
+@wait 1500
+await NEXT(16)
+await NEXT(17)
+await NEXT(18)
+@expect currentScreen === 19
+s19Tap('silver'); s19ZoneClick('sink'); s19Tap('oak'); s19ZoneClick('float'); s19Tap('glass'); s19ZoneClick('sink'); s19Tap('oil'); s19ZoneClick('float'); s19Tap('gold'); s19ZoneClick('sink'); s19Tap('ice'); s19ZoneClick('float')
+await W('#s19q-check')
+@expect s19Done === true
+await NEXT(19)
+@expect currentScreen === 20
+document.querySelector('#s20-applet .ap-cube').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))
+@wait 1500
+await NEXT(20)
+@expect currentScreen === 21
+document.querySelectorAll('#s21 [onclick="s21Flip(this)"]').forEach(c=>c.click())
+@wait 1000
+await NEXT(21)
+await NEXT(22)
+@expect currentScreen === 23
+document.querySelectorAll('#s23 [onclick="s23Flip(this)"]').forEach(c=>c.click())
+@wait 1000
+await NEXT(23)
+await NEXT(24)
+await NEXT(25)
+@expect currentScreen === 26
+s26Tap('volume'); s26ZoneClick('den'); s26Tap('mass'); s26ZoneClick('num')
+await W('#s26q-check')
+@expect s26Done === true
+await NEXT(26)
+@expect currentScreen === 27
+s27qSelect(S27Q.correctId)
+await W('#s27q-check')
+@expect s27qDone === true
+@print XAPI_Q_RESULTS
+@print xapiPartResult()
+await W('#s27q-check')
+@wait 1000
+@expect currentScreen === 27
+@expect document.getElementById('s27q-check').disabled === true

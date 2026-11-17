@@ -1,0 +1,28 @@
+# comp https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/
+# student VADIM-AR-MD0102-K1-1117
+# expect false 0.5
+goTo(2)
+const v={'a-mass':81,'a-vol':30,'a-den':2.7,'b-mass':25,'b-vol':50,'b-den':0.5,'c-mass':89.6,'c-vol':10,'c-den':8.96}; Object.keys(v).forEach(k=>{const i=s2qInput(k); i.value=String(v[k]); i.dispatchEvent(new Event('input',{bubbles:true}))}); s2qCheck()
+@expect s2qDone === true && s2qOutcome === 'correct'
+advanceScreen()
+@expect currentScreen === 3
+s3Tap('al'); s3ZoneClick('cu'); s3Tap('cu'); s3ZoneClick('al'); s3Tap('pine'); s3ZoneClick('pine'); s3Check()
+s3Tap('al'); s3ZoneClick('pine'); s3Tap('pine'); s3ZoneClick('cu'); s3Check()
+@expect s3Done === true && s3Outcome === 'wrong2'
+@print XAPI_Q_RESULTS
+advanceScreen()
+@expect currentScreen === 4
+s4Tap('c'); s4ZoneClick(); s4Check()
+@expect s4Done === true && s4Outcome === 'correct'
+advanceScreen()
+@expect currentScreen === 5
+s5Pick(0,'T'); s5Pick(1,'F'); s5Pick(2,'T'); s5Pick(3,'T'); s5Check()
+@expect s5Done === true && s5Outcome === 'correct'
+advanceScreen()
+@expect currentScreen === 6
+s6Tap('hollowlead'); s6ZoneClick('sink'); s6Tap('marble'); s6ZoneClick('float'); s6Tap('raft'); s6ZoneClick('float'); s6Tap('solidlead'); s6ZoneClick('sink'); s6Tap('bottle'); s6ZoneClick('float'); s6Check()
+s6Tap('raft'); s6ZoneClick('sink'); s6Check()
+@expect s6Done === true && s6Outcome === 'wrong2'
+@print XAPI_Q_RESULTS
+@print xapiPartResult()
+s6Check()

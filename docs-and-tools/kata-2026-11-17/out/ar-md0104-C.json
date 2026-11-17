@@ -1,0 +1,45 @@
+{
+ "steps": "steps/ar-md0104-C.txt",
+ "student": "VADIM-AR-MD0104-C-1117",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-04/",
+ "registration": "86b0ba1d-cfa8-4a76-84dc-457ad67407cc",
+ "when": "2026-11-17T13:02:22.749Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-04/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-04/methodica-ar-science-mass-density-01-04-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-04/methodica-ar-science-mass-density-01-04-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-04/",
+   "result": {
+    "success": true
+   }
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   currentScreen === 1 → true",
+  "ok   currentScreen === 2 → true",
+  "ok   s2Done === true → true",
+  "xapiPartResult() → {\"success\":true}"
+ ],
+ "problems": [],
+ "logs": [],
+ "hebrew": []
+}

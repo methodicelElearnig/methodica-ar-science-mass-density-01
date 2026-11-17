@@ -1,0 +1,15 @@
+# comp https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-04/
+# student VADIM-AR-MD0104-C-1117
+# expect true
+window.W=async(sel,ms=25000)=>{const t=Date.now();let e;while(Date.now()-t<ms){e=document.querySelector(sel);if(e&&!e.disabled&&e.offsetParent!==null)break;await new Promise(r=>setTimeout(r,200));}if(!e||e.disabled)throw new Error('not enabled: '+sel);e.click();await new Promise(r=>setTimeout(r,300));}
+window.pdrag=(s,t)=>{if(typeof s==='string')s=document.getElementById(s);if(typeof t==='string')t=document.getElementById(t);const r=s.getBoundingClientRect(),q=t.getBoundingClientRect();const o={bubbles:true,cancelable:true,pointerId:7,pointerType:'mouse',button:0,buttons:1,isPrimary:true};const sx=r.x+r.width/2,sy=r.y+r.height/2,x=q.x+q.width/2,y=q.y+q.height/2;s.dispatchEvent(new PointerEvent('pointerdown',{...o,clientX:sx,clientY:sy}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:sx+12,clientY:sy+12}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:x,clientY:y}));document.dispatchEvent(new PointerEvent('pointerup',{...o,clientX:x,clientY:y}));}
+await W('#s0-continue')
+@expect currentScreen === 1
+await W('#s1-continue')
+@expect currentScreen === 2
+for (let i = 6; i >= 1; i--) s2Select(i, S2Q.correct[i])
+await W('#s2q-check')
+@expect s2Done === true
+@print xapiPartResult()
+await W('#s2q-check')
+@wait 1000

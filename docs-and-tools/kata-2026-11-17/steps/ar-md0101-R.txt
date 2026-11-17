@@ -1,0 +1,18 @@
+# comp https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/
+# student VADIM-AR-MD0101-R-1117
+@expect (() => { const r = performance.getEntriesByType('resource'); const lib = r.find(e => /xapi-720-l\.js/.test(e.name)); const img = r.filter(e => /\.(jpe?g|png|webp)(\?|$)/.test(e.name)); return !!lib && img.every(i => i.startTime >= lib.startTime); })()
+@print (() => { const r = performance.getEntriesByType('resource'); const lib = r.find(e => /xapi-720-l\.js/.test(e.name)); return { lib: lib && Math.round(lib.startTime), media: r.filter(e => /\.(jpe?g|png|webp|mp4)(\?|$)/.test(e.name)).slice(0, 8).map(e => e.name.split('/').pop() + '@' + Math.round(e.startTime)) }; })()
+@expect typeof _xapiIsBackward === 'function' && window.__resumeInFlight !== undefined
+if (UNIT_CHARACTERS.length) setUnitCharacter('character-2'); goTo(1); goTo(2); goTo(3);
+@wait 1500
+@reload
+@expect currentScreen === 3 && (!UNIT_CHARACTERS.length || getUnitCharacter() === 'character-2')
+goTo(4); goTo(5); setTimeout(() => location.reload(), 50);
+@wait 9000
+@expect currentScreen === 5
+_resumeReady = false; if (UNIT_CHARACTERS.length) setUnitCharacter('character-1'); goTo(1); _resumeReady = true; drainPendingUnitState(); applyExecutionState(_unitState.payload);
+@expect currentScreen === 5
+@wait 1500
+@reload
+@expect currentScreen === 5 && (!UNIT_CHARACTERS.length || getUnitCharacter() === 'character-1')
+@print JSON.stringify(stateLastResult720())

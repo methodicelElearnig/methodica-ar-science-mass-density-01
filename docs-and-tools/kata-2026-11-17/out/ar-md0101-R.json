@@ -1,0 +1,105 @@
+{
+ "steps": "steps/ar-md0101-R.txt",
+ "student": "VADIM-AR-MD0101-R-1117",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/",
+ "registration": "3ce98e75-806e-4eed-8ba2-1cd61efdb77e",
+ "when": "2026-11-17T12:57:05.237Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-002/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-002/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-003/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-003/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-003/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-01/methodica-ar-science-mass-density-01-01-003/",
+   "result": null
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   (() => { const r = performance.getEntriesByType('resource'); const lib = r.find(e => /xapi-720-l\\.js/.test(e.name)); const img = r.filter(e => /\\.(jpe?g|png|webp)(\\?|$)/.test(e.name)); return !!lib && img.every(i => i.startTime >= lib.startTime); })() → true",
+  "(() => { const r = performance.getEntriesByType('resource'); const lib = r.find(e => /xapi-720-l\\.js/.test(e.name)); return { lib: lib && Math.round(lib.startTime), media: r.filter(e => /\\.(jpe?g|png|webp|mp4)(\\?|$)/.test(e.name)).slice(0, 8).map(e => e.name.split('/').pop() + '@' + Math.round(e.startTime)) }; })() → {\"lib\":541,\"media\":[\"jordan-river.mp4@836\",\"cube-pine.png@921\",\"cube-iron.png@921\",\"glass-water.png@923\",\"boat-copper.png@924\",\"coin-copper.png@924\"]}",
+  "ok   typeof _xapiIsBackward === 'function' && window.__resumeInFlight !== undefined → true",
+  "reloaded, on screen 3",
+  "ok   currentScreen === 3 && (!UNIT_CHARACTERS.length || getUnitCharacter() === 'character-2') → true",
+  "ok   currentScreen === 5 → true",
+  "ok   currentScreen === 5 → true",
+  "reloaded, on screen 5",
+  "ok   currentScreen === 5 && (!UNIT_CHARACTERS.length || getUnitCharacter() === 'character-1') → true",
+  "JSON.stringify(stateLastResult720()) → \"{\\\"op\\\":\\\"load\\\",\\\"status\\\":200,\\\"ok\\\":true,\\\"reason\\\":\\\"ok\\\",\\\"at\\\":\\\"2026-11-17T12:56:58.146Z\\\"}\""
+ ],
+ "problems": [
+  "0 component completed"
+ ],
+ "logs": [],
+ "hebrew": []
+}
