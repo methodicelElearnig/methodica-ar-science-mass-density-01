@@ -2194,15 +2194,22 @@ var XAPI_EVAL_ITEMS = { '001': 1, '002': 1, '003': 1, '004': 1 };   /* items who
 var XAPI_METADATA_FILE = '../metadata/methodica-science-mass-density-01-02.json';
 var XAPI_END_BTN = 's6q-check';                               /* the part's last button (D-8, restoreEndedButton) */
 var XAPI_PART_QUESTIONS = ['001/q1', '001/q2', '002/q1', '003/q1', '003/q2', '003/q3', '003/q4', '004/q1'];   /* '<item>/<q>' keys this part reports — the denominator of the part result */
-var XAPI_PASS = 0.6;
+var XAPI_PASS = 0.75;   /* = XAPI_THRESHOLD.K / its question count: success ⇔ scaled ≥ XAPI_PASS */
 
-/* תוצאת הרכיב ל-completed (§6.4): correct / all graded catalogue questions this part reports
-   (unanswered = wrong), success at XAPI_PASS. No threshold is promised on screen in this part;
-   0.6 is the family default (mass-gas-01). */
+/* תוצאת הרכיב ל-completed (§6.4). 2026-11-09 (תיקונים 2, 4, 6 בגיליון 08.11): מסך s0 מבטיח
+   "4 שאלות … צריך לענות נכון על 3 שאלות לפחות", ולכן success ו-score מאותה ספירה של 4 השאלות.
+   שאלה עם כמה סעיפים נספרת פעם אחת, ונכונה רק כשכל הסעיפים שלה נכונים (הכרעה 09.11): שאלה 1 =
+   001/q1 + 001/q2 (s2 + s3), שאלה 3 = טבלת 4 ההיגדים 003/q1–q4 (s5). עד כה: 0.6 מתוך 8 הסעיפים.
+   answered נשלח עדיין לכל סעיף, כפי שהקטלוג מגדיר. */
+var XAPI_THRESHOLD = { K: 3, questions: [['001/q1', '001/q2'], ['002/q1'], ['003/q1', '003/q2', '003/q3', '003/q4'], ['004/q1']] };
+function xapiThresholdCorrect() {
+  return XAPI_THRESHOLD.questions.filter(function (subs) {
+    return subs.every(function (k) { return XAPI_Q_RESULTS[k] === true; });
+  }).length;
+}
 function xapiPartResult() {
-  var ok = XAPI_PART_QUESTIONS.filter(function (k) { return XAPI_Q_RESULTS[k] === true; }).length;
-  var n = XAPI_PART_QUESTIONS.length || 1;
-  return { success: ok / n >= XAPI_PASS, score: { scaled: Math.round((ok / n) * 1000) / 1000 } };
+  var ok = xapiThresholdCorrect(), n = XAPI_THRESHOLD.questions.length;
+  return { success: ok >= XAPI_THRESHOLD.K, score: { scaled: Math.round((ok / n) * 1000) / 1000 } };
 }
 
 /* Option id 'a'..'d' -> answers index. Every single-choice screen of this unit lists its options in the

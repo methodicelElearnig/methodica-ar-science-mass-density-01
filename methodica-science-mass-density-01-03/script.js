@@ -124,6 +124,7 @@ function advanceScreen() {
   if (currentScreen === 7 && !s7Done) return; // מסך 8: כנ"ל
   if (currentScreen === 6 && !s6qDone) return; // מסך 7: כנ"ל
   if (currentScreen === 4 && !s4Done) return; // מסך 5: כנ"ל
+  if (currentScreen === 4 && xapiGateStopped()) { partFinish(document.getElementById('s4q-check')); return; } // השער (תיקון 5, ראו xapiGateStopped)
   if (currentScreen === 3 && !s3qDone) return; // מסך 4: כנ"ל
   if (currentScreen === 2 && !s2qDone) return; // מסך 3: כנ"ל
   if (currentScreen === 1 && !s1Done) return; // מסך 2: ההמשך נפתח רק אחרי שהשאלה נפתרה (resolved, לא correctness)
@@ -2114,15 +2115,29 @@ var XAPI_EVAL_ITEMS = { '001': 1, '002': 1, '003': 1, '004': 1, '005': 1, '006':
 var XAPI_METADATA_FILE = '../metadata/methodica-science-mass-density-01-03.json';
 var XAPI_END_BTN = 's7q-check';                               /* the part's last button (D-8, restoreEndedButton) */
 var XAPI_PART_QUESTIONS = ['001/q1', '002/q1', '003/q1', '004/q1', '005/q1', '006/q1'];   /* '<item>/<q>' keys this part reports — the denominator of the part result */
-var XAPI_PASS = 0.6;
+var XAPI_PASS = 0.75;   /* = XAPI_THRESHOLD.K / its question count: success ⇔ scaled ≥ XAPI_PASS */
 
-/* תוצאת הרכיב ל-completed (§6.4): correct / all graded catalogue questions this part reports
-   (unanswered = wrong), success at XAPI_PASS. No threshold is promised on screen in this part;
-   0.6 is the family default (mass-gas-01). */
+/* תוצאת הרכיב ל-completed (§6.4). 2026-11-09 (תיקונים 1, 2, 4 בגיליון 08.11): מסך s0 מבטיח
+   "4 שאלות … ענו נכון על 3 שאלות ומעלה כדי להתקדם" (s1–s4, פריטים 001–004), ולכן success ו-score
+   מאותה ספירה של 4 השאלות האלה בלבד. שני התרגילים ברמת קושי גבוהה (s6–s7, פריטים 005–006) מדווחים
+   answered משלהם ואינם נכנסים לתוצאת הרכיב. עד כה: 0.6 מתוך כל 6 השאלות. */
+var XAPI_THRESHOLD = { K: 3, questions: [['001/q1'], ['002/q1'], ['003/q1'], ['004/q1']] };
+function xapiThresholdCorrect() {
+  return XAPI_THRESHOLD.questions.filter(function (subs) {
+    return subs.every(function (k) { return XAPI_Q_RESULTS[k] === true; });
+  }).length;
+}
 function xapiPartResult() {
-  var ok = XAPI_PART_QUESTIONS.filter(function (k) { return XAPI_Q_RESULTS[k] === true; }).length;
-  var n = XAPI_PART_QUESTIONS.length || 1;
-  return { success: ok / n >= XAPI_PASS, score: { scaled: Math.round((ok / n) * 1000) / 1000 } };
+  var ok = xapiThresholdCorrect(), n = XAPI_THRESHOLD.questions.length;
+  return { success: ok >= XAPI_THRESHOLD.K, score: { scaled: Math.round((ok / n) * 1000) / 1000 } };
+}
+
+/* השער (2026-11-09, תיקון 5 — הדפוס של נמרוד מ-16.09.26, mass-measure-02-02 sq6Continue): ביציאה
+   ממסך 5 (s4, השאלה הרביעית), מתחת ל-3/4 → completed עם success:false מיד, הכפתור מושבת, ושני
+   התרגילים הקשים לא מוצגים. ללומד לא מוצג טקסט חדש; Kata מנתבת (recommendedAfterFail). הספירה
+   מ-XAPI_Q_RESULTS, שמשוחזר ב-resume. */
+function xapiGateStopped() {
+  return xapiThresholdCorrect() < XAPI_THRESHOLD.K;
 }
 
 /* Option id 'a'..'d' -> answers index. Every single-choice screen of this unit lists its options in the
@@ -2356,7 +2371,11 @@ function restoreScreenUI(n) {
       mark: s3qMark, finish: s3qFinish, select: rsFn('s3qSelect'), showPopup: rsFn('s3qShowPopup'), reopen: rsFn('s3qReopenPopup'),
       hint: 's3q-hint', check: 's3q-check' }); break;
     case 4: rsPaintDd({ done: s4Done, att: s4Attempts, lw: s4LastWrong, sel: s4Selected, out: s4Outcome, idx: [1, 2], btn: s4Btn, markOne: s4MarkOne,
-       update: rsFn('s4UpdateCheck'), showPopup: rsFn('s4ShowPopup'), reopen: rsFn('s4ReopenPopup'), hint: 's4q-hint' }); break;
+       update: rsFn('s4UpdateCheck'), showPopup: rsFn('s4ShowPopup'), reopen: rsFn('s4ReopenPopup'), hint: 's4q-hint' });
+      /* s4 is the part's end when the gate stopped it: once completed was sent, its button stays disabled
+         (restoreEndedButton only knows XAPI_END_BTN, the s7 end). */
+      if (s4Done && xapiGateStopped() && xapiComponentEnded()) { var b4 = document.getElementById('s4q-check'); if (b4) { b4.disabled = true; b4.setAttribute('aria-disabled', 'true'); } }
+      break;
     case 6: rsPaintScq({ sel: s6qSelected, done: s6qDone, lw: s6qLastWrong, att: s6qAttempts, out: s6qOutcome, correct: S6Q.correctId,
       mark: s6qMark, finish: s6qFinish, select: rsFn('s6qSelect'), showPopup: rsFn('s6qShowPopup'), reopen: rsFn('s6qReopenPopup'),
       hint: 's6q-hint', check: 's6q-check' }); break;
