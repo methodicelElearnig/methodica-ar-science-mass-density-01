@@ -157,7 +157,7 @@ function emptyUnitState() {
 /* Namespaced per unit (QA D-6): the origin-wide 'lomda_selectedCharacter' was shared by several
    units with incompatible values, and adoptUnitCharacter copied the foreign value into each
    component's Kata document. */
-var UI_CHARACTER_KEY = 'methodica_science_mass_density_01_selectedCharacter';
+var UI_CHARACTER_KEY = 'methodica_ar_science_mass_density_01_selectedCharacter';
 /* This unit has NO character selection (producer decision, part 01 index.html header comment: a
    single companion character, never chosen). Parts 02–07 still read the key at the top of
    script.js through getUnitCharacter() (typeof-guarded) — it always yields null here, and the
@@ -524,7 +524,7 @@ function sendCompletedOnce(ledger, key, objectType, result, opts) {
    מניסיון קודם עלולה לשלוח לומד למסלול שהוא לא עבר בפעם הזאת. */
 /* ⚠️ נושא את slug היחידה במכוון. שתי יחידות שחולקות את המפתח הזה חולקות יומן,
    וכל אחת משתיקה בשקט את הדיווחים של השנייה. */
-var NAV_EDGE_KEY = 'lomda_nav_edges::methodica-science-mass-density-01';
+var NAV_EDGE_KEY = 'lomda_nav_edges::methodica-ar-science-mass-density-01';
 
 function _readEdges() {
   try {

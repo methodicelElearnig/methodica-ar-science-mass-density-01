@@ -18,7 +18,7 @@ let currentScreen = 0;
    try/catch: בפתיחה מ-file:// חלק מהדפדפנים (ולמשל jsdom) חוסמים
    גישה ל-localStorage עם SecurityError — בלי ה-try/catch, חריגה
    כאן הייתה עוצרת את טעינת כל script.js */
-const CHARACTER_STORAGE_KEY = 'methodica_science_mass_density_01_selectedCharacter';   /* = UI_CHARACTER_KEY in ../unit-js/40-resume.js (D-6) */
+const CHARACTER_STORAGE_KEY = 'methodica_ar_science_mass_density_01_selectedCharacter';   /* = UI_CHARACTER_KEY in ../unit-js/40-resume.js (D-6) */
 let savedCharacter = null;
 try {
   /* 720 platform layer (guide §8.7): the document first, the per-unit cache as fallback; a shared file
@@ -2188,10 +2188,10 @@ var SCREEN_TO_SUBCONTENT = {
   6: ['004', 1]
 };
 
-var XAPI_COMP_SLUG = 'methodica-science-mass-density-01-02';
+var XAPI_COMP_SLUG = 'methodica-ar-science-mass-density-01-02';
 var XAPI_COMP_ID   = XAPI_ID_PREFIX + XAPI_COMP_SLUG + '/';
 var XAPI_EVAL_ITEMS = { '001': 1, '002': 1, '003': 1, '004': 1 };   /* items whose question is graded in CODE (xapiAnswered call sites) */
-var XAPI_METADATA_FILE = '../metadata/methodica-science-mass-density-01-02.json';
+var XAPI_METADATA_FILE = '../metadata/methodica-ar-science-mass-density-01-02.json';
 var XAPI_END_BTN = 's6q-check';                               /* the part's last button (D-8, restoreEndedButton) */
 var XAPI_PART_QUESTIONS = ['001/q1', '001/q2', '002/q1', '003/q1', '003/q2', '003/q3', '003/q4', '004/q1'];   /* '<item>/<q>' keys this part reports — the denominator of the part result */
 var XAPI_PASS = 0.75;   /* = XAPI_THRESHOLD.K / its question count: success ⇔ scaled ≥ XAPI_PASS */
@@ -2222,7 +2222,7 @@ function xapiOptIdx(id) { return 'abcdefgh'.indexOf(String(id)); }
 function partFinish(btn) {
   try { xapiEndComponent(xapiPartResult(), btn || document.getElementById(XAPI_END_BTN)); } catch (e) { console.error('[xAPI] partFinish', e); }
   try { flushResumeSave(); } catch (e) {}
-  if (DEV_NAV) window.location.href = '../methodica-science-mass-density-01-03/index.html' + window.location.search;
+  if (DEV_NAV) window.location.href = '../methodica-ar-science-mass-density-01-03/index.html' + window.location.search;
 }
 
 /* ═══════════════════ RESUME — ארבעת ה-hooks הפר-סיניים (guide §8.7) ═══════════════════

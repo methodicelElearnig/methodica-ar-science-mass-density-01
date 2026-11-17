@@ -26,12 +26,12 @@ const vm = require('vm');
 
 const BASE = process.argv[2] || path.join(__dirname, '..');
 const REPO = path.join(__dirname, '..');
-const UNIT_SLUG = 'methodica-science-mass-density-01';
+const UNIT_SLUG = 'methodica-ar-science-mass-density-01';
 const COMPONENTS = ['01', '02', '03', '04', '05', '06', '07'];
-const PREFIX = 'https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/';
+const PREFIX = 'https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/';
 const SHARED = ['10-identity', '20-xapi', '25-report', '40-resume', '50-loader', '90-boot'];
 const HOOKS = ['capturePartPayload', 'applyResumeVars', 'applyResumeDom', 'restoreScreenUI'];
-const CHAR_KEY = 'methodica_science_mass_density_01_selectedCharacter';
+const CHAR_KEY = 'methodica_ar_science_mass_density_01_selectedCharacter';
 
 const compSlug = (c) => UNIT_SLUG + '-' + c;
 const compDir = (c) => path.join(BASE, compSlug(c));

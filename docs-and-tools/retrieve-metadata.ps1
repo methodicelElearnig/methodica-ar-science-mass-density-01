@@ -113,15 +113,15 @@ $LogFile = Join-Path $RepoRoot 'retrieve-metadata.log'
 # ── (2) PER-UNIT — usually fine as-is ───────────────────────────────────────
 # Which language to unwrap the unit's title object with:
 #   { "Hebrew": "מדידת מסה" } -> "מדידת מסה".
-$TitleLangKey = 'he'   # KATA-API.md rule 2026-10-19: the UI reads only he / ar (send-metadata.ps1 sends he)
+$TitleLangKey = 'he'   # KATA-API.md rule 2026-10-19: the UI reads only he / ar; the parent unit's title is under he
 # Value written to each component's `manufacture`.
-# ⚠️ $null since percent-02 (was 'methodica' in the first donor unit).
+# ⚠️ CHANGED FOR percent-02 (was 'methodica', inherited from scale-01).
 # `manufacture` is a v2.4 field. The 720 standard v2.5 §2.6 renamed it to
 # `manufacturer`, MOVED it from the component to the UNIT, and changed its type
 # from free text to the ministry's supplier number. This unit's metadata is
 # v2.5-shaped: no component carries the field, and the unit carries
 # `manufacturer`. Forcing a component-level `manufacture` here would therefore
-# add a spurious key to all seven retrieved components and put seven fake lines
+# add a spurious key to every retrieved component and put one fake line per component
 # into every diff. $null passes KATA's own value through instead.
 $Manufacture = $null
 # Fallback URL prefix for rebuilding `id` fields, used ONLY when no component
@@ -129,10 +129,10 @@ $Manufacture = $null
 # ⚠️ SET FOR THIS UNIT — this is the prefix every id in metadata/ is built from;
 # verified against metadata/*.json. Note 720active/ (identifiers), not 720/ (content):
 # the same split send-metadata.ps1 keeps between $ContentBaseUrl and the IRIs.
-# Retargeted for mass-density-01 (2026-11-02) when this script was copied from mass-gas-01.
-# In practice it is the THIRD fallback and is not reached while components carry
-# an IRI uniqueKey, so a wrong value would never surface — which is exactly why it must be set.
-if (-not $IdBase) { $IdBase = 'https://lomdot.education.gov.il/metodica/720active/science/mass-density/01' }
+# It arrived here pointing at math/percent/02, which is where this script was copied
+# from. In practice it is the THIRD fallback and is not reached while components carry
+# an IRI uniqueKey, so the wrong value never surfaced — which is exactly why it sat.
+if (-not $IdBase) { $IdBase = 'https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01' }   # methodica-ar-science-mass-density-01 (2026-11-02)
 # The authored metadata/ that KATA is audited against (override with -MetadataDir,
 # or pass '' to skip). Not bound to $OutDir: the point is to compare the catalogue
 # with what we MEANT to publish, not with a previous retrieval of itself.
@@ -614,7 +614,13 @@ function New-ComponentFileBody {
         }
     }
 
-    $afterFail = @(foreach ($r in (ConvertTo-JsonArray $Comp.recommendedAfterFail)) { "$UrlPrefix/$(Get-Slug ([string] $r))/" })
+    # An IRI that KATA already holds is kept as it is: one unit can hold components under two prefixes
+    # (volume-liquid-01: Hebrew …/720active/science/… and Arabic …/720active/ar/science/…; here …/720/ar/science/…), and rebuilding
+    # every link from the one unit-wide $UrlPrefix dropped the 'ar/' (2026-11-02). Bare keys are rebuilt.
+    $afterFail = @(foreach ($r in (ConvertTo-JsonArray $Comp.recommendedAfterFail)) {
+        $s = ([string] $r).Trim()
+        if ($s -match '^https?://') { $s.TrimEnd('/') + '/' } else { "$UrlPrefix/$(Get-Slug $s)/" }
+    })
 
     $items = foreach ($it in ((ConvertTo-JsonArray $Comp.subContent) | Sort-Object { [int] $_.order })) {
         $script:counts.items++
@@ -683,6 +689,13 @@ Write-Log ("Output dir : {0}" -f $OutDir)
 
 # 1) Which unit? Parameter, else the local metadata folder, else ask the catalog.
 if ($UnitKey) { Write-Log ("Unit key   : {0} (-UnitKey)" -f $UnitKey) }
+# Arabic twin (2026-11-02): there is no Arabic unit in KATA — the Arabic components live under the
+# Hebrew unit (send-metadata.ps1, PARENT UNIT), so that is the default. The snapshot then also holds
+# the 7 Hebrew components, which are not in this repo's metadata/ (expect warnings for them).
+if (-not $UnitKey) {
+    $UnitKey = 'methodica-science-mass-density-01'
+    Write-Log ("Unit key   : {0} (parent unit of the Arabic components)" -f $UnitKey)
+}
 if (-not $UnitKey) {
     $localUnit = Get-ChildItem -Path (Join-Path $RepoRoot 'metadata') -Filter '*_unit.json' -ErrorAction SilentlyContinue |
         Select-Object -First 1
@@ -738,7 +751,7 @@ if ($components.Count -eq 0) { Write-Warn 'Unit has no components — writing th
 # ⚠️ 2026-09-16: this took the prefix from hostedContentRef, and that is where the
 # false drift came from. hostedContentRef is a CONTENT address and lives under 720/;
 # an id is an IDENTIFIER and lives under 720active/. The prefix built from the content
-# address then produced a 720/ id where a 720active/ one belongs, and an earlier unit's
+# address then produced a 720/ id where a 720active/ one belongs, and mass-measure-01's
 # verify-metadata.ps1 reported `id` DRIFT rows that were not drift.
 # Since the IRI migration the component uniqueKey IS an absolute id, so it is the
 # authority. hostedContentRef survives only as the fallback for a catalogue row that

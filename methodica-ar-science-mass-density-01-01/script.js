@@ -3489,10 +3489,10 @@ var SCREEN_TO_SUBCONTENT = {
   27: ['012', 1]
 };
 
-var XAPI_COMP_SLUG = 'methodica-science-mass-density-01-01';
+var XAPI_COMP_SLUG = 'methodica-ar-science-mass-density-01-01';
 var XAPI_COMP_ID   = XAPI_ID_PREFIX + XAPI_COMP_SLUG + '/';
 var XAPI_EVAL_ITEMS = { '002': 1, '004': 1, '006': 1, '008': 1, '011': 1, '012': 1 };   /* items whose question is graded in CODE (xapiAnswered call sites) */
-var XAPI_METADATA_FILE = '../metadata/methodica-science-mass-density-01-01.json';
+var XAPI_METADATA_FILE = '../metadata/methodica-ar-science-mass-density-01-01.json';
 var XAPI_END_BTN = 's27q-check';                               /* the part's last button (D-8, restoreEndedButton) */
 var XAPI_PART_QUESTIONS = ['002/q1', '002/q2', '004/q1', '006/q1', '008/q1', '011/q1', '012/q1'];   /* '<item>/<q>' keys this part reports — the denominator of the part result */
 var XAPI_PASS = 0.6;
@@ -3516,7 +3516,7 @@ function xapiOptIdx(id) { return 'abcdefgh'.indexOf(String(id)); }
 function partFinish(btn) {
   try { xapiEndComponent(xapiPartResult(), btn || document.getElementById(XAPI_END_BTN)); } catch (e) { console.error('[xAPI] partFinish', e); }
   try { flushResumeSave(); } catch (e) {}
-  if (DEV_NAV) window.location.href = '../methodica-science-mass-density-01-02/index.html' + window.location.search;
+  if (DEV_NAV) window.location.href = '../methodica-ar-science-mass-density-01-02/index.html' + window.location.search;
 }
 
 /* ═══════════════════ RESUME — ארבעת ה-hooks הפר-סיניים (guide §8.7) ═══════════════════

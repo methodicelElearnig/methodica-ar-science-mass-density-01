@@ -12,7 +12,7 @@ let currentScreen = 0;
 
 /* הדמות שתיבחר במסך הראשון (אם קיים) נשמרת ב-localStorage (כל סיין הוא מסמך HTML נפרד);
    try/catch: בפתיחה מ-file:// חלק מהדפדפנים חוסמים גישה ל-localStorage */
-const CHARACTER_STORAGE_KEY = 'methodica_science_mass_density_01_selectedCharacter';   /* = UI_CHARACTER_KEY in ../unit-js/40-resume.js (D-6) */
+const CHARACTER_STORAGE_KEY = 'methodica_ar_science_mass_density_01_selectedCharacter';   /* = UI_CHARACTER_KEY in ../unit-js/40-resume.js (D-6) */
 let savedCharacter = null;
 try {
   /* 720 platform layer (guide §8.7): the document first, the per-unit cache as fallback; a shared file
@@ -1620,10 +1620,10 @@ var SCREEN_TO_SUBCONTENT = {
   5: ['001', 6]
 };
 
-var XAPI_COMP_SLUG = 'methodica-science-mass-density-01-07';
+var XAPI_COMP_SLUG = 'methodica-ar-science-mass-density-01-07';
 var XAPI_COMP_ID   = XAPI_ID_PREFIX + XAPI_COMP_SLUG + '/';
 var XAPI_EVAL_ITEMS = { '001': 1 };   /* items whose question is graded in CODE (xapiAnswered call sites) */
-var XAPI_METADATA_FILE = '../metadata/methodica-science-mass-density-01-07.json';
+var XAPI_METADATA_FILE = '../metadata/methodica-ar-science-mass-density-01-07.json';
 var XAPI_END_BTN = 's5q-check';                               /* the part's last button (D-8, restoreEndedButton) */
 var XAPI_PART_QUESTIONS = ['001/q1', '001/q2', '001/q3', '001/q4'];   /* '<item>/<q>' keys this part reports — the denominator of the part result */
 var XAPI_PASS = 0.75;

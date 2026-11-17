@@ -33,7 +33,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
-const UNIT = 'methodica-science-mass-density-01';
+const UNIT = 'methodica-ar-science-mass-density-01';
 const PARTS = [1, 2, 3, 4, 5, 6, 7].map(n => `${UNIT}-0${n}`);
 
 let fails = 0, checks = 0;

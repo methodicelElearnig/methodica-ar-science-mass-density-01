@@ -1,7 +1,7 @@
 {
-  "id": "https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-06/",
+  "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/",
   "title": "السؤال الأكبر",
-  "learningUnitId": "methodica-science-mass-density-01",
+  "learningUnitId": "methodica-ar-science-mass-density-01",
   "componentPurpose": "practice",
   "isAssessment": true,
   "recommendedAfterFail": [],
@@ -22,14 +22,14 @@
   "updatedAt": "2026-11-17T00:00:00.000Z",
   "subContent": [
     {
-      "id": "https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-06/methodica-science-mass-density-01-06-001/",
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/",
       "title": "نفايات البلاستيك في البحر",
       "informationToBot": "מטרת הפריט: שאלת שיא בת ארבעה סעיפים: שימוש בצפיפות כדי לחזות היכן תימצא פסולת פלסטיק בים, לזהות סוג פלסטיק לא מוכר ולהעריך טענה של פעיל סביבתי. מה התלמיד אמור להבין/לתרגל: התלמיד אמור לתרגל שימוש בנתוני צפיפות מגרף כדי לחזות ציפה ושקיעה, לזהות חומר לא מוכר ולהעריך טענה על סמך נתונים. כיווני חשיבה ואסטרטגיות: א: השוואת צפיפות כל פלסטיק ל-1.03 (פוליפרופילן ופוליאתילן יצופו; פי-וי-סי ופוליאסטר ישקעו). ב: חישוב 19 ÷ 20 = 0.95 וזיהוי פוליאתילן בגרף. ג: השלמת פסקה — מעל פני הים בעיקר פוליפרופילן ופוליאתילן (צפיפות נמוכה מצפיפות מי הים); בקרקעית בעיקר פוליאסטר ופי-וי-סי (צפיפות גבוהה); סדר שני סוגי הפלסטיק באותו משפט חופשי. ד: ביסוס טיעון על ראיות — איסוף דגימות מכמה עומקים, כי חלק מהפלסטיק שוקע ורשת על פני הים לא תאסוף אותו. טעויות נפוצות: סעיף א: בחירה שכל סוגי הפלסטיק יצופו או ישקעו; סעיף ב: חלוקה הפוכה (20 ÷ 19) או השוואה לנפח; סעיף ג: החלפה בין \"גבוהה\" ל\"נמוכה\"; סעיף ד: קבלת הטענה כהגיונית בלי בדיקת נתונים. מידע נוסף: לפני הפריט: \"כל הכבוד! ... עכשיו מגיעה שאלת השיא. יש בה 4 סעיפים. עליכם להצליח ב-3 לפחות.\" ומסך פתיחה: \"מדי שנה מגיעות לאוקיינוסים מיליוני טונות של פסולת פלסטיק. חוקרים סביבתיים המתכננים את איסוף הפסולת מדדו במעבדה את הצפיפות של סוגי הפלסטיק הנפוצים בפסולת, כדי לחזות היכן תימצא כל פסולת בים, ואספו גם מידע על השימוש הנפוץ בכל סוג.\" שני ניסיונות בכל סעיף; רמז קיים בסעיפים ב ו-ד. נתוני הגרף — צפיפות סוגי הפלסטיק הנפוצים בפסולת (גרם/סמ\"ק): פוליפרופילן 0.90; פוליאתילן 0.95; פוליאסטר 1.38; פי-וי-סי 1.40. שימושים נפוצים (נחשפים בלחיצה על סימן שאלה בגרף): פי-וי-סי — צינורות ואריזות קשיחות; פוליאסטר — בקבוקי שתייה; פוליאתילן — שקיות ומכלי ניקוי; פוליפרופילן — פקקי בקבוקים וקשיות. צפיפות מי הים: 1.03 גרם/סמ\"ק. צילום מסך: לא צורף.",
       "contentType": "practice",
       "mediaFormat": "interactive-content",
       "questions": [
         {
-          "questionId": "https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-06/methodica-science-mass-density-01-06-001/q1",
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q1",
           "questionType": "choice",
           "questionText": "أ. بناءً على بيانات الرسم البياني: أي من أنواع البلاستيك سيطفو على سطح مياه البحر، وأيّها ستغرق؟ تذكروا - كثافة مياه البحر هي 1.03 غرام / سم³.",
           "answers": [
@@ -43,7 +43,7 @@
           ]
         },
         {
-          "questionId": "https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-06/methodica-science-mass-density-01-06-001/q2",
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q2",
           "questionType": "choice",
           "questionText": "ب. خلال البحث، عثر الباحثون على جسم من البلاستيك لم يتمكنوا من التعرف عليه. قاموا بقياس كتلته وحجمه: الكتلة: 19 غرام. الحجم: 20 سم³. ما هو نوع البلاستيك الذي وجده الباحثون؟",
           "answers": [
@@ -57,7 +57,7 @@
           ]
         },
         {
-          "questionId": "https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-06/methodica-science-mass-density-01-06-001/q3",
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q3",
           "questionType": "matching",
           "questionText": "ج. اسحبوا الكلمات من المخزن لإكمال الفقرة: في عملية البحث التي أُجريَت فوق سطح البحر، عُثِر بشكل أساسي على شظايا ___ و-___ لأن كثافتها ___ من كثافة مياه البحر. في قاع البحر وُجدت بشكل أساسي شظايا ___ و-___ لأن كثافتها ___ من كثافة مياه البحر.",
           "answers": {
@@ -106,7 +106,7 @@
           ]
         },
         {
-          "questionId": "https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/methodica-science-mass-density-01-06/methodica-science-mass-density-01-06-001/q4",
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q4",
           "questionType": "choice",
           "questionText": "د. ادّعى ناشط بيئي: \"يكفي أن نضع شِباكًا على سطح البحر، كي نجمع بذلك كل نفايات البلاستيك.\" ما هي أفضل طريقة لدعم ادعائه أو معارضته؟",
           "answers": [
