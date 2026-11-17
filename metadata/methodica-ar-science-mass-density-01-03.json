@@ -1,0 +1,179 @@
+{
+  "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/",
+  "title": "وقت التدريب 2",
+  "learningUnitId": "methodica-ar-science-mass-density-01",
+  "componentPurpose": "practice",
+  "isAssessment": false,
+  "recommendedAfterFail": [
+    "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/"
+  ],
+  "isRequired": false,
+  "relativeDifficulty": 2,
+  "masteryLevel": null,
+  "order": 3,
+  "depthLevel": "core-curriculum-basic",
+  "cognitiveLevels": [
+    "applying-a-model-or-procedure"
+  ],
+  "languages": [
+    "Arabic"
+  ],
+  "skills": [],
+  "estimatedTimeInMinutes": 12,
+  "createdAt": "2026-11-17T00:00:00.000Z",
+  "updatedAt": "2026-11-17T00:00:00.000Z",
+  "subContent": [
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-001/",
+      "title": "تعريف الكثافة",
+      "informationToBot": "מטרת הפריט: חיזוק ההגדרה: צפיפות היא תכונה (אופיינית) של חומר. מה התלמיד אמור להבין/לתרגל: התלמיד אמור לשלוף את ההגדרה: צפיפות היא תכונה של החומר, שאינה תלויה בגודל הגוף. כיווני חשיבה ואסטרטגיות: הלומד משלים את המשפט ובוחר את המונח המתאים מבין ארבע אפשרויות. טעויות נפוצות: בחירה ב\"כמות\" או ב\"תכונה משתנה\" — הצפיפות קבועה לחומר ואינה תלויה בגודל הגוף; בלבול עם מצב צבירה. מידע נוסף: שני ניסיונות; יש רמז. לפני הפריט: \"אין כמו תרגול לחיזוק הלמידה — 4 שאלות, ענו נכון על 3 שאלות ומעלה כדי להתקדם\". הלומד בוחר מילה מתוך תפריט נפתח יחיד (מחסן המילים: תכונה, כמות, מצב צבירה, תכונה משתנה). צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-001/q1",
+          "questionType": "choice",
+          "questionText": "أكمِلوا الجملة من بنك الكلمات. الكثافة هي ___ للمادة.",
+          "answers": [
+            "خاصيّة",
+            "كمية",
+            "حالة المادة",
+            "خاصيّة متغيّرة"
+          ],
+          "correctAnswers": [
+            "خاصيّة"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-002/",
+      "title": "حساب الكثافة من معطيات",
+      "informationToBot": "מטרת הפריט: חישוב צפיפות בעזרת הנוסחה צפיפות = מסה ÷ נפח. מה התלמיד אמור להבין/לתרגל: התלמיד אמור לתרגל הצבה בנוסחה צפיפות = מסה ÷ נפח וחישוב ערך הצפיפות. כיווני חשיבה ואסטרטגיות: הלומד מחלק את המסה (10 גרם) בנפח (2 סמ\"ק): 10 ÷ 2 = 5. טעויות נפוצות: חלוקה הפוכה (נפח במסה, 0.2) או הכפלה (20). מידע נוסף: שני ניסיונות; יש רמז. נתוני השאלה: מסה 10 גרם, נפח 2 סמ\"ק; התשובה הנכונה: 5 גרם/סמ\"ק. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-002/q1",
+          "questionType": "choice",
+          "questionText": "كتلة جسم معين 10 غرام وحجمه 2 سم³. ما كثافته؟",
+          "answers": [
+            "5 غرام/سم³",
+            "12 غرام/سم³",
+            "20 غرام/سم³",
+            "8 غرام/سم³"
+          ],
+          "correctAnswers": [
+            "5 غرام/سم³"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-003/",
+      "title": "مقارنة الكثافة حسب الخطوط في الرسم البياني",
+      "informationToBot": "מטרת הפריט: זיהוי החומר בעל הצפיפות הגבוהה ביותר בגרף מסה-נפח לפי שיפוע הקו. מה התלמיד אמור להבין/לתרגל: התלמיד אמור לתרגל זיהוי החומר הצפוף ביותר בגרף לפי שיפוע הקו. כיווני חשיבה ואסטרטגיות: הלומד משווה מסה בנפח זהה: הקו שמגיע למסה הגדולה ביותר ב-5 סמ\"ק הוא התלול ביותר, ולכן צפיפותו הגבוהה ביותר (12.5 ÷ 5 = 2.5 גרם/סמ\"ק). טעויות נפוצות: בחירה בקו הארוך או הגבוה בלי להשוות לפי נפח זהה. מידע נוסף: שני ניסיונות; יש רמז. הלומד לוחץ על הקו המתאים. נתוני הגרף (נפח בסמ\"ק על ציר X, מסה בגרם על ציר Y; כל הקווים יוצאים מראשית הצירים): קו א מגיע ל-2.5 גרם בנפח 5 סמ\"ק (צפיפות 0.5); קו ב — 5 גרם (צפיפות 1); קו ג — 10 גרם (צפיפות 2); קו ד — 12.5 גרם (צפיפות 2.5). צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-003/q1",
+          "questionType": "choice",
+          "questionText": "في الرسم البياني أمامكم مُوضَّحة خطوط الكتلة-الحجم لأربع مواد. اضغطوا على الخط الذي يمثل المادة ذات الكثافة الأعلى.",
+          "answers": [
+            "الخط الذي يصل إلى 2.5 غرام عند حجم 5 سم³",
+            "الخط الذي يصل إلى 5 غرام عند حجم 5 سم³",
+            "الخط الذي يصل إلى 10 غرام عند حجم 5 سم³",
+            "الخط الذي يصل إلى 12.5 غرام عند حجم 5 سم³"
+          ],
+          "correctAnswers": [
+            "الخط الذي يصل إلى 12.5 غرام عند حجم 5 سم³"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-004/",
+      "title": "كثافة الماء والطفو",
+      "informationToBot": "מטרת הפריט: שליפת הכלל: צפיפות המים היא 1 גרם/סמ\"ק, וחומר בעל צפיפות גבוהה מ-1 ישקע במים. מה התלמיד אמור להבין/לתרגל: התלמיד אמור לשלוף את הכלל: צפיפות המים היא 1 גרם/סמ\"ק, ולהסיק מכך אם חומר ישקע או יצוף במים. כיווני חשיבה ואסטרטגיות: הלומד משלים שני חללים בתפריטים נפתחים: צפיפות המים (1) והתנהגות חומר בצפיפות 2.3 (ישקע). טעויות נפוצות: בחירה ב-0 או 1.5 כצפיפות המים; הסקה שחומר צפוף יותר יצוף. מידע נוסף: שני ניסיונות; יש רמז. שני תפריטים נפתחים עם רשימות שונות: צפיפות המים — אפשרויות 0, 1, 1.5, 0.1; התנהגות חומר בצפיפות 2.3 — אפשרויות יצוף, ישקע, יתערבב, יתמוסס. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-004/q1",
+          "questionType": "performance",
+          "questionText": "أكملوا الناقص. كثافة الماء هي ___ غرام/سم³. مادة ذات كثافة 2.3 ___ في الماء.",
+          "answers": null,
+          "correctAnswers": [
+            {
+              "stepId": "كثافة الماء (غرام/سم³)",
+              "response": "1"
+            },
+            {
+              "stepId": "سلوك مادة ذات كثافة 2.3 في الماء",
+              "response": "تغرق"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-005/",
+      "title": "تحديد معدن غير معروف",
+      "informationToBot": "מטרת הפריט: חישוב צפיפות של גוש מתכת וזיהוי המתכת בעזרת טבלת הצפיפויות. מה התלמיד אמור להבין/לתרגל: התלמיד אמור לתרגל חישוב צפיפות מנתוני מסה ונפח וזיהוי המתכת בעזרת טבלת הצפיפויות. כיווני חשיבה ואסטרטגיות: הלומד מחשב 270 ÷ 100 = 2.70 גרם/סמ״ק ומחפש בטבלה את המתכת בעלת הערך הזה — אלומיניום. טעויות נפוצות: התאמה לכסף בגלל הספרות 2.70 ו-10.5 המופיעות בטבלה; חלוקה הפוכה (0.37). מידע נוסף: לפני הפריט: \"יופי של עבודה! הנה עוד 2 תרגילים ברמת קושי גבוהה יותר\". שני ניסיונות; יש רמז. נתוני השאלה: גוש מתכת — מסה 270 גרם, נפח 100 סמ\"ק. טבלת צפיפויות של מתכות (גרם/סמ\"ק): אלומיניום 2.70; ברזל 7.87; כסף 10.5. התשובה: 2.70 גרם/סמ״ק — אלומיניום. צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-005/q1",
+          "questionType": "choice",
+          "questionText": "قطعة معدن غير معروفة، كتلتها 270 غرام وحجمها 100 سم³. احسبوا كثافتها، واستعينوا بجدول الكثافات لتحديد نوع المعدن.",
+          "answers": [
+            "2.70 غرام/سم³ - الفضة",
+            "2.70 غرام/سم³ - الألومنيوم",
+            "7.87 غرام/سم³ - الحديد",
+            "27 غرام/سم³ - لا تطابق لأي معدن في الجدول"
+          ],
+          "correctAnswers": [
+            "2.70 غرام/سم³ - الألومنيوم"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-006/",
+      "title": "كرة في سائل: الكثافة والرسم البياني",
+      "informationToBot": "מטרת הפריט: חיבור בין ציפה/שקיעה, צפיפות ושיפוע קו בגרף מסה-נפח: גולה השוקעת בנוזל צפופה יותר מהנוזל, והקו שלה תלול יותר. מה התלמיד אמור להבין/לתרגל: התלמיד אמור לחבר בין שקיעה בנוזל, צפיפות גבוהה יותר ושיפוע תלול יותר בגרף מסה-נפח. כיווני חשיבה ואסטרטגיות: הלומד משלים שני חללים מתוך מחסן מילים: \"גדולה\" (צפיפות הגולה גדולה מצפיפות הנוזל) ו\"תלול\" (קו של חומר בעל צפיפות גדולה יותר תלול יותר). המילה \"מתון\" היא מסיח. טעויות נפוצות: בחירה ב\"מתון\" לחומר הצפוף יותר; בלבול בין צפיפות לנפח. מידע נוסף: שני ניסיונות; יש רמז. נתוני הגרף (נפח בסמ\"ק על ציר X, מסה בגרם על ציר Y): קו הגולה — תלול, מגיע ל-12.5 גרם בנפח 5 סמ\"ק (צפיפות 2.5); קו הנוזל — מתון, מגיע ל-5 גרם באותו נפח (צפיפות 1). צילום מסך: לא צורף.",
+      "contentType": "practice",
+      "mediaFormat": "interactive-content",
+      "questions": [
+        {
+          "questionId": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-006/q1",
+          "questionType": "matching",
+          "questionText": "غُطست كرة زجاجية في سائل شفاف، وقد غرقت حتى القاع. في الرسم البياني للكتلة-الحجم يظهر خط الكرة الزجاجية وخط السائل. اسحبوا الكلمات وأكملوا النص: الكرة غرقت، لأن كثافتها ___ من كثافة السائل. في الرسم البياني للكتلة-الحجم، تُمثَّل المادة ذات الكثافة الأكبر بخط ___.",
+          "answers": {
+            "source": [
+              "معتدل",
+              "أكبر",
+              "شديد الانحدار"
+            ],
+            "target": [
+              "الفراغ الأول: كثافة الكرة بالنسبة إلى كثافة السائل",
+              "الفراغ الثاني: نوع الخط في الرسم البياني"
+            ]
+          },
+          "correctAnswers": [
+            {
+              "source": "أكبر",
+              "target": "الفراغ الأول: كثافة الكرة بالنسبة إلى كثافة السائل"
+            },
+            {
+              "source": "شديد الانحدار",
+              "target": "الفراغ الثاني: نوع الخط في الرسم البياني"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

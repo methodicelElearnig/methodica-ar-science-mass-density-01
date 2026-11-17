@@ -224,8 +224,8 @@
         .forEach(function (k) { sessionStorage.removeItem(k); });
       sessionStorage.removeItem(LOG_KEY);
       sessionStorage.removeItem(FAIL_KEY);
-      sessionStorage.removeItem('lomda_nav_edges::methodica-science-mass-density-01');
-      Object.keys(sessionStorage).filter(function (k) { return k.indexOf('methodica-science-mass-density-01:') === 0; })
+      sessionStorage.removeItem('lomda_nav_edges::methodica-ar-science-mass-density-01');
+      Object.keys(sessionStorage).filter(function (k) { return k.indexOf('methodica-ar-science-mass-density-01:') === 0; })
         .forEach(function (k) { sessionStorage.removeItem(k); });
     } catch (e) {}
     /* The character and the מועד א verdict live in the State document; localStorage is a cache
@@ -234,8 +234,8 @@
        UI_CHARACTER_KEY and RESULT_KEYS in unit-js/40-resume.js. */
     try {
       localStorage.removeItem('methodica_science_mass_gas_01_selectedCharacter');
-      localStorage.removeItem('methodica-science-mass-density-01:selectedCharacter');
-      localStorage.removeItem('methodica-science-mass-density-01:unitCompleted');
+      localStorage.removeItem('methodica-ar-science-mass-density-01:selectedCharacter');
+      localStorage.removeItem('methodica-ar-science-mass-density-01:unitCompleted');
     } catch (e) {}
     return 'cleared';
   };

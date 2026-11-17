@@ -26,12 +26,12 @@ const vm = require('vm');
 
 const BASE = process.argv[2] || path.join(__dirname, '..');
 const REPO = path.join(__dirname, '..');
-const UNIT_SLUG = 'methodica-science-mass-density-01';
+const UNIT_SLUG = 'methodica-ar-science-mass-density-01';
 const COMPONENTS = ['01', '02', '03', '04', '05', '06', '07'];
-const PREFIX = 'https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/';
+const PREFIX = 'https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/';
 const SHARED = ['10-identity', '20-xapi', '25-report', '40-resume', '50-loader', '90-boot'];
 const HOOKS = ['capturePartPayload', 'applyResumeVars', 'applyResumeDom', 'restoreScreenUI'];
-const CHAR_KEY = 'methodica_science_mass_density_01_selectedCharacter';
+const CHAR_KEY = 'methodica_ar_science_mass_density_01_selectedCharacter';
 
 const compSlug = (c) => UNIT_SLUG + '-' + c;
 const compDir = (c) => path.join(BASE, compSlug(c));
@@ -91,9 +91,16 @@ for (const f of SHARED.concat(['05-media', '05-motion'])) ok('identity', 'unit-j
 const loader = read(path.join(BASE, 'unit-js', '50-loader.js'));
 const lib = (/\(RESUME_ENABLED \? 'xapi-720-(\w)\.js' : 'xapi-720-(\w)\.js'\)/.exec(loader) || []);
 const gate = (/xapi-720-\[([a-z]+)\]\\\.js/.exec(loader) || [])[1] || '';
-ok('loader', 'library letter is k with resume (i without)', lib[1] === 'k' && lib[2] === 'i', lib.join('/'));
-ok('loader', 'the loaded letters are inside the XAPI_USING_G gate', gate.includes('k') && gate.includes('i'), gate);
-ok('loader', 'the stub carries a gated letter', /xapi-720-[ghijk]\.js$/.test('_test/xapi-720-k.js'));
+ok('loader', 'library letter is l with resume (i without) — leave save, 14.11.26', lib[1] === 'l' && lib[2] === 'i', lib.join('/'));
+ok('loader', 'the loaded letters are inside the XAPI_USING_G gate', gate.includes('l') && gate.includes('i'), gate);
+ok('loader', 'the stub carries a gated letter', /xapi-720-[ghijkl]\.js$/.test('_test/xapi-720-l.js') && fs.existsSync(path.join(REPO, '_test', 'xapi-720-l.js')));
+/* Hardening C1/C2 (14.11.26): every part raises __resumeInFlight inline on a registration= launch, and
+   preloads exactly the URLs 50-loader.js builds (the library letter moves with LIB720). */
+for (const p of COMPONENTS) {
+  const h = indexHtml(p);
+  ok('loader', p + ': inline __resumeInFlight on registration=', /if \(\/\[\?&\]registration=\/\.test\(location\.search\)\) window\.__resumeInFlight = true;/.test(h));
+  ok('loader', p + ': preload of xapiwrapper + xapi-720-' + lib[1] + ' + Kata preconnect', h.includes('href="https://lomdot.education.gov.il/metodica/720active/common/xapiwrapper.min.js"') && h.includes('href="https://lomdot.education.gov.il/metodica/720active/common/xapi-720-' + lib[1] + '.js"') && h.includes('<link rel="preconnect" href="https://kata.cet.ac.il">'));
+}
 ok('loader', 'the stub names no other unit', !/mass-gas|body-matter|liquid-02/.test(stripComments(read(path.join(REPO, '_test', 'xapi-720-k.js')))));
 
 const META = {};
@@ -134,7 +141,8 @@ for (const c of COMPONENTS) {
   ok(c, 'platform script tags: 10..50 first, in order', JSON.stringify(names.slice(0, 5)) === JSON.stringify(head), names.join(' '));
   ok(c, 'platform script tags: 05-media.js then 05-motion.js before script.js', names.indexOf('05-media.js') === 5 && names.indexOf('05-motion.js') === 6 && names.indexOf('script.js') > 6, names.join(' '));
   ok(c, 'platform script tags: 90-boot.js last, once', names[names.length - 1] === '90-boot.js' && names.filter((n) => n === '90-boot.js').length === 1, names.join(' '));
-  ok(c, 'platform script tags: nothing unexpected', names.every((n) => head.includes(n) || ['05-media.js', '05-motion.js', 'script.js', '90-boot.js', 'applet.js', 'applet2.js'].includes(n)), names.join(' '));
+  /* Arabic build: 07-btn-width.js (hover width lock for the Arabic SemiBold labels) is the one Arabic-only shared file. */
+  ok(c, 'platform script tags: nothing unexpected', names.every((n) => head.includes(n) || ['05-media.js', '05-motion.js', '07-btn-width.js', 'script.js', '90-boot.js', 'applet.js', 'applet2.js'].includes(n)), names.join(' '));
   for (const u of tags) {
     const v = (/[?&]v=([^&#]+)/.exec(u) || [])[1];
     ok(c, '?v= on ' + u, !!v);
@@ -344,6 +352,39 @@ if (JSDOM) for (const c of COMPONENTS) {
   ok(c, 'flow: unanswered evaluated items are never closed (B-1), ungraded ones are', closes.every((it) => !evalItems.includes(it)) &&
      expectedItems.filter(Boolean).slice(0, -1).filter((it) => !evalItems.includes(it)).every((it) => closes.includes(it)), closes.join(','));
   ok(c, 'flow: initialized carries isEvaluationItem for graded items', sent.filter((s) => s.verb === 'initialized' && s.ctx && s.ctx.objectId).every((s) => s.ctx.isEvaluationItem === evalItems.includes(suffixOf(s.ctx.objectId))));
+  /* B-2 (monday 13454123722): a wrong answer, then Back, sends nothing for the item; coming back and
+     answering right, then moving forward, sends exactly one completed — with the final result */
+  {
+    const itemOf = (n) => cfg.SCREEN_TO_SUBCONTENT[n] ? cfg.SCREEN_TO_SUBCONTENT[n][0] : null;
+    const iE = screens.findIndex((n, i) => i > 0 && evalItems.includes(itemOf(n)) && itemOf(screens[i - 1]) !== itemOf(n) &&
+      screens.slice(i + 1).some((m) => itemOf(m) !== itemOf(n)));
+    if (iE > 0) {
+      const E = itemOf(screens[iE]);
+      const after = screens.slice(iE + 1).find((m) => itemOf(m) !== E);
+      const rb = loadPart(c); const wb = rb.w; const sb = [];
+      wb.METADATA = META[c]; wb.XAPI_USING_G = true; wb.xapiItemAnswered = {}; wb.xapiCompletedObjects = {};
+      wb.sendStatement720 = (verb, type, result, ctx) => sb.push({ verb, result: result || null, ctx: ctx || null });
+      let db = null;
+      wb.loadState720 = () => db; wb.saveState720 = (id, o) => { db = JSON.parse(JSON.stringify(o)); return true; };
+      wb.saveState720Debounced = (id, o) => { db = JSON.parse(JSON.stringify(o)); };
+      wb.readUnitState(); wb._resumeReady = true;
+      wb.xapiOnScreen(wb.eval('currentScreen'));
+      for (const n of screens.slice(1, iE + 1)) wb.goTo(n);
+      const qs = (cfg.XAPI_PART_QUESTIONS || []).filter((k) => k.split('/')[0] === E);
+      const setAll = (v) => { for (const k of qs) wb.XAPI_Q_RESULTS[k] = v; wb.xapiItemAnswered[wb.xapiItemId(E)] = true; };
+      const closesOf = () => sb.filter((s) => s.verb === 'completed' && s.ctx && s.ctx.objectId && suffixOf(s.ctx.objectId) === E);
+      setAll(false);
+      wb.goTo(screens[iE - 1], true);
+      ok(c, 'B-2: Back from answered item ' + E + ' (wrong) sends no completed', closesOf().length === 0, JSON.stringify(closesOf()));
+      wb.goTo(screens[iE]);
+      setAll(true);
+      wb.goTo(after);
+      const cl = closesOf();
+      ok(c, 'B-2: the forward move out of ' + E + ' sends exactly one completed', cl.length === 1, cl.length);
+      ok(c, 'B-2: that completed carries the final (right) result', !!(cl[0] && cl[0].result && cl[0].result.success === true), JSON.stringify(cl[0] && cl[0].result));
+      ok(c, 'B-2: no console.error', rb.errors.length === 0, rb.errors.slice(0, 2).join(' | '));
+    }
+  }
   /* the last click: one component completed, explicit success, button disabled, no navigation */
   const hrefBefore = w.location.href;
   const btn = w.document.getElementById(cfg.XAPI_END_BTN);
@@ -368,8 +409,9 @@ if (JSDOM) for (const c of COMPONENTS) {
   const btn2 = w2.document.getElementById(cfg.XAPI_END_BTN);
   ok(c, 'D-8: finished button stays disabled after a reload with the ledger', btn2 && btn2.disabled);
 
-  /* 4b'' — part result: every question right → success with scaled 1; the pass threshold holds */
-  if (evalItems.length) {
+  /* 4b'' — part result: every question right → success with scaled 1; the pass threshold holds.
+     Parts with an on-screen threshold (XAPI_THRESHOLD, 08.11 sheet fixes) are covered by group 5. */
+  if (evalItems.length && !cfg.XAPI_THRESHOLD) {
     const r7 = loadPart(c); const w7 = r7.w;
     for (const k of cfg.XAPI_PART_QUESTIONS) w7.XAPI_Q_RESULTS[k] = true;
     const full = w7.xapiPartResult();
@@ -463,6 +505,82 @@ if (JSDOM) for (const c of COMPONENTS) {
   const r5 = loadPart(c); const w5 = r5.w; w5._resumeReady = true;
   for (const n of screens) { try { w5.goTo(n); } catch (e) { ok(c, 'sweep(clean): goTo(' + n + ') throws', false, String(e)); } }
   ok(c, 'sweep(clean): no console.error', r5.errors.length === 0, r5.errors.slice(0, 2).join(' | '));
+}
+
+/* ══════════════════ 5. score contract (MOE QA runbook §4 "ציון ומעבר") ══════════════════
+   2026-11-09, fixes 1/2/4/5/6 of the 08.11 sheet. For a part that promises K of N on its first screen
+   (XAPI_THRESHOLD): success and score.scaled come from one count of the N threshold questions only
+   (the harder set never enters), a question with sub-questions counts once and only when all of them
+   are right, success ⇔ scaled ≥ K/N, and — where the part has a gate — below K the part ends there:
+   one completed success:false, the button disabled, the harder screens never reached, also after a
+   reload. challenge: the harder questions' keys; gate: the last threshold screen. */
+const SCORE_CONTRACT = {
+  '02': { K: 3, N: 4, threshold: [['001/q1', '001/q2'], ['002/q1'], ['003/q1', '003/q2', '003/q3', '003/q4'], ['004/q1']], challenge: [] },
+  '03': { K: 3, N: 4, threshold: [['001/q1'], ['002/q1'], ['003/q1'], ['004/q1']], challenge: ['005/q1', '006/q1'],
+          gate: { screen: 4, btn: 's4q-check', cont: (w) => w.advanceScreen(), done: 's4Done', next: 5 } }
+};
+section('5. score contract');
+/* the first `correct` threshold questions right; every other one wrong — a multi-part one with all but its
+   last sub-question right (so a partly-right question must count 0) */
+function scSet(w, sc, correct, challengeOk) {
+  sc.threshold.forEach((subs, i) => subs.forEach((k, j) => { w.XAPI_Q_RESULTS[k] = i < correct || (subs.length > 1 && j < subs.length - 1); }));
+  sc.challenge.forEach((k) => { w.XAPI_Q_RESULTS[k] = challengeOk; });
+}
+function scRecorder(w, c) {
+  const sent = []; let doc = null;
+  w.METADATA = META[c]; w.XAPI_USING_G = true; w.xapiItemAnswered = {}; w.xapiCompletedObjects = {};
+  w.sendStatement720 = (verb, type, result, ctx) => sent.push({ verb, result: result || null, ctx: ctx || null });
+  w.loadState720 = () => doc;
+  w.saveState720 = (id, o) => { doc = JSON.parse(JSON.stringify(o)); return true; };
+  w.saveState720Debounced = (id, o) => { doc = JSON.parse(JSON.stringify(o)); };
+  w.readUnitState(); w._resumeReady = true;
+  return { sent, doc: () => doc, comps: () => sent.filter((s) => s.verb === 'completed' && !(s.ctx && s.ctx.objectId)) };
+}
+if (JSDOM) for (const c of Object.keys(SCORE_CONTRACT)) {
+  const sc = SCORE_CONTRACT[c];
+  const cfg = partConfig(c);
+  ok(c, 'contract: XAPI_THRESHOLD matches the screen promise (K, questions)', cfg.XAPI_THRESHOLD && cfg.XAPI_THRESHOLD.K === sc.K &&
+     JSON.stringify(cfg.XAPI_THRESHOLD.questions) === JSON.stringify(sc.threshold), JSON.stringify(cfg.XAPI_THRESHOLD));
+  ok(c, 'contract: XAPI_PASS = K / N', Math.abs(cfg.XAPI_PASS - sc.K / sc.N) < 1e-9, String(cfg.XAPI_PASS));
+  const r = loadPart(c); const w = r.w;
+  for (let k = 0; k <= sc.N; k++) for (const chal of (sc.challenge.length ? [false, true] : [false])) {
+    scSet(w, sc, k, chal);
+    const res = w.xapiPartResult();
+    const tag = k + '/' + sc.N + (sc.challenge.length ? (chal ? ' + harder all right' : ' + harder all wrong') : '');
+    ok(c, 'result ' + tag + ': success = correct ≥ ' + sc.K, res.success === (k >= sc.K), JSON.stringify(res));
+    ok(c, 'result ' + tag + ': scaled = correct / ' + sc.N + ' (harder set and partly-right questions not counted)', Math.abs(res.score.scaled - Math.round(k / sc.N * 1000) / 1000) < 1e-9, JSON.stringify(res));
+    ok(c, 'result ' + tag + ': success ⇔ scaled ≥ K/N', res.success === (res.score.scaled >= sc.K / sc.N - 1e-9));
+  }
+  if (!sc.gate) continue;
+  /* the gate, K−1 and K (runbook §4: one round with Y−1 correct, one with Y) */
+  for (const k of [sc.K - 1, sc.K]) {
+    const rg = loadPart(c); const wg = rg.w; const rec = scRecorder(wg, c);
+    scSet(wg, sc, k, false); wg.eval(sc.gate.done + ' = true'); wg.goTo(sc.gate.screen);
+    const btn = wg.document.getElementById(sc.gate.btn);
+    sc.gate.cont(wg);
+    const at = wg.eval('currentScreen');
+    if (k < sc.K) sc.gate.cont(wg);   // a second click on the stopped gate (the pass case has moved on)
+    const comps = rec.comps();
+    if (k < sc.K) {
+      ok(c, 'gate ' + k + '/' + sc.N + ': exactly one completed for two clicks', comps.length === 1, String(comps.length));
+      ok(c, 'gate ' + k + '/' + sc.N + ': completed success:false, scaled ' + (k / sc.N), comps[0] && comps[0].result.success === false && Math.abs(comps[0].result.score.scaled - k / sc.N) < 1e-3, JSON.stringify(comps[0] && comps[0].result));
+      ok(c, 'gate ' + k + '/' + sc.N + ': stays on the gate screen, harder screens not shown', at === sc.gate.screen, String(at));
+      ok(c, 'gate ' + k + '/' + sc.N + ': button disabled, aria-disabled', btn && btn.disabled && btn.getAttribute('aria-disabled') === 'true');
+      /* reload with the ledger and the saved progress: the gate still holds, nothing is sent again */
+      const payload = JSON.parse(JSON.stringify(wg.capturePartPayload()));
+      const rr = loadPart(c); const wr = rr.w; const saved = rec.doc();
+      const rec2 = scRecorder(wr, c); wr.loadState720 = () => saved; wr.readUnitState();
+      wr.applyResumeVars(payload); wr.goTo(sc.gate.screen);
+      const btnR = wr.document.getElementById(sc.gate.btn);
+      ok(c, 'gate resume: button disabled after a reload with the ledger', btnR && btnR.disabled, btnR && btnR.textContent);
+      sc.gate.cont(wr);
+      ok(c, 'gate resume: no second completed, still on the gate screen', rec2.comps().length === 0 && wr.eval('currentScreen') === sc.gate.screen);
+      ok(c, 'gate resume: no console.error', rr.errors.length === 0, rr.errors.slice(0, 2).join(' | '));
+    } else {
+      ok(c, 'gate ' + k + '/' + sc.N + ': no completed, continues to screen ' + sc.gate.next, comps.length === 0 && at === sc.gate.next, comps.length + ' @' + at);
+    }
+    ok(c, 'gate ' + k + '/' + sc.N + ': no console.error', rg.errors.length === 0, rg.errors.slice(0, 2).join(' | '));
+  }
 }
 
 /* ═══════════════════════════════ summary ═══════════════════════════════ */

@@ -1,9 +1,16 @@
 'use strict';
 /* ═══════════════════ xAPI (720) — identity ═══════════════════
-   Shared by the seven parts of methodica-science-mass-density-01. Loaded first.
+   Shared by the seven parts of methodica-ar-science-mass-density-01, the Arabic twin of
+   methodica-science-mass-density-01. Loaded first.
    methodica-science-mass-density-01 (2026-11-02): copied from methodica-science-mass-gas-01 (values replaced).
    Source: methodica-science-mass-liquid-02/unit-js/10-identity.js (2026-10-25 state, itself from
    body-matter-01 ← mass-weight-01 ← mass-measure-03), values replaced for this unit on 2026-11-01.
+   Arabic identity (2026-11-17, as methodica-ar-science-mass-liquid-02 593ca51): every id is the Hebrew
+   one with /720active/ → /720/ar/ and "methodica-ar-" for "methodica-", as in metadata/. In Kata there
+   is no Arabic unit: the seven Arabic components join the Hebrew unit methodica-science-mass-density-01
+   (docs-and-tools/send-metadata.ps1, parent-unit mode). XAPI_UNIT_ID stays the Arabic slug, as
+   learningUnitId in every component JSON. The storage keys in 40-resume.js carry "ar" too, so Hebrew
+   and Arabic state never mix in one browser.
    Procedure: 2026/Documentation/reporting-and-resume/ADDING-REPORTING-AND-RESUME.md.
 
    Every id the lomda reports is built from these values and must match metadata/*.json byte for
@@ -15,15 +22,15 @@
    Lowercase everywhere (ids, folder names, storage keys): Kata derives a uniqueKey from the last
    id segment, and currentPartSlug() derives the state key from location.pathname — a capital
    letter would split one learner's progress across two documents. */
-var XAPI_ID_PREFIX = 'https://lomdot.education.gov.il/metodica/720active/science/mass-density/01/';
+var XAPI_ID_PREFIX = 'https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/';
 
-/* The unit id — a bare SLUG, not an IRI, equal to metadata/methodica-science-mass-density-01_unit.json
+/* The unit id — a bare SLUG, not an IRI, equal to metadata/methodica-ar-science-mass-density-01_unit.json
    `id` and to `learningUnitId` in every component JSON. MOE v2.5 §2.7 dropped the IRI requirement
    for the content unit only; components and items remain IRIs (hence XAPI_ID_PREFIX above).
    ⚠️ Never replace it with the prefix alone: Kata would take "01" as the uniqueKey and collide with
    every unit 01 of every subject. The issue-report form also posts shortId(learningUnitId) as the
    unit column of the sheet all 720 units share. */
-window.XAPI_UNIT_ID = 'methodica-science-mass-density-01';
+window.XAPI_UNIT_ID = 'methodica-ar-science-mass-density-01';
 
 /* The last segment of a canonical id — the short slug the issue-report form records. */
 function shortId(u) { return String(u || '').replace(/\/+$/, '').split('/').pop(); }
@@ -32,7 +39,8 @@ function shortId(u) { return String(u || '').replace(/\/+$/, '').split('/').pop(
    (capturePartPayload / applyResumeVars / applyResumeDom / restoreScreenUI) are provided for every
    part at the bottom of its script.js (guide §8.7; docs-and-tools/RESUME.md).
    ⚠️ This flag also changes reporting, not only restoring: it makes 50-loader.js load
-   xapi-720-k.js (the build with the State layer) instead of xapi-720-i.js. Do not switch it off to
+   xapi-720-l.js (the build with the State layer and, since 2026-11-13, the leave save) instead of
+   xapi-720-i.js, and every part's <head> preloads that exact URL. Do not switch it off to
    debug a restore — use ?resetState. */
 var RESUME_ENABLED = true;
 

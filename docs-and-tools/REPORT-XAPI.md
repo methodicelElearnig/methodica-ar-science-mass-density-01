@@ -1,4 +1,11 @@
-# xAPI reporting — methodica-science-mass-density-01
+# xAPI reporting — methodica-ar-science-mass-density-01
+
+> **Arabic twin, 2026-11-17:** ids under `…/720/ar/science/mass-density/01/` with `methodica-ar-` slugs
+> (`unit-js/10-identity.js`, `metadata/`); `20-xapi.js` is byte-identical to the Hebrew unit's `17394ae`
+> (B-2: Back never closes an item); 02 and 03 take score and success from the screen-1 threshold (3 of 4),
+> and 03 stops below it (Hebrew af41559). The library is `xapi-720-l.js` (`50-loader.js` LIB720,
+> preloaded from every `index.html` head). Issue report: the submitted problem type is the Hebrew label
+> (shared sheet), the learner sees Arabic (`REPORT_TYPE_DISPLAY`). The rest of this file is the Hebrew unit's record.
 
 Added 2026-11-02 following `2026/Documentation/reporting-and-resume/ADDING-REPORTING-AND-RESUME.md`
 (§5–§7), after the optimization pass (`OPTIMIZATION-REPORT.md`, guide §15).

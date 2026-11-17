@@ -38,7 +38,7 @@ from PIL import Image, ImageOps
 import imagequant
 
 ROOT = Path(__file__).resolve().parent.parent
-UNIT = 'methodica-science-mass-density-01'
+UNIT = 'methodica-ar-science-mass-density-01'
 PARTS = [f'{UNIT}-0{n}' for n in range(1, 8)]
 KEEP_AUDIO = {'jordan-river.mp4'}
 BOXES = json.loads((ROOT / 'docs-and-tools' / 'media-display-boxes.json').read_text('utf-8'))['boxes']

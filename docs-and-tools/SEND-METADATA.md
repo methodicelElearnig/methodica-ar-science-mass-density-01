@@ -1,3 +1,34 @@
+> **methodica-ar-science-mass-density-01 (2026-11-17) — the Arabic twin.** `send-metadata.ps1` and
+> `retrieve-metadata.ps1` are methodica-ar-science-mass-liquid-02's versions (parent-unit mode), retargeted:
+> - There is no Arabic unit in Kata (Kata binds a learning objective to one unit). `-ParentUnitKey`
+>   defaults to the Hebrew unit `methodica-science-mass-density-01`; the unit is only read (GET), never
+>   POSTed/PATCHed, and `*_unit.json` is not sent. The seven Arabic components
+>   (`…/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-0N/`) are created under it as **draft**.
+>   `-ParentUnitKey ''` restores the own-unit upsert (never use it here).
+> - `ContentBaseUrl` = `https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01` (Hebrew is
+>   served from `…/720/science/mass-density/01/`). Titles go under the ISO key `ar`.
+> - `retrieve-metadata.ps1` reads the parent unit by default, so its snapshot also holds the seven Hebrew
+>   components (warnings for them are expected), and Kata reports `learningUnitId` as the parent.
+>
+> Order: `-DryRun`, `-Preflight`, live create, `retrieve-metadata.ps1`, `-Status` — each live step only on
+> an explicit go from the unit owner. **`-Publish` needs MOE approval of the Arabic version first**
+> (rule 2026-11-02): the components sit in the MOE-approved Hebrew unit, so publishing them approves them
+> without MOE testing. Record the approval here before publishing. See
+> `Documentation/KATA/KATA-API.md` → "Arabic components in a Hebrew unit".
+> **2026-11-17 (owner's go, in chat):** `-DryRun` (`send-metadata-2026-11-17-dryrun.log`) — parent read-only,
+> created=36, failed=0. `-Preflight` (`preflight-metadata-2026-11-17.log`) — parent unit
+> `methodica-science-mass-density-01` EXISTS (200), all 7 Arabic components ABSENT (404), exit 0.
+> **Live create** (`send-metadata-2026-11-17-create.log`) — **created=36 (7 components, 29 items, all HTTP 201),
+> 03 → 02 `recommendedAfterFail` linked (200), failed=0**; the parent unit was only read. Retrieve
+> (`retrieve-metadata-2026-11-17-after-create.log`, snapshot written outside the repo) — the unit holds 14
+> components (7 Hebrew + 7 Arabic) and 58 items; the 36 warnings are the Hebrew records only. The Arabic
+> records equal `metadata/` (id, title, order, isRequired, purpose, time, languages, every question's text,
+> answers, correctAnswers and type) except `learningUnitId`, which Kata sets to the parent (expected).
+> Status (`publish-metadata-2026-11-17-status.log`) — 7 × draft. **Not published** — waits for MOE approval.
+>
+> Everything below this note is the Hebrew unit's history (its runs, logs and Kata state), kept as the
+> record of the shared tooling.
+
 # Sending metadata to the Kata catalog
 
 `send-metadata.ps1` pushes the `metadata/` folder (1 unit + 7 components + their

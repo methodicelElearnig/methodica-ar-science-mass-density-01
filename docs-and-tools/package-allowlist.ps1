@@ -32,7 +32,7 @@
     (itself from the ratio units). build-package.ps1 and verify-package.ps1 come from
     methodica-science-mass-gas-01 (byte-identical to liquid-02's) — only this file is unit-specific:
 
-      1. The component glob is locked to methodica-science-mass-density-01-NN.
+      1. The component glob is locked to methodica-ar-science-mass-density-01-NN (Arabic identity, 2026-11-17).
       2. The sub-app rule covers the applet/ folder of parts 01 and 02 (applet.js, applet2.js,
          applet.css, images/*.png), loaded by the part's own index.html — not an <iframe> site, but
          the same allowlist shape: named files at depth 3, one image folder below.
@@ -96,7 +96,7 @@ $UnitDirs = @{
 
 # Inside a component folder: these files, plus everything under assets/.
 $ComponentFiles = @('index.html', 'script.js', 'styles.css')
-$ComponentGlob  = 'methodica-science-mass-density-01-[0-9][0-9]'
+$ComponentGlob  = 'methodica-ar-science-mass-density-01-[0-9][0-9]'
 
 # ── Sub-apps: a self-contained site inside a component, loaded by <iframe> ───
 #    A sub-app is a self-contained site inside a component, pulled in by <iframe>. It has

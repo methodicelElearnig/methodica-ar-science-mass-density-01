@@ -36,6 +36,23 @@
 [CmdletBinding()]
 param(
     [switch] $DryRun,
+    # methodica-science-mass-weight-01 (2026-09-24): READ-ONLY check before the first live run.
+    # GETs the unit and every component by key and prints each status — writes nothing to Kata.
+    # Needs the key (it reads through the same Resolve-ApiKey, never printing it). Exit 0 when
+    # everything is absent (404), 2 when anything already exists (200 — switch to the update path),
+    # 1 on any other status (key / network problem). Logs to preflight-metadata.log, so the
+    # send-metadata.log of a real run is never overwritten by a check.
+    [switch] $Preflight,
+    # methodica-science-mass-weight-01 (2026-09-24): READ-ONLY. GET every component and print its
+    # publication status (draft | published). Writes nothing. Logs to publish-metadata.log.
+    [switch] $Status,
+    # methodica-science-mass-weight-01 (2026-09-24): LIVE and ONE-WAY. Publishes every component that
+    # is still draft (POST /api/v1/component/publish?componentKey=<IRI>). Kata: "One-way — a published
+    # component cannot return to draft through this endpoint", and published components "appear in
+    # the learning-platform catalog"; publishing freezes the component and item ids. Refuses to start
+    # unless all components exist; stops at the first failure; skips ones already published; then
+    # reads every component back and requires status=published. Logs to publish-metadata.log.
+    [switch] $Publish,
     [string] $ApiKey,
     [string] $BaseUrl,
     [string] $MetadataDir,
@@ -45,7 +62,11 @@ param(
     # Deliberately sends no `order` and no `questions`, so the item-order 409 trap
     # cannot fire and — far more important right now — so a catalogue-side edit to a
     # question can never be overwritten by this mode.
-    [switch] $ItemHostedRefOnly
+    [switch] $ItemHostedRefOnly,
+    # methodica-ar-science-volume-liquid-01 (2026-11-02), ported to methodica-ar-science-mass-density-01
+    # (2026-11-02): the Hebrew unit the Arabic components join.
+    # See the PARENT UNIT note in CONFIG (2). '' restores the own-unit upsert of *_unit.json.
+    [string] $ParentUnitKey
 )
 
 # ============================================================================
@@ -77,6 +98,21 @@ if (-not $BaseUrl) { $BaseUrl = 'https://kata.cet.ac.il' }
 if (-not $MetadataDir) { $MetadataDir = Join-Path $RepoRoot 'metadata' }
 # Run log (git-ignored via *.log).
 $LogFile = Join-Path $RepoRoot 'send-metadata.log'
+if ($Preflight) { $LogFile = Join-Path $RepoRoot 'preflight-metadata.log' }   # a check never overwrites a run's log
+
+# PARENT UNIT — the Arabic components join the EXISTING Hebrew unit; there is no Arabic unit
+# in KATA. KATA binds a learning objective to exactly one unit (a separate Arabic unit got
+# 409 "objective already bound to a unit (strict 1:1)" on methodica-ar-math-ratio-01 and
+# methodica-ar-math-percent-08), and the KATA team's instruction is to add the Arabic
+# components to the existing unit. Ported 2026-11-02 from methodica-ar-science-body-matter-01
+# (5cdfed4, itself from methodica-ar-math-ratio-04 3c028d7).
+#
+# When set, the unit is READ-ONLY: one GET confirms it exists, *_unit.json is not read, and
+# no POST/PATCH ever goes to the unit — a PATCH here would overwrite the Hebrew unit's title,
+# sectors and audience with this repo's values. Components are created under this key.
+# -ParentUnitKey '' restores the original behaviour (upsert this repo's own *_unit.json).
+if (-not $PSBoundParameters.ContainsKey('ParentUnitKey')) { $ParentUnitKey = 'methodica-science-mass-density-01' }
+if ($Status -or $Publish) { $LogFile = Join-Path $RepoRoot 'publish-metadata.log' }
 
 # ── (2) PER-UNIT — usually fine as-is ───────────────────────────────────────
 # Where the CONTENT is served from, for hostedContentRef — the field Kata launches the
@@ -92,15 +128,18 @@ $LogFile = Join-Path $RepoRoot 'send-metadata.log'
 # one, for every component of this unit.
 #
 # Take this from the unit's own DEPLOY.md deploy target. No trailing slash.
-$ContentBaseUrl = 'https://lomdot.education.gov.il/metodica/720/science/mass-density/01'
+# Arabic hosting path, as the Arabic twins (.../720/ar/science/volume-liquid/01, confirmed 2026-11-02);
+# the Hebrew parts are served from .../720/science/mass-density/01/.
+# Confirmed for this unit 2026-11-02 (unit owner). hostedContentRef is one-way (see -ItemHostedRefOnly).
+$ContentBaseUrl = 'https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01'
 # Title language key: wraps a string title into the API object, e.g.
 #   "מדידת מסה" -> { "Hebrew": "מדידת מסה" }. Change only for non-Hebrew content.
-$TitleLangKey = 'he'   # KATA-API.md rule 2026-10-19: the UI reads only the ISO codes he / ar
+$TitleLangKey = 'ar'   # KATA-API.md rule 2026-10-19: the UI reads only the ISO codes he / ar
 # ⚠️ NO LONGER SENT (2026-09-09). v2.5 §2.6 renamed the v2.4 component field
 # `manufacture` to the unit field `manufacturer` and retyped it as the ministry's
 # supplier number. It is moot either way, because KATA derives the value itself
 # from the group owning the API key and returns the provider's DISPLAY NAME:
-# an earlier unit's metadata carried no manufacturer at all, yet the
+# mass-measure-02's unit metadata carries no manufacturer at all, yet the
 # catalogue reports "מתודיקה". Sending anything here is therefore either ignored
 # or a chance to be wrong, so New-UnitBody omits the field. Kept only to document
 # why. (This unit's metadata does carry manufacturer = "310"; §2.6 asks for a
@@ -112,7 +151,7 @@ $UnitManufacture = 'methodica'
 $DefaultDepthLevel = 'core-curriculum-basic'
 # Optional per-component overrides, keyed by uniqueKey (URL slug). An override
 # WINS over the metadata value; unlisted components use their metadata value.
-#   e.g. 'methodica-science-mass-density-01-05' = @{ relativeDifficulty = 4; depthLevel = 'core-curriculum-advanced' }
+#   e.g. 'methodica-ar-science-mass-density-01-05' = @{ relativeDifficulty = 4; depthLevel = 'core-curriculum-advanced' }
 $ComponentOverrides = @{
 }
 
@@ -157,8 +196,9 @@ $CognitiveLevelMap = @{
 }
 # The SCIENCE codes KATA actually holds — verified live 2026-07-25 via
 # GET /api/v1/cognitive-levels (12 codes total: 8 `science` plus 4 `mathematics`).
-# THIS UNIT IS SCIENCE (mass-density-01, like mass-gas-01, uses applying-a-model-or-procedure and analyzing);
-# the mathematics codes are kept because the endpoint accepts them and a shared unit could use them.
+# THIS UNIT IS SCIENCE (mass-density-01 uses applying-a-model-or-procedure, analyzing and
+# evaluating-and-justifying); the mathematics codes are kept because the endpoint accepts them
+# and a shared unit could use them.
 #
 # ⚠️ VOCABULARY MISMATCH — the metadata/ files in this repo currently carry word-reversed
 #    spellings that the API will reject with 422 "code does not exist", e.g.
@@ -340,11 +380,22 @@ function Invoke-Kata {
     }
 }
 
+# methodica-science-mass-weight-01 (2026-09-24): 200 = exists, 404 = absent, ANYTHING ELSE STOPS
+# THE RUN. The mm-03 original read every non-200 as "absent" and POSTed — so a 401/403 (bad key), a
+# 429 or a 5xx would have turned into a spurious create. Stopping here, before the write, is the
+# only safe reading of an answer that is neither yes nor no.
+function Get-ExistsCode {
+    param([string] $Path)
+    return (& curl.exe -s -o NUL -w '%{http_code}' -X GET "$BaseUrl$Path" -H "X-API-Key: $ApiKey")
+}
 function Test-Exists {
     param([string] $Path)
     if ($DryRun) { return $false }
-    $code = (& curl.exe -s -o NUL -w '%{http_code}' -X GET "$BaseUrl$Path" -H "X-API-Key: $ApiKey")
-    return ($code -eq '200')
+    $code = Get-ExistsCode $Path
+    if ($code -eq '200') { return $true }
+    if ($code -eq '404') { return $false }
+    Write-Log ("STOPPED existence check GET {0} returned HTTP {1} — neither 200 nor 404. Nothing was written for it." -f $Path, $code) 'ERROR'
+    throw "Existence check GET $Path returned HTTP $code (not 200/404) — stopping before any write. 401/403: key; 429/5xx: retry later."
 }
 
 # Upsert one entity. Returns $true on success (so children may proceed).
@@ -392,12 +443,12 @@ function New-UnitBody {
     param($Unit)
 
     # uniqueKey comes from the last path segment of the unit id. Guard against an id that stops at
-    # the unit FOLDER (".../mass-liquid/02/"), which would silently key the unit as "01" and collide with
+    # the unit FOLDER (".../mass-density/01/"), which would silently key the unit as "01" and collide with
     # every other unit numbered 01.
     $unitKey = Get-Slug $Unit.id
     if ($unitKey -notmatch '^methodica-') {
         throw ("Unit uniqueKey resolves to '$unitKey' from id '$($Unit.id)' — expected a slug like " +
-               "'methodica-science-mass-density-01'. The unit id must end with the unit slug, not the folder number.")
+               "'methodica-ar-science-mass-density-01'. The unit id must end with the unit slug, not the folder number.")
     }
 
     # ── 720 v2.5 field shapes (updated 2026-09-09; see the block comment below) ──
@@ -527,7 +578,7 @@ function New-ComponentBody {
     }
     # Keyed on PRESENCE, not truthiness. `"masteryLevel": null` in the metadata is a
     # deliberate instruction to clear the field, and a PATCH that omits the key leaves
-    # whatever Kata holds — which is how, in an earlier unit, five components went on serving stale
+    # whatever Kata holds — which is how five components went on serving stale
     # basic/intermediate/advanced values after the metadata dropped them.
     # ComponentUpdate.masteryLevel is anyOf [MasteryLevel, null], so an explicit null is
     # legal. An ABSENT key still means "leave it alone", which is the older behaviour.
@@ -559,15 +610,15 @@ function New-ItemBody {
         # i.e. the item's own 720active IRI, defended on the grounds that an item is a
         # screen group INSIDE the component's page so no such file exists, and that
         # 720 v2.5 p.11 frees an IRI from resolving. p.11 is about IDENTIFIERS; this
-        # field is a CONTENT ADDRESS, and 720active/science/mass-density/01/ serves 0 bytes,
+        # field is a CONTENT ADDRESS, and 720active/math/percent/02/ serves 0 bytes,
         # so what went in was a URL that resolves to nothing. The component-level ref
         # had the same fault and is what Kata actually launches from — see the CONFIG
         # note on $ContentBaseUrl.
         #
         # Omitted rather than re-pointed: there is genuinely no item-level page to
         # address, and nothing launches an item. Omitting it from a PATCH leaves
-        # whatever KATA holds untouched, which is the point — any item refs written by
-        # an earlier backfill stay exactly as they are, and the field is ONE-WAY
+        # whatever KATA holds untouched, which is the point — the 26 refs written by
+        # the September backfill stay exactly as they are, and the field is ONE-WAY
         # (null is silently ignored, '' is a 422) so they could not be cleared anyway.
         # A newly POSTed item simply has none.
         order            = $Order
@@ -586,7 +637,9 @@ function New-ItemBody {
 # ---- Main -------------------------------------------------------------------
 
 # Fresh log per run.
-$modeLabel = if ($DryRun) { 'DRY-RUN (no network)' } else { 'LIVE' }
+if ($Preflight -and $DryRun) { throw '-Preflight and -DryRun are exclusive: the preflight is the read-only NETWORK check.' }
+if (@($Preflight, $Status, $Publish, $DryRun | Where-Object { $_ }).Count -gt 1) { throw '-Preflight, -Status, -Publish and -DryRun are mutually exclusive.' }
+$modeLabel = if ($Preflight) { 'PREFLIGHT (read-only GETs)' } elseif ($Status) { 'STATUS (read-only GETs)' } elseif ($Publish) { 'PUBLISH (LIVE, one-way)' } elseif ($DryRun) { 'DRY-RUN (no network)' } else { 'LIVE' }
 Set-Content -Path $LogFile -Value ("=== send-metadata {0} ===" -f $modeLabel) -Encoding UTF8
 
 $ApiKey = Resolve-ApiKey
@@ -604,16 +657,104 @@ Write-Log ("Base URL     : {0}" -f $BaseUrl)
 Write-Log ("Metadata dir : {0}" -f $MetadataDir)
 Write-Log ("Mode         : {0}" -f $modeLabel)
 
-# 1) Unit
-$unitFile = Get-ChildItem -Path $MetadataDir -Filter '*_unit.json' | Select-Object -First 1
-if (-not $unitFile) { Write-Log "No *_unit.json found in $MetadataDir" 'ERROR'; exit 1 }
-$unit = Get-Content -Raw -Path $unitFile.FullName -Encoding UTF8 | ConvertFrom-Json
-$unitKey = Get-Slug $unit.id
+# 0) Preflight — READ-ONLY: GET the unit and each component, report, write nothing, exit.
+if ($Preflight) {
+    $pUnitFile = Get-ChildItem -Path $MetadataDir -Filter '*_unit.json' | Select-Object -First 1
+    if (-not $pUnitFile) { Write-Log "No *_unit.json found in $MetadataDir" 'ERROR'; exit 1 }
+    $pUnit = Get-Content -Raw -Path $pUnitFile.FullName -Encoding UTF8 | ConvertFrom-Json
+    $pUnitKey = if ($ParentUnitKey) { $ParentUnitKey } else { Get-Slug $pUnit.id }   # parent unit: expected to EXIST
+    $checks = @()
+    if ($ParentUnitKey) {
+        # The parent unit must EXIST: a 404 here is the failure, not the expected state.
+        $pc = Get-ExistsCode ('/api/v1/content-units/' + $pUnitKey)
+        Write-Log ("{0} parent unit {1} (HTTP {2})" -f $(if ($pc -eq '200') { 'EXISTS ' } else { 'MISSING' }), $pUnitKey, $pc)
+        if ($pc -ne '200') { Write-Log 'Parent unit not found — nothing can be created under it.' 'ERROR'; exit 1 }
+    } else {
+        $checks += @{ Label = 'unit ' + $pUnitKey; Path = '/api/v1/content-units/' + $pUnitKey }
+    }
+    $pComps = Get-ChildItem -Path $MetadataDir -Filter '*.json' | Where-Object { $_.Name -notlike '*_unit.json' } |
+        ForEach-Object { Get-Content -Raw -Path $_.FullName -Encoding UTF8 | ConvertFrom-Json } | Sort-Object { [int] $_.order }
+    foreach ($c in $pComps) { $checks += @{ Label = 'component ' + (Get-Slug $c.id); Path = '/api/v1/component?componentKey=' + (Enc $c.id) } }
+    $absent = 0; $present = 0; $other = 0
+    foreach ($ck in $checks) {
+        $code = Get-ExistsCode $ck.Path
+        if ($code -eq '404') { $absent++; $tag = 'ABSENT ' } elseif ($code -eq '200') { $present++; $tag = 'EXISTS ' } else { $other++; $tag = 'UNKNOWN' }
+        Write-Log ("{0} {1} (HTTP {2})" -f $tag, $ck.Label, $code)
+    }
+    Write-Log ("Preflight done. absent={0} exists={1} other={2} — nothing was written." -f $absent, $present, $other)
+    if ($other -gt 0) { exit 1 }
+    if ($present -gt 0) { exit 2 }
+    exit 0
+}
+
+# 0b) Status (read-only) / Publish (live, one-way) — components only; units and items carry no status.
+if ($Status -or $Publish) {
+    $sComps = Get-ChildItem -Path $MetadataDir -Filter '*.json' | Where-Object { $_.Name -notlike '*_unit.json' } |
+        ForEach-Object { Get-Content -Raw -Path $_.FullName -Encoding UTF8 | ConvertFrom-Json } | Sort-Object { [int] $_.order }
+    function Get-ComponentStatus([string] $iri) {
+        $r = Invoke-Kata 'GET' ('/api/v1/component?componentKey=' + (Enc $iri)) $null
+        if ($r.Code -ne '200') { return @{ Code = $r.Code; Status = $null } }
+        try { $st = ($r.Body | ConvertFrom-Json).status } catch { $st = $null }
+        return @{ Code = $r.Code; Status = $st }
+    }
+    $rows = foreach ($c in $sComps) { $s = Get-ComponentStatus $c.id; [pscustomobject]@{ Slug = (Get-Slug $c.id); Iri = $c.id; Code = $s.Code; Status = $s.Status } }
+    foreach ($row in $rows) { Write-Log ("{0,-9} {1} (HTTP {2})" -f ($(if ($row.Status) { $row.Status } else { '?' })), $row.Slug, $row.Code) }
+    $missing = @($rows | Where-Object { $_.Code -ne '200' -or -not $_.Status })
+    if ($Status) {
+        Write-Log ("Status done. draft={0} published={1} unreadable={2} — nothing was written." -f `
+            @($rows | Where-Object Status -eq 'draft').Count, @($rows | Where-Object Status -eq 'published').Count, $missing.Count)
+        exit ($(if ($missing.Count) { 1 } else { 0 }))
+    }
+    # ---- Publish ----
+    if ($missing.Count) {
+        Write-Log ("REFUSED to publish: {0} component(s) unreadable — nothing was written." -f $missing.Count) 'ERROR'
+        exit 1
+    }
+    $published = 0; $skipped = 0
+    foreach ($row in $rows) {
+        if ($row.Status -eq 'published') { $skipped++; Write-Log ("SKIPPED  {0} (already published)" -f $row.Slug); continue }
+        $r = Invoke-Kata 'POST' ('/api/v1/component/publish?componentKey=' + (Enc $row.Iri)) $null
+        $after = $null; try { $after = ($r.Body | ConvertFrom-Json).status } catch {}
+        if ($r.Code -eq '200' -and $after -eq 'published') {
+            $published++; Write-Log ("PUBLISHED {0} (HTTP {1})" -f $row.Slug, $r.Code)
+        } else {
+            $snippet = ($r.Body -replace '\s+', ' '); if ($snippet.Length -gt 400) { $snippet = $snippet.Substring(0, 400) + '…' }
+            Write-Log ("FAILED   {0} (HTTP {1}, status={2}) {3} — stopping; later components untouched." -f $row.Slug, $r.Code, $after, $snippet) 'ERROR'
+            exit 1
+        }
+    }
+    # Read back — never trust a 2xx.
+    $bad = 0
+    foreach ($c in $sComps) {
+        $s = Get-ComponentStatus $c.id
+        if ($s.Status -ne 'published') { $bad++; Write-Log ("NOT PUBLISHED on read-back: {0} (HTTP {1}, status={2})" -f (Get-Slug $c.id), $s.Code, $s.Status) 'ERROR' }
+    }
+    Write-Log ("Publish done. published={0} skipped={1} read-back-not-published={2}" -f $published, $skipped, $bad)
+    exit ($(if ($bad) { 1 } else { 0 }))
+}
+
+# 1) Unit — either an existing parent unit (read-only) or this repo's own unit (upserted)
+if ($ParentUnitKey) {
+    $unitKey = $ParentUnitKey
+    $unit = $null
+} else {
+    $unitFile = Get-ChildItem -Path $MetadataDir -Filter '*_unit.json' | Select-Object -First 1
+    if (-not $unitFile) { Write-Log "No *_unit.json found in $MetadataDir" 'ERROR'; exit 1 }
+    $unit = Get-Content -Raw -Path $unitFile.FullName -Encoding UTF8 | ConvertFrom-Json
+    $unitKey = Get-Slug $unit.id
+}
 
 # In -ItemHostedRefOnly the unit is not touched at all — the whole point of that mode
-# is that exactly one field per item changes and nothing else in the catalogue moves.
+# is that exactly one field on 26 items changes and nothing else in the catalogue moves.
 $unitOk = $true
-if (-not $ItemHostedRefOnly) {
+if ($ParentUnitKey) {
+    Write-Log ("Parent unit  : {0} (read-only, not modified)" -f $unitKey)
+    $r = Invoke-Kata 'GET' "/api/v1/content-units/$unitKey" $null
+    $unitOk = $DryRun -or ($r.Code -eq '200')
+    if (-not $unitOk) {
+        Write-Log ("Parent unit {0} not found or not readable (HTTP {1}) — nothing sent." -f $unitKey, $r.Code) 'ERROR'
+    }
+} elseif (-not $ItemHostedRefOnly) {
     $unitBody  = New-UnitBody $unit
     $unitPatch = Remove-Key $unitBody 'uniqueKey'
     $unitOk = Send-Entity -Label "unit $unitKey" `
@@ -624,18 +765,18 @@ if (-not $ItemHostedRefOnly) {
 
 if ($ItemHostedRefOnly) {
     # ── Narrow mode — RETIRED 2026-09-16, and it refuses to run ───────────────
-    # One field, one row per item, nothing else. It existed because the catalogue is NOT a
+    # One field, 26 rows, nothing else. It existed because the catalogue is NOT a
     # mirror of metadata/ any more: somebody edited questions in KATA after our
     # 2026-09-09 push (see kata-vs-metadata.md), and a full re-send would silently
     # overwrite their work.
     #
     # ⚠️ It wrote a ref that cannot resolve. $ref came from Get-ContentIri $item.id,
-    # i.e. the item's 720active IRI — and 720active/science/mass-density/01/ serves 0 bytes.
+    # i.e. the item's 720active IRI — and 720active/math/percent/02/ serves 0 bytes.
     # An id is an identifier, not a fetch URL (720 v2.5 p.11), so deriving one from the
     # other is the same mistake the component ref carried until today; see the CONFIG
     # note on $ContentBaseUrl.
     #
-    # It is NOT re-pointed at $ContentBaseUrl, and any item rows already in KATA are left
+    # It is NOT re-pointed at $ContentBaseUrl, and the 26 rows already in KATA are left
     # exactly as they are. Two reasons. There is no item-level page to point at — items
     # are screens inside one component index.html — so any value here is approximate at
     # best; and the field is ONE-WAY (null is silently ignored, '' is a 422), so a
@@ -644,7 +785,7 @@ if ($ItemHostedRefOnly) {
     #
     # Re-enable only with a value someone can point at in a browser.
     throw ('-ItemHostedRefOnly is retired: it derived the ref from the item id, which is a ' +
-           '720active identifier that serves 0 bytes. Any item refs already in KATA are ' +
+           '720active identifier that serves 0 bytes. The 26 item refs already in KATA are ' +
            'left alone deliberately (the field is one-way). See the block comment here and ' +
            'the CONFIG note on $ContentBaseUrl.')
 

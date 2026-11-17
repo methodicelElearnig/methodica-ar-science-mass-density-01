@@ -1,4 +1,14 @@
-# methodica-science-mass-density-01 — מדעים · יעד 10 · צפיפות
+# methodica-ar-science-mass-density-01 — العلوم · الهدف 10 · الكثافة (Arabic twin)
+
+The Arabic twin of `methodica-science-mass-density-01`: every text the learner sees is Arabic, the
+behaviour is the Hebrew unit's (parity with Hebrew `17394ae`, ported 2026-11-17 — score/success from the
+screen-1 threshold in 02/03, Back never closes an item, resume hardening and the leave save through
+`xapi-720-l.js`). Identity: ids under `https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/`,
+slugs `methodica-ar-science-mass-density-01-0N`, storage keys with `ar`; the shared library still loads from
+`720active/common/`. In Kata the seven Arabic components live inside the Hebrew unit (draft, parent-unit
+mode — `docs-and-tools/SEND-METADATA.md`). Arabic-only: `unit-js/07-btn-width.js` (hover width lock) and
+the issue-report display labels (`REPORT_TYPE_DISPLAY`; the submitted labels stay Hebrew for the shared sheet).
+
 
 720 Science unit, seven self-contained parts (one per PPTX רכיב), canvas 1280×710, per-screen
 `script.js` engine (static `<section class="screen">` blocks, `goTo` / `advanceScreen` / `backScreen`).
@@ -11,11 +21,11 @@ metadata/               the catalogue (unit + 7 components) — source of every 
 unit-js/ unit-css/      720 platform layer — xAPI reporting, issue report, resume (10/20/25/40/50/90),
                         plus 05-media.js (lazy media) and 05-motion.js + motion.css (system animation)
 unit-assets/            fonts, icons (incl. the report flag) and clips shared by several parts, one copy each
-_test/                  verify-assets.js · verify-report.js · xapi-720-k.js (offline library stub) · README (browser walk)
+_test/                  verify-assets.js · verify-report.js · write-guard.js · xapi-720-l.js / -k.js (offline library stubs) · README
 docs-and-tools/         REPORT-XAPI · RESUME · RESPONSE-EXAMPLES · STUB-WALK · OPTIMIZATION-REPORT · MEDIA-CHANGES ·
                         reencode-media.py (+ media-display-boxes.json) · send/retrieve-metadata.ps1 · packaging scripts
 scripts/serve.py        local static server (python scripts/serve.py → http://127.0.0.1:8765)
-methodica-science-mass-density-01-NN/
+methodica-ar-science-mass-density-01-NN/
   index.html            production entry (boot cover, report dialogs, the layer's script tags, one ?v=)
   index_dev.html        DEV bar (screen jumping via postMessage) — never shipped
   script.js             this part's screens + the xAPI seams, call sites and the four resume hooks at its end
