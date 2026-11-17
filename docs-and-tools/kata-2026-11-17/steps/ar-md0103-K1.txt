@@ -1,0 +1,35 @@
+# comp https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/
+# student VADIM-AR-MD0103-K1-1117
+# expect false 0.5
+goTo(1)
+s1Select('خاصيّة'); s1Check()
+@expect s1Done === true
+advanceScreen()
+@expect currentScreen === 2
+s2qSelect('a'); s2qCheck()
+@expect s2qDone === true
+advanceScreen()
+@expect currentScreen === 3
+s3qSelect('a'); s3qCheck()
+s3qSelect('b'); s3qCheck()
+@expect s3qDone === true
+advanceScreen()
+@expect currentScreen === 4
+s4Select(1,'1'); s4Select(2,'تطفو'); s4Check()
+s4Select(2,'تختلط'); s4Check()
+@expect s4Done === true && s4Outcome === 'wrong2'
+@print XAPI_Q_RESULTS
+@print xapiPartResult()
+s4Check()
+@expect currentScreen === 4
+@expect document.getElementById('s4q-check').disabled === true
+@mark
+s4Check()
+@expect currentScreen === 4
+@reload
+@expect currentScreen === 4
+@expect document.getElementById('s4q-check').disabled === true
+s4Check()
+advanceScreen()
+@expect currentScreen === 4
+@nonew

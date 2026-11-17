@@ -1,0 +1,108 @@
+{
+ "steps": "steps/ar-md0107-C.txt",
+ "student": "VADIM-AR-MD0107-C-1117",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/",
+ "registration": "bc52093e-33e3-42b1-82d6-1a47f1f2b0bd",
+ "when": "2026-11-17T13:03:33.516Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/methodica-ar-science-mass-density-01-07-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/methodica-ar-science-mass-density-01-07-001/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "في وضع \"طفو\" الكثافة المتوسطة للغواصة[.]منخفضة[,]في وضع \"الغوص\" الكثافة المتوسطة للغواصة[.]عالية"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/methodica-ar-science-mass-density-01-07-001/q2",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "تُملأ خزانات الموازنة بمياه البحر.[,]تزداد كتلة الغواصة.[,]تزداد الكثافة المتوسطة.[,]الغواصة تغرق."
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/methodica-ar-science-mass-density-01-07-001/q3",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "الكثافة المتوسطة للغواصة تساوي كثافة مياه البحر (1.03 غرام/سم³). يتم تحقيق هذه الحالة عن طريق ضبط كمية الماء في خزانات الموازنة."
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/methodica-ar-science-mass-density-01-07-001/q4",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "الادعاء غير دقيق. يتحدَّد الطفو حسب الكثافة المتوسطة للغواصة؛ فعلى سبيل المثال، عندما تكون كثافتها المتوسطة 0.99 غرام/سم³ فإنها تطفو، وعندما تكون 1.04 غرام/سم³ فإنها تغرق."
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/methodica-ar-science-mass-density-01-07-001/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   currentScreen === 2 → true",
+  "ok   s7Done === true → true",
+  "ok   currentScreen === 3 → true",
+  "ok   s3Done === true → true",
+  "ok   currentScreen === 4 → true",
+  "ok   s4qDone === true → true",
+  "ok   currentScreen === 5 → true",
+  "ok   s5qDone === true → true",
+  "XAPI_Q_RESULTS → {\"001/q1\":true,\"001/q2\":true,\"001/q3\":true,\"001/q4\":true}",
+  "xapiPartResult() → {\"success\":true,\"score\":{\"scaled\":1}}",
+  "ok   document.getElementById('s5q-check').disabled === true → true"
+ ],
+ "problems": [],
+ "logs": [],
+ "hebrew": []
+}

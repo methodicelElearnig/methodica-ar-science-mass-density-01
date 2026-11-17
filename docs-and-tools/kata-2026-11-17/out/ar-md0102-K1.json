@@ -1,0 +1,232 @@
+{
+ "steps": "steps/ar-md0102-K1.txt",
+ "student": "VADIM-AR-MD0102-K1-1117",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/",
+ "registration": "b791ea11-3d21-4505-a41a-afce2ae8b69a",
+ "when": "2026-11-17T12:59:32.340Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "كتلة (غرام) - مادة أ[.]81[,]حجم (سم³) - مادة أ[.]30[,]الكثافة (غرام/سم³) - مادة أ[.]2.7[,]كتلة (غرام) - مادة ب[.]25[,]حجم (سم³) - مادة ب[.]50[,]الكثافة (غرام/سم³) - مادة ب[.]0.5[,]كتلة (غرام) - مادة ت[.]89.6[,]حجم (سم³) - مادة ت[.]10[,]الكثافة (غرام/سم³) - مادة ت[.]8.96"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/q2",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "خشب الصنوبر (الكثافة: 0.5)[.]الخط السفلي في الرسم البياني[,]الألومنيوم (الكثافة: 2.7)[.]الخط العلوي في الرسم البياني[,]نحاس (الكثافة: 8.96)[.]الخط الأوسط في الرسم البياني"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/q2",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "الألومنيوم (الكثافة: 2.7)[.]الخط السفلي في الرسم البياني[,]خشب الصنوبر (الكثافة: 0.5)[.]الخط العلوي في الرسم البياني[,]نحاس (الكثافة: 8.96)[.]الخط الأوسط في الرسم البياني"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-001/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0.5
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-002/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-002/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "16.2 غرام"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-002/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "true"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q2",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "false"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q3",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "true"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/q4",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "true"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-003/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-004/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-004/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "طوّافة من خشب البلوط - الكثافة: 0.7 (غرام/سم³)[.]يطفو[,]كرة رصاص صلبة - الكثافة: 11.3 (غرام/سم³)[.]يغرق[,]قنينة زجاجية فارغة ومغلقة - الكثافة: 0.6 (غرام/سم³)[.]يطفو[,]كرة رصاص مجوَّفة (فارغة من الداخل) - الكثافة: 0.8 (غرام/سم³)[.]يغرق[,]كرة زجاجية صلبة - الكثافة: 2.5 (غرام/سم³)[.]يطفو"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-004/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "كرة رصاص صلبة - الكثافة: 11.3 (غرام/سم³)[.]يغرق[,]قنينة زجاجية فارغة ومغلقة - الكثافة: 0.6 (غرام/سم³)[.]يطفو[,]كرة رصاص مجوَّفة (فارغة من الداخل) - الكثافة: 0.8 (غرام/سم³)[.]يغرق[,]كرة زجاجية صلبة - الكثافة: 2.5 (غرام/سم³)[.]يطفو[,]طوّافة من خشب البلوط - الكثافة: 0.7 (غرام/سم³)[.]يغرق"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/methodica-ar-science-mass-density-01-02-004/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-02/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0.5
+    }
+   }
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   s2qDone === true && s2qOutcome === 'correct' → true",
+  "ok   currentScreen === 3 → true",
+  "ok   s3Done === true && s3Outcome === 'wrong2' → true",
+  "XAPI_Q_RESULTS → {\"001/q1\":true,\"001/q2\":false}",
+  "ok   currentScreen === 4 → true",
+  "ok   s4Done === true && s4Outcome === 'correct' → true",
+  "ok   currentScreen === 5 → true",
+  "ok   s5Done === true && s5Outcome === 'correct' → true",
+  "ok   currentScreen === 6 → true",
+  "ok   s6Done === true && s6Outcome === 'wrong2' → true",
+  "XAPI_Q_RESULTS → {\"001/q1\":true,\"001/q2\":false,\"002/q1\":true,\"003/q1\":true,\"003/q2\":true,\"003/q3\":true,\"003/q4\":true,\"004/q1\":false}",
+  "xapiPartResult() → {\"success\":false,\"score\":{\"scaled\":0.5}}"
+ ],
+ "problems": [],
+ "logs": [],
+ "hebrew": []
+}

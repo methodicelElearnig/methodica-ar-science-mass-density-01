@@ -1,0 +1,208 @@
+{
+ "steps": "steps/ar-md0103-W.txt",
+ "student": "VADIM-AR-MD0103-W-1117",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/",
+ "registration": "247b6ffe-a711-4ca8-8b10-60e69a50a027",
+ "when": "2026-11-17T13:00:34.238Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-001/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "كمية"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-001/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "حالة المادة"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-001/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-002/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-002/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "12 غرام/سم³"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-002/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "20 غرام/سم³"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-002/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-003/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-003/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "الخط الذي يصل إلى 2.5 غرام عند حجم 5 سم³"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-003/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "الخط الذي يصل إلى 5 غرام عند حجم 5 سم³"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-003/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-004/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-004/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "كثافة الماء (غرام/سم³)[.]0[,]سلوك مادة ذات كثافة 2.3 في الماء[.]تطفو"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-004/q1",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    },
+    "response": "كثافة الماء (غرام/سم³)[.]1.5[,]سلوك مادة ذات كثافة 2.3 في الماء[.]تختلط"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/methodica-ar-science-mass-density-01-03-004/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-03/",
+   "result": {
+    "success": false,
+    "score": {
+     "scaled": 0
+    }
+   }
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   currentScreen === 1 → true",
+  "ok   s1Done === true → true",
+  "ok   currentScreen === 2 → true",
+  "ok   s2qDone === true → true",
+  "ok   currentScreen === 3 → true",
+  "ok   s3qDone === true → true",
+  "ok   currentScreen === 4 → true",
+  "ok   s4Done === true && s4Outcome === 'wrong2' → true",
+  "XAPI_Q_RESULTS → {\"001/q1\":false,\"002/q1\":false,\"003/q1\":false,\"004/q1\":false}",
+  "xapiPartResult() → {\"success\":false,\"score\":{\"scaled\":0}}",
+  "ok   currentScreen === 4 → true",
+  "ok   document.getElementById('s4q-check').disabled === true → true"
+ ],
+ "problems": [],
+ "logs": [],
+ "hebrew": []
+}

@@ -1,0 +1,11 @@
+
+=== methodica-science-mass-density-01 · 14 רכיבים · סטטוס qa · עודכן 2026-11-03T06:13:22.806250Z
+סיכום: קריטית 1 · גבוהה 0 · בינונית 0 · נמוכה 4 · לבדיקה 2
+[קריטית] יחידה: יש רכיבים בערבית, וחסר arab-sector / druze-sector / bedouin-sector
+[נמוכה] יחידה: יש רכיבים בערבית, ולכותרת היחידה אין גרסה בערבית
+[נמוכה] רכיב methodica-science-mass-density-01-05 'בואו נאתגר את עצמנו' / פריט 'צפיפות כתכונה אופיינית של חומר' / שאלה q1: כמה תשובות נכונות, אבל הנוסח לא אומר 'סמנו את כל...'
+[נמוכה] רכיבים: 2 רכיבים באותו שם 'שאלת שיא' (Hebrew) – לוודא שהשם מתאים למיקום ברצף
+[נמוכה] רכיבים: 2 רכיבים באותו שם 'السؤال الأكبر' (Arabic) – לוודא שהשם מתאים למיקום ברצף
+[לבדיקה] רכיב methodica-ar-science-mass-density-01-05 'لنتحدَّ أنفسنا' / פריט 'الكثافة كخاصيّة مميزة للمادة' / שאלה q1: בחירה מרובה: לוודא בנגן שסדר הלחיצה לא משנה את ה-response
+[לבדיקה] רכיב methodica-science-mass-density-01-05 'בואו נאתגר את עצמנו' / פריט 'צפיפות כתכונה אופיינית של חומר' / שאלה q1: בחירה מרובה: לוודא בנגן שסדר הלחיצה לא משנה את ה-response
+נשמר: C:\Users\Vadim\OneDrive - methodic.co.il\Projects_ACTIVE\MOE\720\2026\methodica-ar-science-mass-density-01\git-repo\methodica-ar-science-mass-density-01\docs-and-tools\kata-rounds-2026-11-17\check-unit720\20261117-150357\methodica-science-mass-density-01.csv

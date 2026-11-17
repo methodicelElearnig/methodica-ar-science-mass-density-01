@@ -1,0 +1,32 @@
+# comp https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-07/
+# student VADIM-AR-MD0107-C-1117
+# expect true 1
+window.W=async(sel,ms=25000)=>{const t=Date.now();let e;while(Date.now()-t<ms){e=document.querySelector(sel);if(e&&!e.disabled&&e.offsetParent!==null)break;await new Promise(r=>setTimeout(r,200));}if(!e||e.disabled)throw new Error('not enabled: '+sel);e.click();await new Promise(r=>setTimeout(r,300));}
+window.pdrag=(s,t)=>{if(typeof s==='string')s=document.getElementById(s);if(typeof t==='string')t=document.getElementById(t);const r=s.getBoundingClientRect(),q=t.getBoundingClientRect();const o={bubbles:true,cancelable:true,pointerId:7,pointerType:'mouse',button:0,buttons:1,isPrimary:true};const sx=r.x+r.width/2,sy=r.y+r.height/2,x=q.x+q.width/2,y=q.y+q.height/2;s.dispatchEvent(new PointerEvent('pointerdown',{...o,clientX:sx,clientY:sy}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:sx+12,clientY:sy+12}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:x,clientY:y}));document.dispatchEvent(new PointerEvent('pointerup',{...o,clientX:x,clientY:y}));}
+window.NEXT=async(n,ms=40000)=>{const sc=()=>document.querySelector('.screen[data-screen="'+n+'"]');const t=Date.now();while(currentScreen===n&&Date.now()-t<ms){const b=[...sc().querySelectorAll('.btn-continue, [onclick="advanceScreen()"]')].filter(e=>!e.disabled&&e.offsetParent!==null);if(b.length)b[b.length-1].click();await new Promise(r=>setTimeout(r,500));}if(currentScreen===n)throw new Error('stuck on '+n);}
+await NEXT(0)
+await NEXT(1)
+@expect currentScreen === 2
+s7Toggle(2); s7Select(2, S7Q.correct[2]); s7Toggle(1); s7Select(1, S7Q.correct[1])
+await W('#s7q-check')
+@expect s7Done === true
+await NEXT(2)
+@expect currentScreen === 3
+for (const z of [...S3.zones].reverse()) { s3Tap(S3.correct[z]); s3ZoneClick(z) }
+await W('#s3q-check')
+@expect s3Done === true
+await NEXT(3)
+@expect currentScreen === 4
+s4qSelect(S4Q.correctId)
+await W('#s4q-check')
+@expect s4qDone === true
+await NEXT(4)
+@expect currentScreen === 5
+s5qSelect(S5Q.correctId)
+await W('#s5q-check')
+@expect s5qDone === true
+@print XAPI_Q_RESULTS
+@print xapiPartResult()
+await W('#s5q-check')
+@wait 1000
+@expect document.getElementById('s5q-check').disabled === true
