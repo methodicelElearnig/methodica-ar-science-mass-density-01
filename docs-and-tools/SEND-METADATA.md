@@ -1,3 +1,23 @@
+> **methodica-ar-science-mass-density-01 (2026-11-17) — the Arabic twin.** `send-metadata.ps1` and
+> `retrieve-metadata.ps1` are methodica-ar-science-mass-liquid-02's versions (parent-unit mode), retargeted:
+> - There is no Arabic unit in Kata (Kata binds a learning objective to one unit). `-ParentUnitKey`
+>   defaults to the Hebrew unit `methodica-science-mass-density-01`; the unit is only read (GET), never
+>   POSTed/PATCHed, and `*_unit.json` is not sent. The seven Arabic components
+>   (`…/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-0N/`) are created under it as **draft**.
+>   `-ParentUnitKey ''` restores the own-unit upsert (never use it here).
+> - `ContentBaseUrl` = `https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01` (Hebrew is
+>   served from `…/720/science/mass-density/01/`). Titles go under the ISO key `ar`.
+> - `retrieve-metadata.ps1` reads the parent unit by default, so its snapshot also holds the seven Hebrew
+>   components (warnings for them are expected), and Kata reports `learningUnitId` as the parent.
+>
+> Order: `-DryRun`, `-Preflight`, live create, `retrieve-metadata.ps1`, `-Status` — each live step only on
+> an explicit go from the unit owner. **`-Publish` needs MOE approval of the Arabic version first**
+> (rule 2026-11-02): the components sit in the MOE-approved Hebrew unit, so publishing them approves them
+> without MOE testing. Record the approval here before publishing. See
+> `Documentation/KATA/KATA-API.md` → "Arabic components in a Hebrew unit".
+> Everything below this note is the Hebrew unit's history (its runs, logs and Kata state), kept as the
+> record of the shared tooling.
+
 # Sending metadata to the Kata catalog
 
 `send-metadata.ps1` pushes the `metadata/` folder (1 unit + 7 components + their

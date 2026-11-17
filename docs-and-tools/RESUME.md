@@ -1,4 +1,11 @@
-# Resume — methodica-science-mass-density-01
+# Resume — methodica-ar-science-mass-density-01
+
+> **Arabic twin, 2026-11-17:** `unit-js/40-resume.js` and `50-loader.js` are the Hebrew unit's `17394ae`
+> (b57db07 — boot and resume hardening: a document is never written before the restore, a failed read
+> (not 404) closes every write for the session, the drain saves the document as read, the leave save goes
+> through `saveState720OnLeave` of `xapi-720-l.js`). Only the keys differ: `UI_CHARACTER_KEY` and
+> `NAV_EDGE_KEY` carry `ar`, and the state key follows the `methodica-ar-…` part folder, so Hebrew and
+> Arabic state never mix. The rest of this file is the Hebrew unit's record.
 
 Kata xAPI State API, one document per component keyed by the launch's `?registration`
 (`'execution-state::' + part slug`, document v5 — guide §8). Without `?slxapi` / `?registration` the
