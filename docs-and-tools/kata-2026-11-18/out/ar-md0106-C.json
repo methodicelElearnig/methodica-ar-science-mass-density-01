@@ -1,0 +1,109 @@
+{
+ "steps": "../../methodica-ar-science-mass-density-01/git-repo/methodica-ar-science-mass-density-01/docs-and-tools/kata-2026-11-18/steps/ar-md0106-C.txt",
+ "student": "VADIM-AR-MD0106-C-1118",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/",
+ "registration": "0eb41d1a-8807-44dd-ac66-603207e475dd",
+ "when": "2026-11-18T07:11:57.892Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "البولي بروبيلين والبولي إيثيلين سيطفوان. البولي فينيل كلورايد والبوليستر سيغرقان."
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q2",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "بولي إيثيلين"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q3",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "بولي بروبيلين[.]فوق سطح البحر: نوع البلاستيك الأول[,]بولي إيثيلين[.]فوق سطح البحر: نوع البلاستيك الثاني[,]منخفضة[.]فوق سطح البحر: كثافتها[,]بوليستر[.]في القاع: نوع البلاستيك الأول[,]بولي فينيل كلورايد (PVC)[.]في القاع: نوع البلاستيك الثاني[,]عالية[.]في القاع: كثافتها"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/q4",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "لجمع عينات بلاستيكية من عدة أعماق في البحر وفحص ما إذا كانت البيانات تدعم الادعاء."
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/methodica-ar-science-mass-density-01-06-001/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   currentScreen === 1 → true",
+  "ok   currentScreen === 2 → true",
+  "ok   s2qDone === true → true",
+  "ok   currentScreen === 3 → true",
+  "ok   s74qDone === true → true",
+  "ok   currentScreen === 4 → true",
+  "ok   fbdDone === true → true",
+  "ok   currentScreen === 5 → true",
+  "ok   s3qDone === true → true",
+  "XAPI_Q_RESULTS → {\"001/q1\":true,\"001/q2\":true,\"001/q3\":true,\"001/q4\":true}",
+  "xapiPartResult() → {\"success\":true,\"score\":{\"scaled\":1}}",
+  "ok   document.getElementById('s3q-check').disabled === true → true"
+ ],
+ "problems": [],
+ "logs": [],
+ "hebrew": []
+}
