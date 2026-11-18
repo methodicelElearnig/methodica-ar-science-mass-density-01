@@ -909,6 +909,24 @@ function fbdAllFilled() { return FBD.zones.every(function (z) { return fbdOccupa
 function fbdSay(msg) { const el = document.getElementById('fbd-live'); if (el) el.textContent = msg; }
 function fbdWordLabel(id) { return document.querySelector('#fbd-d-' + id + ' .fbd-card__text').textContent; }
 function fbdIsRight(z) { const id = fbdOccupant(z, null); return id !== null && FBD.accept[z].indexOf(id) !== -1; }
+/* xAPI (Monday 06-001 q3, 18.11): the two plastics of each place may go in either order (FBD.accept), but the
+   metadata holds ONE pattern (FBD.solution order). A correctly filled interchangeable group is therefore reported
+   in pattern order, so a right answer always equals correctXapiResponsesPattern. Anything else is reported as placed. */
+function fbdReportOccupants() {
+  const occ = {};
+  FBD.zones.forEach(function (z) { occ[z] = fbdOccupant(z, null); });
+  const groups = {};
+  FBD.zones.forEach(function (z) {
+    if (FBD.accept[z].length < 2) return;
+    const k = FBD.accept[z].slice().sort().join('|');
+    (groups[k] = groups[k] || []).push(z);
+  });
+  Object.keys(groups).forEach(function (k) {
+    const g = groups[k];
+    if (g.every(fbdIsRight)) g.forEach(function (z) { occ[z] = FBD.solution[z]; });
+  });
+  return occ;
+}
 /* הנחת מילה בחלל; אם החלל תפוס — הדייר מוחזר למחסן */
 function fbdPlace(id, zone) {
   const occ = fbdOccupant(zone, id);
@@ -1071,7 +1089,7 @@ function fbdCheck() {
   const okCount = FBD.zones.filter(fbdIsRight).length;
   const ok = okCount === FBD.zones.length;
   /* xAPI: matching — the word in each blank; target index = blank order (z1..z6 = the catalogue's 6 targets). */
-  xapiAnswered('001', 'q3', ok, ok || fbdAttempts >= FBD.maxAttempts, { pairs: FBD.zones.map(function (z, i) { var id = fbdOccupant(z, null); return id ? { source: fbdWordLabel(id), target: i } : null; }).filter(Boolean) });
+  xapiAnswered('001', 'q3', ok, ok || fbdAttempts >= FBD.maxAttempts, { pairs: (function (occ) { return FBD.zones.map(function (z, i) { var id = occ[z]; return id ? { source: fbdWordLabel(id), target: i } : null; }).filter(Boolean); })(fbdReportOccupants()) });
   fbdPartial = okCount > 0 && !ok;
   if (ok) {
     fbdDone = true;
