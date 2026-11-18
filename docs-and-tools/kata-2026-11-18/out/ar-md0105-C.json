@@ -1,0 +1,159 @@
+{
+ "steps": "../../methodica-ar-science-mass-density-01/git-repo/methodica-ar-science-mass-density-01/docs-and-tools/kata-2026-11-18/steps/ar-md0105-C.txt",
+ "student": "VADIM-AR-MD0105-C-1118",
+ "comp": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/",
+ "registration": "2c5f93c1-3806-4010-a472-d4d2f982667c",
+ "when": "2026-11-18T07:11:33.931Z",
+ "statements": [
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-001/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-001/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "الحلية ليست مصنوعة من ذهب خالص.[.]ادعاء[,]الحلية أزاحت حجمًا من الماء أكبر مما أزاحته سبيكة الذهب ذات الكتلة المماثلة.[.]دليل[,]عندما تتساوى الكتلتان، ويكون الحجم أكبر، تكون كثافة المادة أقل من كثافة الذهب.[.]التبرير"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-001/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-002/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-002/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "سدادة الفلين[.]يطفو على سطح الزيت[,]بولي بروبيلين[.]يطفو على سطح الزيت[,]الألومنيوم[.]سيغرق إلى قاع الوعاء"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-002/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-003/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-003/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "أمير: الكثافة هي النسبة بين كتلة المادة وحجمها. هذه القيمة ثابتة لكل مادة، ولذلك فهي تتيح تحديد نوع المادة.[,]ريم: الكثافة هي خاصيّة للمادة. سيكون لجسمين مصنوعين من نفس المادة دائمًا نفس الكثافة، بغض النظر عن حجمهما أو شكلهما."
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-003/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "initialized",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-004/",
+   "result": null
+  },
+  {
+   "status": 200,
+   "verb": "answered",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-004/q1",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    },
+    "response": "قراءة مستوى الماء الابتدائي لإناء القياس[,]غَمر الجسم في الماء[,]قراءة مستوى الماء الجديد[,]حساب الفرق في مستوى الماء بين القياسَين (حجم الجسم)[,]قسمة الكتلة على الحجم، لإيجاد قيمة الكثافة.[,]مقارنة بجدول الكثافات لتحديد المادة"
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/methodica-ar-science-mass-density-01-05-004/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  },
+  {
+   "status": 200,
+   "verb": "completed",
+   "object": "https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-05/",
+   "result": {
+    "success": true,
+    "score": {
+     "scaled": 1
+    }
+   }
+  }
+ ],
+ "notes": [
+  "first state read 404 (404 = fresh)",
+  "ok   currentScreen === 1 → true",
+  "ok   s1Done === true → true",
+  "ok   currentScreen === 2 → true",
+  "ok   s2Done === true → true",
+  "ok   currentScreen === 3 → true",
+  "ok   s3Done === true → true",
+  "ok   currentScreen === 4 → true",
+  "ok   s4Done === true → true",
+  "XAPI_Q_RESULTS → {\"001/q1\":true,\"002/q1\":true,\"003/q1\":true,\"004/q1\":true}",
+  "xapiPartResult() → {\"success\":true,\"score\":{\"scaled\":1}}",
+  "ok   document.getElementById('s4q-check').disabled === true → true"
+ ],
+ "problems": [],
+ "logs": [],
+ "hebrew": []
+}

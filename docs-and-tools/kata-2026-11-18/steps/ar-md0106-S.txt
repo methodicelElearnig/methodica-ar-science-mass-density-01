@@ -1,0 +1,36 @@
+# comp https://lomdot.education.gov.il/metodica/720/ar/science/mass-density/01/methodica-ar-science-mass-density-01-06/
+# student VADIM-AR-MD0106-S-1118
+# expect true 1
+window.W=async(sel,ms=25000)=>{const t=Date.now();let e;while(Date.now()-t<ms){e=document.querySelector(sel);if(e&&!e.disabled&&e.offsetParent!==null)break;await new Promise(r=>setTimeout(r,200));}if(!e||e.disabled)throw new Error('not enabled: '+sel);e.click();await new Promise(r=>setTimeout(r,300));}
+window.pdrag=(s,t)=>{if(typeof s==='string')s=document.getElementById(s);if(typeof t==='string')t=document.getElementById(t);const r=s.getBoundingClientRect(),q=t.getBoundingClientRect();const o={bubbles:true,cancelable:true,pointerId:7,pointerType:'mouse',button:0,buttons:1,isPrimary:true};const sx=r.x+r.width/2,sy=r.y+r.height/2,x=q.x+q.width/2,y=q.y+q.height/2;s.dispatchEvent(new PointerEvent('pointerdown',{...o,clientX:sx,clientY:sy}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:sx+12,clientY:sy+12}));document.dispatchEvent(new PointerEvent('pointermove',{...o,clientX:x,clientY:y}));document.dispatchEvent(new PointerEvent('pointerup',{...o,clientX:x,clientY:y}));}
+window.NEXT=async(n,ms=40000)=>{const sc=()=>document.querySelector('.screen[data-screen="'+n+'"]');const t=Date.now();while(currentScreen===n&&Date.now()-t<ms){const b=[...sc().querySelectorAll('.btn-continue, [onclick="advanceScreen()"]')].filter(e=>!e.disabled&&e.offsetParent!==null);if(b.length)b[b.length-1].click();await new Promise(r=>setTimeout(r,500));}if(currentScreen===n)throw new Error('stuck on '+n);}
+await NEXT(0)
+@expect currentScreen === 1
+document.querySelector('#s1 [onclick="openGraphPopup()"]').click()
+@wait 500
+closeGraphPopup(true)
+await NEXT(1)
+@expect currentScreen === 2
+s2qSelect(S2Q.correctId)
+await W('#s2q-check')
+@expect s2qDone === true
+await NEXT(2)
+@expect currentScreen === 3
+s74qSelect(S74Q.correctId)
+await W('#s74q-check')
+@expect s74qDone === true
+await NEXT(3)
+@expect currentScreen === 4
+const SW = { z1: 'z2', z2: 'z1', z4: 'z5', z5: 'z4' }; for (const z of [...FBD.zones].reverse()) { fbdTap(FBD.solution[SW[z] || z]); fbdZoneClick(z) }
+await W('#fbd-check')
+@expect fbdDone === true
+await NEXT(4)
+@expect currentScreen === 5
+s3qSelect(S3Q.correctId)
+await W('#s3q-check')
+@expect s3qDone === true
+@print XAPI_Q_RESULTS
+@print xapiPartResult()
+await W('#s3q-check')
+@wait 1000
+@expect document.getElementById('s3q-check').disabled === true
