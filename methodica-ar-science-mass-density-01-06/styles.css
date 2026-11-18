@@ -310,6 +310,10 @@ img { display: block; max-width: none; }
   background: #ffffff;
   border: 0.7px solid #484848;
 }
+/* Monday 06 (18.11): while a popup is open only the flag icon takes clicks, so the button's empty box
+   (it is wider and taller than the 30px icon) never covers the popup's close X. */
+.flag-btn--popup { pointer-events: none; }
+.flag-btn--popup .flag-btn__icon { pointer-events: auto; }
 
 /* ═══════════════════════════════════════════════════════════
    מסך 2 (#s1) — FullImageWithTextOverlay (שקף 71) + פופאפ גרף (שקף 72).
